@@ -1,0 +1,38 @@
+/**
+ * Created by krisztian on 10/09/16.
+ */
+import React, {PropTypes} from 'react';
+import { Link, IndexLink } from 'react-router';
+import LoadingDots from './loadingDots';
+
+class NavigationPage extends React.Component {
+    render() {
+        return (
+            <nav className="navbar navbar-default">
+                <div className="container">
+
+                    <div className="navbar-header">
+                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span className="sr-only">Toggle navigation</span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                        </button>
+
+                        </div>
+
+                        <IndexLink to="/lists" activeClassName="active">Home</IndexLink>
+                        {" | "}
+                        <Link to="/courses" activeClassName="active">Courses</Link>
+                        {" | "}
+                        <Link to="/learn" activeClassName="active">Learn</Link>
+                        {" | "}
+                        <Link to="/practice" activeClassName="active">Practice</Link>
+                        {/*loading &&*/false && <LoadingDots interval={100} dots={20}/>}
+                    </div>
+                </nav>
+        );
+    }
+}
+
+export default NavigationPage;

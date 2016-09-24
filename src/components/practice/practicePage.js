@@ -1,11 +1,14 @@
 /**
+ * Created by krisztian on 11/09/16.
+ */
+/**
  * Created by krisztian on 10/09/16.
  */
 import React from 'react';
 
 "use strict";
 
-class LearningPage extends React.Component {
+class PracticePage extends React.Component {
 
     getInitialState(){
 
@@ -15,10 +18,10 @@ class LearningPage extends React.Component {
     render() {
         return (
             <div className="behind">
-               <h1>Learn</h1>
+                <h1>Practice</h1>
             </div>
         );
     }
 }
 
-export default LearningPage;
+export default PracticePage;
