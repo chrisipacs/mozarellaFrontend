@@ -10,9 +10,30 @@ export function browseListsSuccess(browseLists){
     return {type: types.BROWSE_LISTS, browseLists};
 }
 
-export function studyList(){ //this is the "add list" function to study a new list
+export function saveListSuccess(list){
+    return {type: types.SAVE_LIST_SUCCESS, list};
+}
 
+/*export function browseListsSuccess(list){
+    return {type: types.SAVE_LIST, list};
+}
 
+/*
+export function browseListsSuccess(browseLists){
+    return {type: types.SAVE_LIST_SUCCESS, browseLists};
+}
+*/
+
+export function saveList(list){
+console.log('saveList called for list '+JSON.stringify(list));
+        return dispatch => {
+            dispatch(beginAjaxCall());
+            return ListApi.addList(list).then(addedList => {
+                dispatch(saveListSuccess(addedList));
+            }).catch(error => {
+                throw(error);
+            });
+    }
 
 }
 

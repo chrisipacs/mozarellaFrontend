@@ -1,7 +1,4 @@
 /**
- * Created by krisztian on 11/09/16.
- */
-/**
  * Created by krisztian on 10/09/16.
  */
 import React from 'react';
