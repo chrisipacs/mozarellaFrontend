@@ -58,7 +58,7 @@ import '../../../node_modules/fixed-data-table/dist/fixed-data-table.css';
                          <input
                             type="submit"
                             disabled={false}
-                            value='Study'
+                            value='View'
                             className="btn btn-primary"
                             onClick={this.props.actions.study}/>
                         </Cell>)}

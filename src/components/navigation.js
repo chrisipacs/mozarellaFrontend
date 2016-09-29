@@ -23,7 +23,7 @@ class NavigationPage extends React.Component {
 
                         <IndexLink to="/lists" activeClassName="active">Home</IndexLink>
                         {" | "}
-                        <Link to="/courses" activeClassName="active">Courses</Link>
+                        <Link to="/lists" activeClassName="active">Courses</Link>
                         {" | "}
                         <Link to="/learn" activeClassName="active">Learn</Link>
                         {" | "}

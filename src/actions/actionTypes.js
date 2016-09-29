@@ -8,5 +8,5 @@ export const UPDATE_COURSE_SUCCESS = 'UPDATE_COURSE_SUCCESS';
 
 export const BROWSE_LISTS = 'BROWSE_LISTS'
 export const SAVE_LIST_SUCCESS = 'SAVE_LIST_SUCCESS';
+export const LOAD_LIST_SUCCESS = 'LOAD_LIST_SUCCESS';
 export const SAVE_LIST = 'SAVE_LIST'; //do we need this
-

@@ -10,6 +10,7 @@ import {bindActionCreators} from 'redux';
 import * as listActions from '../../actions/listActions';
 import ListTable from './ListTable';
 import ListCreationPage from '../listCreation/listCreationPage';
+import {browserHistory} from 'react-router';
 
 class ListSelectionPage extends React.Component {
 
@@ -17,23 +18,26 @@ class ListSelectionPage extends React.Component {
         super(props, context);
 
         this.state = {
-            listsContext: Object.assign({}, props.listsContext),
+            listsContext: Object.assign({}, this.props.listsContext),
             errors: {},
             saving: false
         };
 
-        this.state.listsContext.listUnderEdit = Object.assign({},props.listsContext.listUnderEdit);
+        this.state.listsContext.listUnderEdit = Object.assign({},this.props.listsContext.listUnderEdit);
 
         this.updateListState = this.updateListState.bind(this);
     }
 
     updateListState(event) {
-        //console.log('updateCourseState, state is: '+JSON.stringify(this.state));
         const field = event.target.name;
         console.log(this);
         let listUnderEdit = this.state.listsContext.listUnderEdit;
         listUnderEdit[field] = event.target.value;
         return this.setState({listsContext: {listUnderEdit: listUnderEdit}});
+    }
+
+    redirectToAddCoursePage() {
+        browserHistory.push('/learn');
     }
 
     render() {
@@ -58,7 +62,7 @@ class ListSelectionPage extends React.Component {
 
                 { this.props.browseLists ? <ListTable lists={this.props.lists} actions={this.props.actions}/>
                     : <ListCreationPage list={this.state.listsContext.listUnderEdit} onChange={this.updateListState}
-                    onSave={()=>{this.props.actions.saveList(this.state.listsContext.listUnderEdit)}}/>}
+                    onSave={()=>{this.props.actions.saveList(this.state.listsContext.listUnderEdit); this.redirectToAddCoursePage()}}/>}
 
                 </div>
         );
@@ -67,8 +71,7 @@ class ListSelectionPage extends React.Component {
 
 ListSelectionPage.propTypes = {
     lists: PropTypes.array.isRequired,
-    actions: PropTypes.object.isRequired//,
-    //browseLists: PropTypes.bool.isRequired
+    actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {

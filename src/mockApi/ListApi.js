@@ -39,6 +39,23 @@ class ListApi {
         });
     }
 
+    static getList(listId) {
+        return new Promise((resolve, reject) => {
+            let list=lists.find(function(listToLookAt){
+                return listToLookAt.id===listId;
+
+            });
+            if(list!==undefined)
+            {
+                setTimeout(() => {
+                    resolve(Object.assign({}, list));
+                }, delay);
+            } else {
+                reject();
+            }
+        });
+    }
+
     static addList(list) {
         console.log('addList called');
         return new Promise((resolve, reject) => {

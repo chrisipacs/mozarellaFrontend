@@ -8,6 +8,11 @@ export default {
                     isPublic: true,
                     fromLanguage: '',
                     toLanguage: '',
-                    description: ''}
+                    description: '',
+                    learnItemContext: {
+                      numberOfLearnItems: 0,
+                      pageSize: 10,
+                      learnItems: []
+                    }}
   }
 };
