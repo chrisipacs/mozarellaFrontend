@@ -36,8 +36,18 @@ class ListSelectionPage extends React.Component {
         return this.setState({listsContext: {listUnderEdit: listUnderEdit}});
     }
 
-    redirectToAddCoursePage() {
-        browserHistory.push('/learn');
+    redirectToListPage(listId) {
+            browserHistory.push('/lists/'+listId);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        //console.log(this.props.lists[this.props.lists.length-1].id);
+        //console.log(this.props.lists[this.props.lists.length-1].id);
+
+        if (this.props.lists.length > 0 && this.props.lists[this.props.lists.length-1].id !=
+            nextProps.lists[nextProps.lists.length-1].id) {
+            this.redirectToListPage(nextProps.lists[nextProps.lists.length-1].id);
+        }
     }
 
     render() {
@@ -62,7 +72,7 @@ class ListSelectionPage extends React.Component {
 
                 { this.props.browseLists ? <ListTable lists={this.props.lists} actions={this.props.actions}/>
                     : <ListCreationPage list={this.state.listsContext.listUnderEdit} onChange={this.updateListState}
-                    onSave={()=>{this.props.actions.saveList(this.state.listsContext.listUnderEdit); this.redirectToAddCoursePage()}}/>}
+                    onSave={()=>{this.props.actions.saveList(this.state.listsContext.listUnderEdit);}}/>}
 
                 </div>
         );

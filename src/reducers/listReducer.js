@@ -6,13 +6,29 @@ export default function listReducer(state = initialState.listsContext, action) {
     case types.LOAD_LISTS_SUCCESS:
       return Object.assign({}, state, {lists: action.lists});
       case types.SAVE_LIST_SUCCESS:
+          let existingElement = state.lists.find((list)=>{return list.id===action.list.id});
+          if(existingElement){
+              let index = state.lists.indexOf(existingElement);
+              let newLists = [];
+              state.lists.forEach((element)=> {
+                  if(element.id!==action.list.id){
+                    newLists.push(element);
+                  } else {
+                      console.log(JSON.stringify(action.list));
+                    newLists.push(Object.assign({},action.list));
+                  }
+              });
+              return Object.assign({}, state, {lists: [...newLists]}, {listUnderEdit: Object.assign({},action.list)});
+          } else {
+              //if a list is a new one
+              return Object.assign({}, state, {lists: [...state.lists, Object.assign({},action.list)]});
+          }
           return Object.assign({}, state, {lists: [...state.lists, Object.assign({},action.list)]});
       case types.BROWSE_LISTS:
         return Object.assign({}, state, {browseLists: action.browseLists});
       case types.LOAD_LIST_SUCCESS:
-        return Object.assign({}, state, {listUnderEdit: Object.assign({},action.list)}); //TODO probably still not good enough
+        return Object.assign({}, state, {listUnderEdit: Object.assign({},action.list, {name: action.list.name})}); //TODO probably still not good enough
     default:
-        console.log('default reducer branch');
       return state;
   }
 }

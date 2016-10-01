@@ -46,7 +46,7 @@ class ListApi {
 
             });
             if(list!==undefined)
-            {
+            {   console.log('list in api: '+JSON.stringify(list))
                 setTimeout(() => {
                     resolve(Object.assign({}, list));
                 }, delay);
@@ -57,11 +57,23 @@ class ListApi {
     }
 
     static addList(list) {
-        console.log('addList called');
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                lists.push(list);
-                list.id=lists.length+1;
+
+                let existingList=lists.find(function(listToLookAt){
+                    return listToLookAt.id===list.id;
+
+                });
+
+                console.log(list.id);
+                if(existingList){
+                    lists[existingList.id-1] = list;
+                } else {
+                    lists.push(list);
+                    list.id=lists.length+1;
+                }
+
+
                 resolve(Object.assign({},list));
             }, delay);
         });

@@ -5,6 +5,7 @@ import React, {PropTypes}  from 'react';
 import ReactDOM from 'react-dom';
 import {Table, Column, Cell} from 'fixed-data-table';
 import '../../../node_modules/fixed-data-table/dist/fixed-data-table.css';
+import {browserHistory} from 'react-router';
 
     class ListTable extends React.Component {
         constructor(props, context) {
@@ -54,13 +55,13 @@ import '../../../node_modules/fixed-data-table/dist/fixed-data-table.css';
                     />
                 <Column
                     header={<Cell></Cell>}
-                    cell={(<Cell>
+                    cell={({rowIndex, ...props}) => (<Cell>
                          <input
-                            type="submit"
+                            type='submit'
                             disabled={false}
                             value='View'
-                            className="btn btn-primary"
-                            onClick={this.props.actions.study}/>
+                            className='btn btn-primary'
+                            onClick={()=>{browserHistory.push('/lists/'+this.props.lists[rowIndex].id);}}/>
                         </Cell>)}
                     width={300}
                     />

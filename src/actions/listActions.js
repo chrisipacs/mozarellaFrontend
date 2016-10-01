@@ -18,25 +18,6 @@ export function loadListSuccess(list){
     return {type: types.LOAD_LIST_SUCCESS, list};
 }
 
-
-/*export function browseListsSuccess(list){
-    return {type: types.SAVE_LIST, list};
-}
-
-/*
-export function browseListsSuccess(browseLists){
-    return {type: types.SAVE_LIST_SUCCESS, browseLists};
-}
-*/
-
-function resetState(listUnderEdit){
-    console.log('resetState')
-    listUnderEdit.name='';
-    listUnderEdit.fromLanguage='';
-    listUnderEdit.toLanguage='';
-    listUnderEdit.description='';
-}
-
 export function loadList(listId){
     return dispatch => {
         dispatch(beginAjaxCall());
@@ -49,11 +30,9 @@ export function loadList(listId){
 }
 
 export function saveList(list){
-console.log('saveList called for list '+JSON.stringify(list));
         return dispatch => {
             dispatch(beginAjaxCall());
             return ListApi.addList(list).then(addedList => {
-                resetState(list);
                 dispatch(saveListSuccess(addedList));
             }).catch(error => {
                 throw(error);
@@ -64,8 +43,6 @@ console.log('saveList called for list '+JSON.stringify(list));
 
 export function browseLists(value) {
     return dispatch=>{
-       //dispatch(browseListsSuccess(value));
-        console.log('browse disp');
         dispatch(browseListsSuccess(value));
     }
 }

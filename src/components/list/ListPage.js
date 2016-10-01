@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import * as listActions from '../../actions/listActions';
 import {bindActionCreators} from 'redux';
 import ContentEditable from '../../../node_modules/react-contenteditable';
-
+import striptags from '../../../node_modules/striptags';
 //list.learnItemContext is always populated
 //list.learnItemContext.pageSize
 //list.learnItemContext.pageNumber
@@ -18,29 +18,65 @@ class ListPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
+        this.changeEditing = this.changeEditing.bind(this);
+        this.updateListName = this.updateListName.bind(this);
+        this.updateListDescription = this.updateListDescription.bind(this);
+        this.save = this.save.bind(this);
+        this.cancel = this.cancel.bind(this);
+    }
+
+    componentWillMount(){
+
+        let pathElements = this.props.location.pathname.split('/');
+        let listId = pathElements[pathElements.length-1];
+
+        this.props.actions.loadList(parseInt(listId));
+
         this.state = {
-            enableEditing:true,
-            html:'aglast'
+            enableEditing: false,
+            changedSinceLastSave: false,
+            list: Object.assign({},this.props.list)
         };
 
-        console.log(this.props.location.pathname); //TODO
 
-        this.props.actions.loadList(1);
-
-        this.enableEditing = this.enableEditing.bind(this);
-        this.updateListState = this.updateListState.bind(this);
     }
 
-    updateListState() {
-        //const field = event.target.name;
-        //console.log(this);
-        //let listUnderEdit = this.state.listsContext.listUnderEdit;
-        //listUnderEdit[field] = event.target.value;
-        //return this.setState({listsContext: {listUnderEdit: listUnderEdit}});
+    componentWillReceiveProps(nextProps){
+        this.state = {
+            enableEditing: false,
+            list: nextProps.list
+        };
     }
 
-    enableEditing(enableEditing) {
-        this.setState({enableEditing:enableEditing});
+    updateListName(event) {
+        const value = striptags(event.target.value);
+        this.setState(Object.assign(this.state.list,{name:value}));
+        console.log(JSON.stringify(this.state));
+        this.state.changedSinceLastSave = true;
+    }
+
+    updateListDescription(event) {
+        const value = striptags(event.target.value);
+        this.setState(Object.assign(this.state.list,{description:value}));
+        console.log(JSON.stringify(this.state));
+        this.state.changedSinceLastSave = true;
+    }
+
+    changeEditing() {
+        console.log('change editing'+this.state.enableEditing);
+        this.setState({enableEditing:!this.state.enableEditing});
+    }
+
+    save(){
+        //this.state.
+        this.setState(Object.assign(this.state,{changedSinceLastSave:false}));
+        this.props.actions.saveList(this.state.list);
+    }
+
+    cancel(){
+        this.state.list = this.props.list;
+        this.state.enableEditing = false;
+        this.setState(Object.assign(this.state,{changedSinceLastSave:false}));
     }
 
     render() {
@@ -48,14 +84,31 @@ class ListPage extends React.Component {
 
         return (
             <div>
+                <h1>
                 <ContentEditable
-                    html={this.state.html} // innerHTML of the editable div
-                    disabled={false}       // use true to disable edition
-                    onChange={this.updateListState} // handle innerHTML change
+                    name='title'
+                    html={that.state.list.name} // innerHTML of the editable div
+                    disabled={!that.state.enableEditing}       // use true to disable edition
+                    onChange={this.updateListName} // handle innerHTML change
                 />
-                <button onClick={()=>{this.enableEditing(!this.state.editing)}}>
-                    Enable Editing
-                </button>
+                    </h1>
+                <ContentEditable
+                    name='title'
+                    html={that.state.list.description} // innerHTML of the editable div
+                    disabled={!that.state.enableEditing}       // use true to disable edition
+                    onChange={this.updateListDescription} // handle innerHTML change
+                    />
+                <br/>
+                {!that.state.enableEditing && <button onClick={this.changeEditing} className="btn btn-primary">
+                    Enable editing
+                </button>}
+                {this.state.enableEditing && <div>
+                    <button onClick={this.save} className={this.state.changedSinceLastSave ? "btn btn-success" : "btn btn-secondary"}>
+                        Save
+                    </button>  <button onClick={this.cancel} className={this.state.changedSinceLastSave ? "btn btn-warning" : "btn btn-secondary"}>
+                        Cancel changes
+                    </button>
+                </div>}
             </div>
         );
     }
@@ -63,13 +116,13 @@ class ListPage extends React.Component {
 
 ListPage.propTypes = {
     //list: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    //actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
     return {
         //listsContext: state.listsContext,
-        list:state.listsContext.listUnderEdit
+        list:Object.assign({},state.listsContext.listUnderEdit)
     };
 }
 
