@@ -30,9 +30,11 @@ export function loadList(listId){
 }
 
 export function saveList(list){
+    console.log('saveList');
         return dispatch => {
             dispatch(beginAjaxCall());
             return ListApi.addList(list).then(addedList => {
+                console.log('saveList success is about to dispatched');
                 dispatch(saveListSuccess(addedList));
             }).catch(error => {
                 throw(error);

@@ -23,7 +23,6 @@ export default function listReducer(state = initialState.listsContext, action) {
               //if a list is a new one
               return Object.assign({}, state, {lists: [...state.lists, Object.assign({},action.list)]});
           }
-          return Object.assign({}, state, {lists: [...state.lists, Object.assign({},action.list)]});
       case types.BROWSE_LISTS:
         return Object.assign({}, state, {browseLists: action.browseLists});
       case types.LOAD_LIST_SUCCESS:

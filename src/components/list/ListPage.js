@@ -32,51 +32,35 @@ class ListPage extends React.Component {
 
         this.props.actions.loadList(parseInt(listId));
 
-        this.state = {
-            enableEditing: false,
-            changedSinceLastSave: false,
-            list: Object.assign({},this.props.list)
-        };
-
-
+        this.setState(Object.assign({}, {list: {}}));
+        //this.setState({list:{name:this.props.list.name, description: this.props.list.description}});
     }
 
     componentWillReceiveProps(nextProps){
-        this.state = {
-            enableEditing: false,
-            list: nextProps.list
-        };
+        this.setState(Object.assign({}, this.state, {enableEditing: false, list: Object.assign({},nextProps.list)}));
     }
 
     updateListName(event) {
         const value = striptags(event.target.value);
-        this.setState(Object.assign(this.state.list,{name:value}));
-        console.log(JSON.stringify(this.state));
-        this.state.changedSinceLastSave = true;
+        this.setState(Object.assign({},this.state,{list: Object.assign(this.state.list,{name:value}),changedSinceLastSave : true}));
     }
 
     updateListDescription(event) {
         const value = striptags(event.target.value);
-        this.setState(Object.assign(this.state.list,{description:value}));
-        console.log(JSON.stringify(this.state));
-        this.state.changedSinceLastSave = true;
+        this.setState(Object.assign({},this.state,{list: Object.assign(this.state.list,{description:value}), changedSinceLastSave:true}));
     }
 
     changeEditing() {
-        console.log('change editing'+this.state.enableEditing);
         this.setState({enableEditing:!this.state.enableEditing});
     }
 
     save(){
-        //this.state.
         this.setState(Object.assign(this.state,{changedSinceLastSave:false}));
         this.props.actions.saveList(this.state.list);
     }
 
     cancel(){
-        this.state.list = this.props.list;
-        this.state.enableEditing = false;
-        this.setState(Object.assign(this.state,{changedSinceLastSave:false}));
+        this.setState(Object.assign(this.state,{list: Object.assign({},this.props.list), enableEditing:false,changedSinceLastSave:false}));
     }
 
     render() {
@@ -86,14 +70,14 @@ class ListPage extends React.Component {
             <div>
                 <h1>
                 <ContentEditable
-                    name='title'
+                    name="title"
                     html={that.state.list.name} // innerHTML of the editable div
                     disabled={!that.state.enableEditing}       // use true to disable edition
                     onChange={this.updateListName} // handle innerHTML change
                 />
                     </h1>
                 <ContentEditable
-                    name='title'
+                    name="title"
                     html={that.state.list.description} // innerHTML of the editable div
                     disabled={!that.state.enableEditing}       // use true to disable edition
                     onChange={this.updateListDescription} // handle innerHTML change
@@ -121,7 +105,6 @@ ListPage.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
-        //listsContext: state.listsContext,
         list:Object.assign({},state.listsContext.listUnderEdit)
     };
 }
