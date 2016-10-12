@@ -11,8 +11,9 @@ export default {
                     description: '',
                     learnItemContext: {
                       numberOfLearnItems: 0,
-                      pageSize: 10,
-                      learnItems: []
-                    }}
+                      pageSize: 10
+                    },
+                    learnItems: []
+                  }
   }
 };

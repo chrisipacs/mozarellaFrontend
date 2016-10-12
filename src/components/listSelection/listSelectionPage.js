@@ -79,10 +79,10 @@ class ListSelectionPage extends React.Component {
     }
 }
 
-ListSelectionPage.propTypes = {
-    lists: PropTypes.array.isRequired,
-    actions: PropTypes.object.isRequired
-};
+//ListSelectionPage.propTypes = {
+//    lists: PropTypes.array.isRequired,
+//    actions: PropTypes.object.isRequired
+//};
 
 function mapStateToProps(state, ownProps) {
     return {

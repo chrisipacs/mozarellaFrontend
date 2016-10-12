@@ -23,10 +23,13 @@ export default function listReducer(state = initialState.listsContext, action) {
               //if a list is a new one
               return Object.assign({}, state, {lists: [...state.lists, Object.assign({},action.list)]});
           }
+      case types.LOAD_LEARNITEMS_SUCCESS:
+          console.log('load learnitems success');
+          return Object.assign({}, state, {lists: state.lists}, {listUnderEdit: Object.assign({},state.listUnderEdit,{learnItems: action.learnItems})});
       case types.BROWSE_LISTS:
         return Object.assign({}, state, {browseLists: action.browseLists});
       case types.LOAD_LIST_SUCCESS:
-        return Object.assign({}, state, {listUnderEdit: Object.assign({},action.list, {name: action.list.name})}); //TODO probably still not good enough
+        return Object.assign({}, state, {listUnderEdit: Object.assign({},action.list, {name: action.list.name, learnItemContext: state.listUnderEdit.learnItemContext})}); //TODO probably still not good enough
     default:
       return state;
   }
