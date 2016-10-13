@@ -104,9 +104,9 @@ class ListPage extends React.Component {
                     onChange={this.updateListDescription} // handle innerHTML change
                     />
                 <br/>
-                {!that.state.enableEditing && <button onClick={this.changeEditing} className="btn btn-primary">
+                {!that.state.enableEditing && <div><button onClick={this.changeEditing} className="btn btn-primary">
                     Enable editing
-                </button>}
+                </button> <br/><br/></div>}
                 {this.state.enableEditing && <div>
                     <button onClick={this.save} className={this.state.changedSinceLastSave ? "btn btn-success" : "btn btn-secondary"}>
                         Save
@@ -114,14 +114,14 @@ class ListPage extends React.Component {
                         Cancel changes
                     </button>
                 </div>}
-                <LearnItemTableView learnItems={this.state.learnItems}/>
-                <Pagination
+                <div>{this.state.learnItems && <LearnItemTableView learnItems={this.state.learnItems}/>}</div>
+                <div><Pagination
                     activePage={this.state.activePage}
                     itemsCountPerPage={10}
                     totalItemsCount={450}
                     pageRangeDisplayed={5}
                     onChange={this.handlePageChange}
-                    />
+                    /></div>
             </div>
         );
     }

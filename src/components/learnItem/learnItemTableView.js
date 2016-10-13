@@ -7,9 +7,8 @@ import React, { Component } from "react";
 import LearnItem from './learnItem';
 
     const LearnItemTableView = ({learnItems}) => {
-        console.log('learnitems: '+learnItems);
         return (
-            <div>{learnItems.map(({learnItem})=>{<LearnItem value={learnItem.text} isNew={true} />})}</div>
+            <div>{learnItems.map((learnItem)=>{return (<LearnItem  value={learnItem} isNew={false} key={learnItem.id} />)})}</div>
         );
     };
 
