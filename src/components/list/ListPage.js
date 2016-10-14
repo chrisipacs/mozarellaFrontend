@@ -52,7 +52,12 @@ class ListPage extends React.Component {
 
     updateListName(event) {
         const value = striptags(event.target.value);
-        this.setState(Object.assign({},this.state,{list: Object.assign(this.state.list,{name:value}),changedSinceLastSave : true}));
+
+        this.setState((previousState) => update(previousState, {
+            list: {name: {$set: value}},
+            changedSinceLastSave: {$set: true}
+        }));
+        //this.setState(Object.assign({},this.state,{list: Object.assign(this.state.list,{name:value}),changedSinceLastSave : true}));
     }
 
     updateListDescription(event) {
@@ -70,7 +75,13 @@ class ListPage extends React.Component {
     }
 
     cancel(){
-        this.setState(Object.assign(this.state,{list: Object.assign({},this.props.list), enableEditing:false,changedSinceLastSave:false}));
+        this.setState((previousState) => update(previousState, {
+            enableEditing: {$set: false},
+            changedSinceLastSave: {$set: false},
+            list: {$set: this.props.list}
+        }));
+
+        //this.setState(Object.assign(this.state,{list: Object.assign({},this.props.list), enableEditing:false,changedSinceLastSave:false}));
     }
 
     handlePageChange(page){
@@ -98,7 +109,7 @@ class ListPage extends React.Component {
                 />
                     </h1>
                 <ContentEditable
-                    name="title"
+                    name="description"
                     html={that.state.list.description} // innerHTML of the editable div
                     disabled={!that.state.enableEditing}       // use true to disable edition
                     onChange={this.updateListDescription} // handle innerHTML change
