@@ -10,12 +10,8 @@ import {bindActionCreators} from 'redux';
 import ContentEditable from '../../../node_modules/react-contenteditable';
 import striptags from '../../../node_modules/striptags';
 import LearnItemTableView from '../learnItem/learnItemTableView';
-import Pagination from "../../../node_modules/react-js-pagination";
-
-//list.learnItemContext is always populated
-//list.learnItemContext.pageSize
-//list.learnItemContext.pageNumber
-//list.learnItemContext.learnItems
+import Pagination from '../../../node_modules/react-js-pagination';
+import pageSize from '../../constants';
 
 class ListPage extends React.Component {
 
@@ -31,14 +27,13 @@ class ListPage extends React.Component {
     }
 
     componentWillMount(){
-
         let pathElements = this.props.location.pathname.split('/');
         let listId = pathElements[pathElements.length-1];
 
         this.props.actions.loadList(parseInt(listId));
+        this.props.actions.loadLearnItems(parseInt(listId),0);
 
-        this.setState(Object.assign({}, {list: {}, learnItems:[]}));
-        //this.setState({list:{name:this.props.list.name, description: this.props.list.description}});
+        this.setState({list:{name:this.props.list.name, description: this.props.list.description}});
     }
 
     componentWillReceiveProps(nextProps){
@@ -57,7 +52,7 @@ class ListPage extends React.Component {
             list: {name: {$set: value}},
             changedSinceLastSave: {$set: true}
         }));
-        //this.setState(Object.assign({},this.state,{list: Object.assign(this.state.list,{name:value}),changedSinceLastSave : true}));
+
     }
 
     updateListDescription(event) {
@@ -80,8 +75,6 @@ class ListPage extends React.Component {
             changedSinceLastSave: {$set: false},
             list: {$set: this.props.list}
         }));
-
-        //this.setState(Object.assign(this.state,{list: Object.assign({},this.props.list), enableEditing:false,changedSinceLastSave:false}));
     }
 
     handlePageChange(page){
@@ -92,12 +85,11 @@ class ListPage extends React.Component {
             activePage: {$set: page}
         }));
 
-        this.props.actions.loadLearnItems(parseInt(listId),page);
+        this.props.actions.loadLearnItems(parseInt(listId),page-1);
     }
 
     render() {
         const that = this;
-
         return (
             <div>
                 <h1>
@@ -125,14 +117,13 @@ class ListPage extends React.Component {
                         Cancel changes
                     </button>
                 </div>}
-                <div>{this.state.learnItems && <LearnItemTableView learnItems={this.state.learnItems}/>}</div>
-                <div><Pagination
+                <div>{this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems}/><Pagination
                     activePage={this.state.activePage}
-                    itemsCountPerPage={10}
-                    totalItemsCount={450}
-                    pageRangeDisplayed={5}
+                    itemsCountPerPage={pageSize}
+                    totalItemsCount={this.props.learnItemCount}
+                    pageRangeDisplayed={10}
                     onChange={this.handlePageChange}
-                    /></div>
+                    /></div>}</div>
             </div>
         );
     }
@@ -142,7 +133,8 @@ function mapStateToProps(state, ownProps) {
     console.log(JSON.stringify(state));
     return {
         list:Object.assign({},state.listsContext.listUnderEdit),
-        learnItems:state.listsContext.listUnderEdit.learnItems
+        learnItems:state.listsContext.listUnderEdit.learnItems,
+        learnItemCount: state.listsContext.listUnderEdit.totalCount
     };
 }
 

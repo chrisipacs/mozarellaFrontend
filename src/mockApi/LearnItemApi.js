@@ -2,6 +2,7 @@
  * Created by krisztian on 24/09/16.
  */
 import delay from './delay';
+import pageSize from '../constants';
 
 //protected String idDescriptor;
 //protected String text;
@@ -65,8 +66,8 @@ let mockLearnItems = {
         },{   id:17,
             text:'cat',
             translations:['macska']
-        },{ id:18,text:'dog',
-            translations:['kutya','eb']
+        },{ id:18,text:'dragon',
+            translations:['sarkany']
         },{   id:19,
             text:'cat',
             translations:['macska']
@@ -96,7 +97,9 @@ class LearnItemApi {
     static getLearnItemsForList(listId,pageNumber) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(mockLearnItems.eng);
+                let toReturn = mockLearnItems.eng.slice(pageSize*pageNumber,pageSize*(pageNumber+1));
+
+                resolve({totalCount: mockLearnItems.eng.length,learnItems:toReturn});
             }, delay);
         });
     }

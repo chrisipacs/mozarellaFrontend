@@ -9,9 +9,10 @@ export default {
                     fromLanguage: '',
                     toLanguage: '',
                     description: '',
+                    totalCount: 0,
                     learnItemContext: {
-                      numberOfLearnItems: 0,
-                      pageSize: 10
+                      pageSize: 10,
+                      learnItems: []
                     },
                     learnItems: []
                   }

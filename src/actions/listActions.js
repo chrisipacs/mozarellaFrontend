@@ -20,8 +20,8 @@ export function loadListSuccess(list){
     return {type: types.LOAD_LIST_SUCCESS, list};
 }
 
-export function loadLearnitemSuccess(learnItems){
-    return {type: types.LOAD_LEARNITEMS_SUCCESS, learnItems};
+export function loadLearnitemSuccess(totalCount,learnItems){
+    return {type: types.LOAD_LEARNITEMS_SUCCESS,totalCount, learnItems};
 }
 
 export function loadList(listId){
@@ -70,8 +70,8 @@ export function loadLists() {
 export function loadLearnItems(listId,pageNumber=0) {
     return dispatch => {
         dispatch(beginAjaxCall());
-        return LearnItemApi.getLearnItemsForList(listId,pageNumber).then(learnItems => {
-            dispatch(loadLearnitemSuccess(learnItems));
+        return LearnItemApi.getLearnItemsForList(listId,pageNumber).then(result => {
+            dispatch(loadLearnitemSuccess(result.totalCount,result.learnItems));
         }).catch(error => {
             throw(error);
         });
