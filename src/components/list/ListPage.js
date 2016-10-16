@@ -12,6 +12,7 @@ import striptags from '../../../node_modules/striptags';
 import LearnItemTableView from '../learnItem/learnItemTableView';
 import Pagination from '../../../node_modules/react-js-pagination';
 import pageSize from '../../constants';
+import NewLearnItem from '../learnItem/newLearnItem';
 
 class ListPage extends React.Component {
 
@@ -24,6 +25,7 @@ class ListPage extends React.Component {
         this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.loadNewLearnItemAddition = this.loadNewLearnItemAddition.bind(this);
     }
 
     componentWillMount(){
@@ -42,6 +44,12 @@ class ListPage extends React.Component {
             enableEditing: {$set: false},
               list: {$set: nextProps.list},
             learnItems: {$set: nextProps.learnItems}
+        }));
+    }
+
+    loadNewLearnItemAddition(){
+        this.setState((previousState) => update(previousState, {
+            learnItemToAdd: {$set: {text:'',translations:''}}
         }));
     }
 
@@ -109,21 +117,33 @@ class ListPage extends React.Component {
                 <br/>
                 {!that.state.enableEditing && <div><button onClick={this.changeEditing} className="btn btn-primary">
                     Enable editing
-                </button> <br/><br/></div>}
-                {this.state.enableEditing && <div>
-                    <button onClick={this.save} className={this.state.changedSinceLastSave ? "btn btn-success" : "btn btn-secondary"}>
-                        Save
-                    </button>  <button onClick={this.cancel} className={this.state.changedSinceLastSave ? "btn btn-warning" : "btn btn-secondary"}>
-                        Cancel changes
-                    </button>
+                </button> </div>}
+                {this.state.enableEditing &&
+                    <div>
+                        <button onClick={this.loadNewLearnItemAddition} className="btn btn-primary">
+                            Add new learn Item
+                        </button>
+                        <br/><br/>
+                        <button onClick={this.save} className={this.state.changedSinceLastSave ? "btn btn-success" : "btn btn-secondary"}>
+                            Save
+                        </button>  <button onClick={this.cancel} className={this.state.changedSinceLastSave ? "btn btn-warning" : "btn btn-secondary"}>
+                            Cancel changes
+                        </button>
+                    </div>
+                }
+                {that.state.learnItemToAdd &&
+                <div>
+                    <NewLearnItem value={that.state.learnItemToAdd}/>
                 </div>}
+                <br/><br/>
                 <div>{this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems}/><Pagination
                     activePage={this.state.activePage}
                     itemsCountPerPage={pageSize}
                     totalItemsCount={this.props.learnItemCount}
                     pageRangeDisplayed={10}
                     onChange={this.handlePageChange}
-                    /></div>}</div>
+                    /></div>}
+                </div>
             </div>
         );
     }
