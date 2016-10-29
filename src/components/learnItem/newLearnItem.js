@@ -1,10 +1,10 @@
 import React, {PropTypes}  from 'react';
 import TextInput from '../reusable/TextInput';
-import * as learnItemActions from '../../actions/learnItemActions';
 import {connect} from 'react-redux';
 import update from '../../../node_modules/react-addons-update';
 import {bindActionCreators} from 'redux';
-import * as listActions from '../../actions/learnItemActions';
+import * as listActions from '../../actions/listActions';
+import * as learnItemActions from '../../actions/learnItemActions';
 
 class NewLearnItem extends React.Component {
     constructor(props, context) {
@@ -16,6 +16,7 @@ class NewLearnItem extends React.Component {
 
         this.modifyText = this.modifyText.bind(this);
         this.modifyTranslations = this.modifyTranslations.bind(this);
+        this.reset = this.reset.bind(this);
     }
 
     modifyText(event){
@@ -32,19 +33,29 @@ class NewLearnItem extends React.Component {
         }));
     }
 
+    reset(){
+        this.setState((previousState) => update(previousState, {
+            learnItem: {text: {$set: ''}, translations: {$set: ''}}
+        }));
+    }
+
     render(){
         return (
-            <div className="panel panel-success">
-                <div className="panel-heading">
-                    <h3 className="panel-title">{this.state.learnItem.text}</h3>
+            <div>
+                <br/><br/>
+                <div className="panel panel-success">
+                    <div className="panel-heading">
+                        <h3 className="panel-title">{this.state.learnItem.text}</h3>
+                    </div>
+                    <div className="panel-body">
+                        Learnitem
+                        <TextInput name='text' value={this.state.learnItem.text} onChange={this.modifyText}/>
+                        Learnitem translations separated by comma
+                        <TextInput name='translations' value={this.state.learnItem.translations} onChange={this.modifyTranslations}/>
+                        <br/>
+                        <div style={{float: 'right'}}><button type="button" className="btn btn-success" onClick={()=>{this.props.actions.saveLearnItem(this.state.learnItem); this.reset()}}>Add</button></div>
+                    </div>
                 </div>
-                <div className="panel-body">
-                    Learnitem
-                    <TextInput name='text' value={this.state.learnItem.text} onChange={this.modifyText}/>
-                    Learnitem translations separated by comma
-                    <TextInput name='translations' value={this.state.learnItem.translations} onChange={this.modifyTranslations}/>
-                </div>
-                <div><button type="button" className="btn btn-success">Save</button></div>
             </div>
         );
     }
@@ -59,7 +70,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(listActions, dispatch)
+        actions: bindActionCreators(learnItemActions, dispatch)
     };
 }
 

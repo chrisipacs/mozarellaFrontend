@@ -8,7 +8,7 @@ import LearnItem from './learnItem';
 
     const LearnItemTableView = ({learnItems}) => {
         return (
-            <div>{learnItems.map((learnItem)=>{return (<LearnItem  value={learnItem} isNew={false} key={learnItem.id} />)})}</div>
+            <div>{learnItems.map((learnItem)=>{console.log(JSON.stringify(learnItem)); return (<LearnItem  value={learnItem} isNew={false} key={learnItem.id} />)})}</div>
         );
     };
 

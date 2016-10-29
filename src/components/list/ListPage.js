@@ -39,7 +39,7 @@ class ListPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        console.log('willreceive'+JSON.stringify(nextProps.learnItems));
+        //console.log('willreceive'+JSON.stringify(nextProps.learnItems));
         this.setState((previousState) => update(previousState, {
             enableEditing: {$set: false},
               list: {$set: nextProps.list},
@@ -121,14 +121,16 @@ class ListPage extends React.Component {
                 {this.state.enableEditing &&
                     <div>
                         <button onClick={this.loadNewLearnItemAddition} className="btn btn-primary">
-                            Add new learn Item
+                                Add new learn Item
                         </button>
                         <br/><br/>
-                        <button onClick={this.save} className={this.state.changedSinceLastSave ? "btn btn-success" : "btn btn-secondary"}>
-                            Save
-                        </button>  <button onClick={this.cancel} className={this.state.changedSinceLastSave ? "btn btn-warning" : "btn btn-secondary"}>
-                            Cancel changes
-                        </button>
+                        <div>
+                            <button onClick={this.save} className={this.state.changedSinceLastSave ? "btn btn-success" : "btn btn-secondary"}>
+                                Save
+                            </button>  <button onClick={this.cancel} className={this.state.changedSinceLastSave ? "btn btn-warning" : "btn btn-secondary"}>
+                                Cancel changes
+                            </button>
+                        </div>
                     </div>
                 }
                 {that.state.learnItemToAdd &&

@@ -92,8 +92,20 @@ ger: [
 ]
 };
 
-
 class LearnItemApi {
+
+    static saveLearnItem(learnItem){
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                    let toReturn = mockLearnItems.eng.push(learnItem);
+                    learnItem.id = mockLearnItems.eng.length;
+                    learnItem.translations = learnItem.translations.split(",");
+
+                    resolve(learnItem);
+                }, delay);
+            });
+    }
+
     static getLearnItemsForList(listId,pageNumber) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
