@@ -7,13 +7,31 @@ import PracticePage from './components/practice/practicePage';
 import ListSelectionPage from './components/listSelection/listSelectionPage.js';
 import HomePage from './components/homePage';
 import ListPage from './components/list/ListPage.js';
+import LoginComponent from './components/login/loginComponent.js';
+
+
+function requireAuth(nextState, replace) {
+
+  if(typeof(Storage)!=="undefined")
+  {
+    console.log('student in localStorage: '+localStorage.getItem("student"));
+    let student = localStorage.getItem("student");
+    if(localStorage.getItem("student")==undefined){
+      replace({
+        pathname: '/login',
+        state: { nextPathname: nextState.location.pathname }
+      })
+    }
+  }
+}
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={HomePage} />
-    <Route path="lists" component={ListSelectionPage} />
-    <Route path="lists/:listId" component={ListPage} />
-    <Route path="learn" component={LearningPage} />
-    <Route path="practice" component={PracticePage} />
+    <IndexRoute component={HomePage} onEnter={requireAuth}/>
+    <Route path="lists" component={ListSelectionPage} onEnter={requireAuth}/>
+    <Route path="lists/:listId" component={ListPage} onEnter={requireAuth}/>
+    <Route path="learn" component={LearningPage} onEnter={requireAuth}/>
+    <Route path="practice" component={PracticePage} onEnter={requireAuth}/>
+    <Route path="login" component={LoginComponent} />
   </Route>
 );

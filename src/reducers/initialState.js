@@ -1,6 +1,7 @@
 export default {
   courses: [],
   ajaxCallsInProgress: 0,
+  student: {},
   listsContext: {lists:[],
                   browseLists: false,
                   listUnderEdit: {

@@ -33,7 +33,7 @@ export default function listReducer(state = initialState.listsContext, action) {
         return Object.assign({}, state, {browseLists: action.browseLists});
       case types.LOAD_LIST_SUCCESS:
         return Object.assign({}, state, {listUnderEdit: Object.assign({},action.list, {name: action.list.name, learnItemContext: state.listUnderEdit.learnItemContext})}); //TODO probably still not good enough
-    default:
+      default:
       return state;
   }
 }

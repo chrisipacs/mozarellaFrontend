@@ -13,4 +13,7 @@ export const SAVE_LIST = 'SAVE_LIST'; //do we need this
 
 //learnItem
 export const SAVE_LEARNITEM_SUCCESS = 'SAVE_LEARNITEM_SUCCESS';
-export const LOAD_LEARNITEMS_SUCCESS = 'LOAD_LEARNITEMS_SUCCESS'
+export const LOAD_LEARNITEMS_SUCCESS = 'LOAD_LEARNITEMS_SUCCESS';
+
+//login
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
