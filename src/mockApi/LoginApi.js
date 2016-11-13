@@ -3,17 +3,31 @@
  */
 import delay from './delay';
 import token from './token';
-
-let student = {
-    name: 'testUser',
-    token: token
-};
+import students from './students';
 
 class LoginApi {
-    static login() {
+
+    constructor(){
+
+    }
+
+    static studentWithName(name){
+        return function(student){
+            return student.name==name;
+        }
+    }
+
+    static login(username,password) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(Object.assign({}, student));
+                let student = students.find(LoginApi.studentWithName(username));
+                if(student && student.password==password){
+                    console.log('will be resolved');
+                    resolve(Object.assign({}, student));
+                } else {
+                    console.log('will be rejected');
+                    reject();
+                }
             }, delay);
         });
     }

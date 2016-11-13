@@ -23,7 +23,8 @@ class LoginComponent extends React.Component {
 
             this.state = {
                 username:'',
-                password: ''
+                password: '',
+                loginError: false
             }
         }
 
@@ -45,7 +46,15 @@ class LoginComponent extends React.Component {
 
         handleSubmit(event) {
             event.preventDefault();
-            this.props.actions.login(this.state.username,this.state.password);
+            let that = this;
+            this.props.actions.login(this.state.username,this.state.password)
+                .then()
+                .catch(
+                function(err){
+                    that.setState((previousState) => update(previousState, {
+                        loginError: {$set: true}
+                    }));
+                })
         }
 
         componentWillReceiveProps(nextProps){
@@ -58,6 +67,10 @@ class LoginComponent extends React.Component {
             return (<div className="container">
                     <form className="form-signin">
                         <h2 className="form-signin-heading">Please sign in</h2>
+                        {this.state.loginError && <div className="alert alert-danger" role="alert">
+                            <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span className="sr-only">Error</span> Invalid credentials
+                        </div>}
                         <label className="sr-only">User name</label>
                         <TextInput type="email" id="inputEmail" className="form-control" placeholder="Username" required=""
                                autofocus="" onChange={this.updateUserName}/>

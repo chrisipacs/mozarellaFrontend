@@ -1,10 +1,6 @@
 /**
  * Created by krisztian on 2016. 10. 31..
  */
-/**
- * Created by krisztian on 2016. 10. 30..
- */
-
 
 import React from 'react';
 import {render} from 'react-dom';
@@ -16,6 +12,7 @@ import update from '../../../node_modules/react-addons-update';
 import {bindActionCreators} from 'redux';
 import * as signupActions from '../../actions/signupActions';
 import renderField from './SignUpField';
+import signupApi from '../../mockApi/SignupApi'; //TODO: change for real Api when integrating with backend
 
 const validate = values => {
     const errors = {};
@@ -40,6 +37,22 @@ const validate = values => {
         errors.email = 'Invalid email address'
     }
     return errors
+};
+
+const asyncValidate = (values) => {
+    return signupApi.isUsernameFree(values.username)
+        .then((isFree) => {
+            if (!isFree) {
+                throw { username: 'That username is taken' }
+            }
+        });
+
+    /*return sleep(1000) // simulate server latency
+        .then(() => {
+            if ([ 'john', 'paul', 'george', 'ringo' ].includes(values.username)) {
+                throw { username: 'That username is taken' }
+            }
+        })*/
 };
 
 class SignUpPage extends React.Component {
@@ -114,5 +127,6 @@ function mapStateToProps(state, ownProps) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
     form: 'signUp',  // a unique identifier for this form
-    validate                // <--- validation function given to redux-form
+    validate,                // <--- validation function given to redux-form
+    asyncValidate
 })(SignUpPage));

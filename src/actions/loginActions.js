@@ -15,7 +15,7 @@ export function login(username,password){
     return dispatch => {
         dispatch(beginAjaxCall());
                 return loginApi.login(username,password).then(student => {
-                    if(username=="user" && password=="password"){
+                    if(student){
                         localStorage.setItem('student',student);
                         dispatch(loginSuccess(student));
                     } else {
