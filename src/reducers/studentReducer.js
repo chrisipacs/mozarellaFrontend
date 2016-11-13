@@ -6,7 +6,9 @@ import initialState from './initialState';
 
 export default function listReducer(state = initialState.student, action) {
     switch (action.type) {
-     case types.LOGIN_SUCCESS:
+        case types.LOGIN_SUCCESS:
+            return Object.assign({}, action.student);
+        case types.SIGNUP_SUCCESS:
             return Object.assign({}, action.student);
         default:
             return state;

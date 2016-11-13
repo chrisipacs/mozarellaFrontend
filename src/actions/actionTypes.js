@@ -17,3 +17,6 @@ export const LOAD_LEARNITEMS_SUCCESS = 'LOAD_LEARNITEMS_SUCCESS';
 
 //login
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+
+//signup
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';

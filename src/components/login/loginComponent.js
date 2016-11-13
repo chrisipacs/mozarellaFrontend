@@ -49,8 +49,6 @@ class LoginComponent extends React.Component {
         }
 
         componentWillReceiveProps(nextProps){
-            console.log('nextProps:'+JSON.stringify(nextProps));
-
             if(nextProps.student!=undefined && nextProps.student.name!=undefined && nextProps.location.state.nextPathname!=null){
                 browserHistory.push(nextProps.location.state.nextPathname);
             }
@@ -74,6 +72,9 @@ class LoginComponent extends React.Component {
                         </div>
                         <button className="btn btn-lg btn-primary btn-block" type="submit" onClick={this.handleSubmit}>Sign in</button>
                     </form>
+                    <div>
+                    Not a member? <a href="/signup">Sign up</a>
+                    </div>
                 </div>);
             }
         }
