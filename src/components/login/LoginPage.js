@@ -2,7 +2,6 @@
  * Created by krisztian on 2016. 10. 30..
  */
 
-
 import React from 'react';
 import {render} from 'react-dom';
 import {browserHistory} from 'react-router';

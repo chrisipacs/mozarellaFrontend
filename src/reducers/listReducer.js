@@ -1,7 +1,7 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-export default function listReducer(state = initialState.listsContext, action) {
+export default function listReducer(state = initialState.listsContext, action = {}) {
   switch (action.type) {
     case types.LOAD_LISTS_SUCCESS:
       return Object.assign({}, state, {lists: action.lists});

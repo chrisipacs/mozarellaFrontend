@@ -8,6 +8,21 @@ export function saveLearnItemSuccess(learnItem) {
   return {type: types.SAVE_LEARNITEM_SUCCESS, learnItem};
 }
 
+export function loadLearnableLearnItemsSuccess(learnItemList,numberOfLearnItems) {
+    return {type: types.LOAD_LEARNABLE_LEARNITEMS_SUCCESS, learnItem};
+}
+
+export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {
+    return dispatch => {
+        dispatch(beginAjaxCall());
+        return LearnItemApi.getLearnItemsToLearn(listId, numberOfLearnItems).then(learnItems => {
+            dispatch(loadLearnableLearnItemsSuccess(learnItems));
+        }).catch(error => {
+            throw(error);
+        });
+    };
+}
+
 export function saveLearnItem(learnItem){
     console.log('before');
     return dispatch => {

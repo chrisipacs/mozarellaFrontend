@@ -9,7 +9,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as listActions from '../../actions/listActions';
 import ListTable from './ListTable';
-import ListCreationPage from '../listCreation/listCreationPage';
+import ListCreationPage from '../listCreation/ListCreationPage';
 import {browserHistory} from 'react-router';
 
 class ListSelectionPage extends React.Component {
@@ -41,9 +41,6 @@ class ListSelectionPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        //console.log(this.props.lists[this.props.lists.length-1].id);
-        //console.log(this.props.lists[this.props.lists.length-1].id);
-
         if (this.props.lists.length > 0 && this.props.lists[this.props.lists.length-1].id !=
             nextProps.lists[nextProps.lists.length-1].id) {
             this.redirectToListPage(nextProps.lists[nextProps.lists.length-1].id);
@@ -78,11 +75,6 @@ class ListSelectionPage extends React.Component {
         );
     }
 }
-
-//ListSelectionPage.propTypes = {
-//    lists: PropTypes.array.isRequired,
-//    actions: PropTypes.object.isRequired
-//};
 
 function mapStateToProps(state, ownProps) {
     return {
