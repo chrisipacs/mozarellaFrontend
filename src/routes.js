@@ -9,6 +9,7 @@ import HomePage from './components/homePage';
 import ListPage from './components/list/ListPage.js';
 import LoginComponent from './components/login/LoginPage.js';
 import SignUpPage from './components/login/SignUpPage.js';
+import ListSelectionPageForLearning from './components/learning/ListSelectionPageForLearning';
 
 function requireAuth(nextState, replace) {
 
@@ -30,7 +31,8 @@ export default (
     <IndexRoute component={HomePage} onEnter={requireAuth}/>
     <Route path="lists" component={ListSelectionPage} onEnter={requireAuth}/>
     <Route path="lists/:listId" component={ListPage} onEnter={requireAuth}/>
-    <Route path="learn" component={LearningPage} onEnter={requireAuth}/>
+    <Route path="learn" component={ListSelectionPageForLearning} onEnter={requireAuth}/>
+    <Route path="learn/:listId" component={LearningPage} onEnter={requireAuth}/>
     <Route path="practice" component={PracticePage} onEnter={requireAuth}/>
     <Route path="login" component={LoginComponent} />
     <Route path="signup" component={SignUpPage} />

@@ -10,7 +10,7 @@ import initialState from './initialState';
 export default function learnItemReducer(state = initialState.student, action = {}) {
     switch (action.type) {
         case types.LOAD_LEARNABLE_LEARNITEMS_SUCCESS:
-            return Object.assign(...state, action.learnItems);
+            return Object.assign([], ...state, action.learnItems);
         default:
             return state;
     }

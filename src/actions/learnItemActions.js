@@ -8,8 +8,8 @@ export function saveLearnItemSuccess(learnItem) {
   return {type: types.SAVE_LEARNITEM_SUCCESS, learnItem};
 }
 
-export function loadLearnableLearnItemsSuccess(learnItemList,numberOfLearnItems) {
-    return {type: types.LOAD_LEARNABLE_LEARNITEMS_SUCCESS, learnItem};
+export function loadLearnableLearnItemsSuccess(learnItems) {
+    return {type: types.LOAD_LEARNABLE_LEARNITEMS_SUCCESS, learnItems};
 }
 
 export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {

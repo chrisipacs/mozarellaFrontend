@@ -24,7 +24,6 @@ class ListSelectionPage extends React.Component {
         };
 
         this.state.listsContext.listUnderEdit = Object.assign({},this.props.listsContext.listUnderEdit);
-
         this.updateListState = this.updateListState.bind(this);
     }
 
@@ -67,7 +66,7 @@ class ListSelectionPage extends React.Component {
                     className={this.props.browseLists ? "btn btn-primary" : ""}
                     onClick={()=>{that.props.actions.browseLists(true)}}/>
 
-                { this.props.browseLists ? <ListTable lists={this.props.lists} actions={this.props.actions}/>
+                { this.props.browseLists ? <ListTable lists={this.props.lists} actions={this.props.actions} nameOfAction='View' pagePrefix='lists'/>
                     : <ListCreationPage list={this.state.listsContext.listUnderEdit} onChange={this.updateListState}
                     onSave={()=>{this.props.actions.saveList(this.state.listsContext.listUnderEdit);}}/>}
 

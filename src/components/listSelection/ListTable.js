@@ -59,9 +59,9 @@ import {browserHistory} from 'react-router';
                          <input
                             type='submit'
                             disabled={false}
-                            value='View'
+                            value={this.props.nameOfAction}
                             className='btn btn-primary'
-                            onClick={()=>{browserHistory.push('/lists/'+this.props.lists[rowIndex].id);}}/>
+                            onClick={()=>{browserHistory.push('/'+this.props.pagePrefix+'/'+this.props.lists[rowIndex].id);}}/>
                         </Cell>)}
                     width={300}
                     />

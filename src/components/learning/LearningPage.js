@@ -8,6 +8,7 @@ import update from '../../../node_modules/react-addons-update';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as listActions from '../../actions/listActions';
+import TextInput from '../reusable/TextInput';
 
 class LearningPage extends React.Component {
 
@@ -19,26 +20,30 @@ class LearningPage extends React.Component {
             usedUpTime: 0
         };
 
+        let pathElements = this.props.location.pathname.split('/');
+        let listId = pathElements[pathElements.length-1];
+
         this.getNextLearnItem = this.getNextLearnItem.bind(this);
+        this.getNextLearnItem();
     }
 
     getNextLearnItem(){
-        if(this.state.upcomingLearnItems.length>0){
+        if(this.state.upcomingLearnItems && this.state.upcomingLearnItems.length>0){
             this.setState((previousState) => update(previousState, {
-                learnItemToAdd: {$set: this.state.upcomingLearnItems.splice(0)},
-                upcomingLearnItems: {$set: this.state.upcomingLearnItems.splice(1,this.state.upcomingLearnItems.splice.length()-1)}
+                currentLearnItem: {$set: this.state.upcomingLearnItems[0]},
+                upcomingLearnItems: {$set: this.state.upcomingLearnItems.splice(1,this.state.upcomingLearnItems.length-1)}
             }));
         } else {
-            //load new learnItems
-            this.props.actions.loadLearnItemsToLearn(this.props.list.id);
+            this.props.learnItemActions.loadLearnItemsToLearn(this.listId);
         }
     }
 
     componentWillMount(){
-        let pathElements = this.props.location.pathname.split('/');
-        let listId = pathElements[pathElements.length-1];
 
-        listActions.loadList();
+    }
+
+    componentWillUpdate(){
+
     }
 
     componentWillReceiveProps(nextProps){
@@ -46,17 +51,25 @@ class LearningPage extends React.Component {
         if(nextProps.learnItems){
             this.setState((previousState) => update(previousState, {
                 upcomingLearnItems: {$set: nextProps.learnItems}
-            }));
+            }),function(){
+                this.getNextLearnItem();
+            });
         }
     }
 
     render() {
         const that = this;
         return (
-            <div>
-                <h1>{this.state.currentLearnItem}</h1>
-                <ProgressBar totalTime={this.state.totalTime} usedUpTime={this.state.usedUpTime}/>
-            </div>
+        <div>
+            {
+                this.state.currentLearnItem &&
+                <div>
+                    <h1>{this.state.currentLearnItem.text}</h1>
+                    <TextInput/>
+                    <ProgressBar totalTime={this.state.totalTime} usedUpTime={this.state.usedUpTime}/>
+                </div>
+            }
+        </div>
         );
     }
 }
@@ -70,7 +83,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(LearnItemActions, dispatch)
+        learnItemActions: bindActionCreators(LearnItemActions, dispatch),
+        listActions: bindActionCreators(listActions, dispatch)
     };
 }
 

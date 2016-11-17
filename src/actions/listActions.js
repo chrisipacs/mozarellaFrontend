@@ -31,6 +31,7 @@ export function loadList(listId){
             loadLearnItems(list.id);
             dispatch(loadListSuccess(list));
         }).catch(error => {
+            console.log(error);
             throw(error);
         });
     }
