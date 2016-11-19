@@ -4,11 +4,13 @@
 import React from 'react';
 import * as LearnItemActions from '../../actions/learnItemActions';
 import ProgressBar from './progressBar';
-import update from '../../../node_modules/react-addons-update';
+import update from 'react-addons-update';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as listActions from '../../actions/listActions';
 import TextInput from '../reusable/TextInput';
+import LearningStatusInfo from './LearningStatusInfo';
+import Sound from 'react-sound';
 
 class LearningPage extends React.Component {
 
@@ -21,17 +23,23 @@ class LearningPage extends React.Component {
 
         this.state = {
             totalTime : that.totalTimeInit,
-            usedUpTime: 0
+            usedUpTime: 0,
+            points: 0,
+            soundPlaying:Sound.status.STOPPED,
+            typedSolution: '',
+            ranOutOfLearnItems: false,
+            showSolution: false
         };
 
         let pathElements = this.props.location.pathname.split('/');
         let listId = pathElements[pathElements.length-1];
-        let frequency = 100;
 
         this.getNextLearnItem = this.getNextLearnItem.bind(this);
         this.countdown = this.countdown.bind(this);
         this.checkSolution = this.checkSolution.bind(this);
         this.startTimer = this.startTimer.bind(this);
+        this.updateStateOnType = this.updateStateOnType.bind(this);
+        this.updateStateOnKeyPress = this.updateStateOnKeyPress.bind(this);
     }
 
     startTimer(){
@@ -50,7 +58,7 @@ class LearningPage extends React.Component {
 
     countdown(){
         if(this.state.usedUpTime>this.state.totalTime) {
-            this.getNextLearnItem();
+            this.setState({showSolution:true});
         } else {
             this.startTimer();
         }
@@ -69,17 +77,47 @@ class LearningPage extends React.Component {
         if(this.state.upcomingLearnItems && this.state.upcomingLearnItems.length>0){
             this.setState((previousState) => update(previousState, {
                 currentLearnItem: {$set: this.state.upcomingLearnItems[0]},
-                upcomingLearnItems: {$set: this.state.upcomingLearnItems.splice(1)}
+                upcomingLearnItems: {$set: this.state.upcomingLearnItems.splice(1)},
+                showSolution: {$set: false}
             }),this.resetCountDown);
         } else {
-            //the event triggered by this will call getNextLearnItem again
+            //the action triggered by this will call getNextLearnItem again
             this.props.learnItemActions.loadLearnItemsToLearn(this.listId);
         }
     }
 
-    checkSolution(event){
-        if(event.target.value==this.state.currentLearnItem.translations[0]){ //TODO: figure out the condition
-            console.log('checksolution'+event.target.value);
+    updateStateOnType(event) {
+        let solution = event.target.value;
+        this.setState({typedSolution: solution},()=>{
+            this.checkSolution(solution);
+        });
+    }
+
+    updateStateOnKeyPress(event) {
+        let key = event.key;
+        console.log('key:'+key);
+
+        if(key=='Enter'){
+            this.checkSolution('', true);
+        }
+    }
+
+
+    checkSolution(solution,forced=false){
+        if(solution==this.state.currentLearnItem.translations[0]){ //TODO: figure out the condition
+            let playing = this.state.showSolution ? Sound.status.STOPPED : Sound.status.PLAYING;
+            let points = this.state.showSolution ? 0 : this.state.currentLearnItem.pointValue;
+
+            this.setState({
+                points: this.state.points+=points,
+                soundPlaying:playing,
+                typedSolution: ''
+            },function(){
+                this.getNextLearnItem();
+            });
+
+        } else if(forced){
+            this.setState({showSolution:true});
         }
     }
 
@@ -93,20 +131,14 @@ class LearningPage extends React.Component {
         }
     }
 
-    setResult(){
-
-    }
-
-    componentWillUpdate(){
-
-    }
-
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         let that = this;
-        if(nextProps.learnItems){
+        if (nextProps.learnItems && nextProps.learnItems.length>0) {
             this.setState((previousState) => update(previousState, {
                 upcomingLearnItems: {$set: nextProps.learnItems}
-            }),that.getNextLearnItem);
+            }), that.getNextLearnItem);
+        } else {
+            this.setState({ranOutOfLearnItems: true});
         }
     }
 
@@ -114,12 +146,24 @@ class LearningPage extends React.Component {
         const that = this;
         return (
         <div>
-            {this.state.currentLearnItem &&
+            {this.state.currentLearnItem && !this.state.ranOutOfLearnItems &&
                 <div>
+                    <LearningStatusInfo pointsCollected={this.state.points}/>
                     <h1>{this.state.currentLearnItem.text}</h1>
-                    <TextInput onChange={this.checkSolution}/>
+                    {this.state.showSolution &&
+                        <div className="alert alert-danger" role="alert">
+                            {this.state.currentLearnItem.translations[0]}
+                        </div>
+                    }
+                    <TextInput onChange={this.updateStateOnType} onKeyPress={this.updateStateOnKeyPress} value={this.state.typedSolution}/>
                     <ProgressBar totalTime={this.state.totalTime} usedUpTime={this.state.usedUpTime}/>
                 </div>}
+            {!this.state.showSolution && <Sound
+                url="../resources/success.wav"
+                playStatus={this.state.soundPlaying}
+                playFromPosition={1000 /* in milliseconds */}
+                onFinishedPlaying={() => this.setState({soundPlaying: Sound.status.STOPPED})} />}
+            {this.state.ranOutOfLearnItems && <h1>No more items to practice at this time</h1>}
         </div>
         );
     }
