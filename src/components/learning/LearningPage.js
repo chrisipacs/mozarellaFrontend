@@ -15,30 +15,85 @@ class LearningPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
+        this.totalTimeInit = 20;
+
+        let that = this;
+
         this.state = {
-            totalTime : 60,
+            totalTime : that.totalTimeInit,
             usedUpTime: 0
         };
 
         let pathElements = this.props.location.pathname.split('/');
         let listId = pathElements[pathElements.length-1];
+        let frequency = 100;
 
         this.getNextLearnItem = this.getNextLearnItem.bind(this);
-        this.getNextLearnItem();
+        this.countdown = this.countdown.bind(this);
+        this.checkSolution = this.checkSolution.bind(this);
+        this.startTimer = this.startTimer.bind(this);
+    }
+
+    startTimer(){
+        let that = this;
+
+        if(this.timer){
+            clearTimeout(this.timer);
+        }
+
+        this.timer = setTimeout(function () {
+            that.setState((previousState) => update(previousState, {
+                usedUpTime: {$set: that.state.usedUpTime + 0.01}
+            }), that.countdown);
+        }, 10);
+    }
+
+    countdown(){
+        if(this.state.usedUpTime>this.state.totalTime) {
+            this.getNextLearnItem();
+        } else {
+            this.startTimer();
+        }
+    }
+
+    resetCountDown(){
+        let that = this;
+
+        this.setState((previousState) => update(previousState, {
+            totalTime : {$set: that.totalTimeInit},
+            usedUpTime: {$set:0}
+        }),that.countdown);
     }
 
     getNextLearnItem(){
         if(this.state.upcomingLearnItems && this.state.upcomingLearnItems.length>0){
             this.setState((previousState) => update(previousState, {
                 currentLearnItem: {$set: this.state.upcomingLearnItems[0]},
-                upcomingLearnItems: {$set: this.state.upcomingLearnItems.splice(1,this.state.upcomingLearnItems.length-1)}
-            }));
+                upcomingLearnItems: {$set: this.state.upcomingLearnItems.splice(1)}
+            }),this.resetCountDown);
         } else {
+            //the event triggered by this will call getNextLearnItem again
             this.props.learnItemActions.loadLearnItemsToLearn(this.listId);
         }
     }
 
+    checkSolution(event){
+        if(event.target.value==this.state.currentLearnItem.translations[0]){ //TODO: figure out the condition
+            console.log('checksolution'+event.target.value);
+        }
+    }
+
     componentWillMount(){
+        this.getNextLearnItem();
+    }
+
+    componentWillUnmount(){
+        if(this.timer){
+            clearTimeout(this.timer);
+        }
+    }
+
+    setResult(){
 
     }
 
@@ -47,13 +102,11 @@ class LearningPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        //TODO: new learnitems into the state
+        let that = this;
         if(nextProps.learnItems){
             this.setState((previousState) => update(previousState, {
                 upcomingLearnItems: {$set: nextProps.learnItems}
-            }),function(){
-                this.getNextLearnItem();
-            });
+            }),that.getNextLearnItem);
         }
     }
 
@@ -61,14 +114,12 @@ class LearningPage extends React.Component {
         const that = this;
         return (
         <div>
-            {
-                this.state.currentLearnItem &&
+            {this.state.currentLearnItem &&
                 <div>
                     <h1>{this.state.currentLearnItem.text}</h1>
-                    <TextInput/>
+                    <TextInput onChange={this.checkSolution}/>
                     <ProgressBar totalTime={this.state.totalTime} usedUpTime={this.state.usedUpTime}/>
-                </div>
-            }
+                </div>}
         </div>
         );
     }

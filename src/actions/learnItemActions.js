@@ -24,7 +24,6 @@ export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {
 }
 
 export function saveLearnItem(learnItem){
-    console.log('before');
     return dispatch => {
         dispatch(beginAjaxCall());
         return LearnItemApi.saveLearnItem(learnItem).then(learnItem => {

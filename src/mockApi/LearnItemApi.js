@@ -11,8 +11,6 @@ class LearnItemApi {
     static getLearnItemsToLearn(listId, numberOfLearnItems){
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                console.log('lets see');
-                console.log(mockLearnItems.eng.splice(0, numberOfLearnItems));
                 resolve(mockLearnItems.eng.splice(0, numberOfLearnItems));
             }, delay);
         });
