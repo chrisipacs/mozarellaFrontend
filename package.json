@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Frontend for the language learning app mozarella",
   "scripts": {
-    "prestart": "node tools/buildHtml.js && node tools/startMessage.js",
+    "prestart": "node tools/startMessage.js",
     "start": "node tools/distServer.js",
     "open:src": "babel-node tools/srcServer.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
