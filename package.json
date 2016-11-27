@@ -1,10 +1,10 @@
 {
-  "name": "ps-redux",
+  "name": "mozarella-frontend",
   "version": "1.0.0",
-  "description": "Starter kit for React and Redux Pluralsight course by Cory House",
+  "description": "Frontend for the language learning app mozarella",
   "scripts": {
-    "prestart": "babel-node tools/startMessage.js",
-    "start": "npm-run-all --parallel test:watch open:src lint:watch",
+    "prestart": "node tools/startMessage.js",
+    "start": "node tools/distServer.js",
     "open:src": "babel-node tools/srcServer.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "npm run lint -- --watch",
@@ -15,10 +15,8 @@
     "build:html": "babel-node tools/buildHtml.js",
     "prebuild": "npm-run-all clean-dist test lint build:html",
     "build": "babel-node tools/build.js",
-    "postbuild": "babel-node tools/distServer.js"
+    "postbuild": "node tools/distServer.js",
   },
-  "author": "Cory House",
-  "license": "MIT",
   "dependencies": {
     "babel-polyfill": "6.8.0",
     "babel-preset-stage-2": "^6.13.0",
@@ -29,7 +27,9 @@
     "react-redux": "4.4.5",
     "react-router": "2.6.0",
     "react-router-redux": "4.0.4",
+    "react-sound": "^0.5.2",
     "redux": "3.5.2",
+    "redux-form": "^6.2.0",
     "redux-thunk": "2.0.1",
     "toastr": "2.1.2"
   },
@@ -71,9 +71,5 @@
     "webpack": "1.13.0",
     "webpack-dev-middleware": "1.6.1",
     "webpack-hot-middleware": "2.10.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/coryhouse/pluralsight-redux-starter"
   }
 }
