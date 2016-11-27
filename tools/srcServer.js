@@ -17,9 +17,13 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('/:folder/:file', function(req, res) {
-  res.sendFile(path.join( __dirname, '../src/'+req.params.folder+'/'+req.params.file));
+app.get('/resources/:file', function(req, res) {
+  res.sendFile(path.join( __dirname, '../public/'+req.params.file));
 });
+
+//app.get('', function(req, res) {
+//  res.sendFile(path.join( __dirname, '../public/index.html'));
+//});
 
 app.get('*', function(req, res) {
   res.sendFile(path.join( __dirname, '../src/index.html'));
