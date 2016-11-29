@@ -12,7 +12,7 @@ import update from '../../../node_modules/react-addons-update';
 import {bindActionCreators} from 'redux';
 import * as signupActions from '../../actions/signupActions';
 import renderField from './SignUpField';
-import signupApi from '../../mockApi/SignupApi'; //TODO: change for real Api when integrating with backend
+import {signupApi} from '../../middleware/middleware'; //TODO: change for real Api when integrating with backend
 
 const validate = values => {
     const errors = {};
