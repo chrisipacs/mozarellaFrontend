@@ -2,7 +2,8 @@
  * Created by krisztian on 2016. 11. 28..
  */
 import host from './host';
-import request from 'request';
+//import fetch from 'whatwg-fetch';
+import 'whatwg-fetch';
 
 class SignupApi {
 
@@ -13,17 +14,25 @@ class SignupApi {
     }
 
     static isUsernameFree(name){
+        console.log('real isusernamefree');
         return new Promise((resolve, reject) => {
-            request
-                .get(host+'/img.png')
-                .on('response', function(response) {
-                    if(response.isArray && response.length>0){
+            fetch(host+'/usernameavailable?name='+name)
+                .then(function(response) {
+                    //console.log('request succeeded with JSON response', response.text());
+                    return response.text();
+                })
+                .then(function(text){
+                    console.log(text)
+                    if(text.isArray && text.length>0){
                         resolve(false);
                     } else {
                         resolve(true);
                     }
                 })
-                .pipe(request.put('http://mysite.com/img.png'))
+                .catch(function(error) {
+                    console.log('request failed', error);
+                    reject();
+                })
         });
     }
 

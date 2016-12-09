@@ -17,10 +17,8 @@ class SignupApi {
             setTimeout(() => {
                 let student = students.find(SignupApi.studentWithName(name));
                 if(student){
-                    console.log('false');
                     resolve(false);
                 } else {
-                    console.log('true');
                     resolve(true);
                 }
 

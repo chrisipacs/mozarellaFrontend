@@ -18,8 +18,8 @@ const validate = values => {
     const errors = {};
     if (!values.username) {
         errors.username = 'Required'
-    } else if (values.username.length > 15) {
-        errors.username = 'Must be 15 characters or less'
+    } else if (values.username.length > 20) {
+        errors.username = 'Must be 20 characters or less'
     }
     if (!values.password) {
         errors.password = 'Required'
@@ -45,6 +45,8 @@ const asyncValidate = (values) => {
             if (!isFree) {
                 throw { username: 'That username is taken' }
             }
+        }).catch(function(err){
+            console.log('error: '+err);
         });
 
     /*return sleep(1000) // simulate server latency

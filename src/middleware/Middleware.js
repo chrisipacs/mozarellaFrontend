@@ -13,6 +13,9 @@ import mockSignupApi from '../mockApi/SignupApi';
 
 let learnItemApi, listApi, loginApi, signupApi;
 
+console.log('process.env.NODE_ENV is: '+process.env.NODE_ENV);
+console.log(JSON.stringify(process.env));
+
 if(process.env.NODE_ENV == 'prod'){
     learnItemApi = realLearnItemApi;
     listApi = realListApi;
