@@ -22,10 +22,8 @@ class LoginApi {
             setTimeout(() => {
                 let student = students.find(LoginApi.studentWithName(username));
                 if(student && student.password==password){
-                    console.log('will be resolved');
                     resolve(Object.assign({}, student));
                 } else {
-                    console.log('will be rejected');
                     reject();
                 }
             }, delay);

@@ -12,7 +12,9 @@ class LearnItemApi {
     }
 
     static saveLearnItem(learnItem){
+        //localStorage.setItem('token',token);
         return new Promise((resolve, reject) => {
+
         });
     }
 

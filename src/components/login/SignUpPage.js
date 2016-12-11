@@ -42,19 +42,11 @@ const validate = values => {
 const asyncValidate = (values) => {
     return signupApi.isUsernameFree(values.username)
         .then((isFree) => {
+            console.log('isFree: '+isFree);
             if (!isFree) {
                 throw { username: 'That username is taken' }
             }
-        }).catch(function(err){
-            console.log('error: '+err);
         });
-
-    /*return sleep(1000) // simulate server latency
-        .then(() => {
-            if ([ 'john', 'paul', 'george', 'ringo' ].includes(values.username)) {
-                throw { username: 'That username is taken' }
-            }
-        })*/
 };
 
 class SignUpPage extends React.Component {
@@ -66,12 +58,16 @@ class SignUpPage extends React.Component {
     }
 
     handleSubmit(event) {
+        console.log('1');
         event.preventDefault();
         if(!this.props.invalid) {
-            this.props.actions.signUp(this.props.username, this.props.password);
-            this.setState((previousState) => update(previousState, {
-                isSuccessful: {$set: true}
-            }));
+            console.log('2');
+            this.props.actions.signUp({name:this.props.username, password:this.props.password}).then(()=>{
+                console.log('3');
+                this.setState((previousState) => update(previousState, {
+                    isSuccessful: {$set: true}
+                }));
+            });
         }
     }
 

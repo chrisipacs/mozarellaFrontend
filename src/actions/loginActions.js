@@ -1,8 +1,7 @@
 /**
  * Created by krisztian on 2016. 10. 30..
  */
-
-import loginApi from '../mockApi/LoginApi';
+import {loginApi} from '../middleware/middleware';
 import * as types from './actionTypes';
 import {beginAjaxCall} from './ajaxStatusActions';
 import pageSize from '../constants';

@@ -29,7 +29,6 @@ class LoginComponent extends React.Component {
 
         updateUserName(event){
             event.persist();
-            console.log(event.target.value);
             this.setState((previousState) => update(previousState, {
                 username: {$set: event.target.value}
             }));
@@ -37,7 +36,6 @@ class LoginComponent extends React.Component {
 
         updatePassword(event){
             event.persist();
-            console.log(event.target.value);
             this.setState((previousState) => update(previousState, {
                 password: {$set: event.target.value}
             }));
@@ -47,9 +45,13 @@ class LoginComponent extends React.Component {
             event.preventDefault();
             let that = this;
             this.props.actions.login(this.state.username,this.state.password)
-                .then()
+                .then(function(){
+                    //TODO trigger props update for student
+
+                })
                 .catch(
                 function(err){
+                    console.log('Login error: '+JSON.stringify(err));
                     that.setState((previousState) => update(previousState, {
                         loginError: {$set: true}
                     }));
@@ -57,6 +59,7 @@ class LoginComponent extends React.Component {
         }
 
         componentWillReceiveProps(nextProps){
+            console.log('nextprops: '+JSON.stringify(nextProps));
             if(nextProps.student!=undefined && nextProps.student.name!=undefined && nextProps.location.state.nextPathname!=null){
                 browserHistory.push(nextProps.location.state.nextPathname);
             }

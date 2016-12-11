@@ -18,16 +18,10 @@ class SignupApi {
         return new Promise((resolve, reject) => {
             fetch(host+'/usernameavailable?name='+name)
                 .then(function(response) {
-                    //console.log('request succeeded with JSON response', response.text());
-                    return response.text();
+                    return response.json();
                 })
-                .then(function(text){
-                    console.log(text)
-                    if(text.isArray && text.length>0){
-                        resolve(false);
-                    } else {
-                        resolve(true);
-                    }
+                .then(function(result){
+                    resolve(JSON.parse(result))
                 })
                 .catch(function(error) {
                     console.log('request failed', error);
@@ -37,8 +31,29 @@ class SignupApi {
     }
 
     static signUp(student) {
+        console.log('signup real api');
         return new Promise((resolve, reject) => {
+            console.log('signup real api '+JSON.stringify(student));
 
+            let data = JSON.stringify(student);
+
+            fetch(host+'/api/students',{
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: data
+                })
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(text){
+                    console.log('response: '+text);
+                })
+                .catch(function(error) {
+                    console.log('request failed', error);
+                    reject();
+                })
         });
     }
 }
