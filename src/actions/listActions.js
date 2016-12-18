@@ -1,4 +1,4 @@
-import ListApi from '../mockApi/ListApi';
+import {listApi} from '../middleware/middleware';
 import LearnItemApi from '../mockApi/LearnItemApi';
 import * as types from './actionTypes';
 import {beginAjaxCall} from './ajaxStatusActions';
@@ -27,7 +27,7 @@ export function loadLearnitemSuccess(totalCount,learnItems){
 export function loadList(listId){
     return dispatch => {
         dispatch(beginAjaxCall());
-        return ListApi.getList(listId).then(list => {
+        return listApi.getList(listId).then(list => {
             loadLearnItems(list.id);
             dispatch(loadListSuccess(list));
         }).catch(error => {
@@ -38,11 +38,9 @@ export function loadList(listId){
 }
 
 export function saveList(list){
-    console.log('saveList');
         return dispatch => {
             dispatch(beginAjaxCall());
-            return ListApi.addList(list).then(addedList => {
-                console.log('saveList success is about to dispatched');
+            return listApi.addList(list).then(addedList => {
                 dispatch(saveListSuccess(addedList));
             }).catch(error => {
                 throw(error);
@@ -57,15 +55,16 @@ export function browseLists(value) {
     }
 }
 
-export function loadLists() {
-  return dispatch => {
-    dispatch(beginAjaxCall());
-    return ListApi.getAllLists().then(lists => {
-      dispatch(loadListsSuccess(lists));
-    }).catch(error => {
-      throw(error);
-    });
-  };
+export function loadLists(pageNumber,pageSize) {
+    return dispatch => {
+        console.log(pageSize);
+        dispatch(beginAjaxCall());
+        return listApi.getAllLists(pageNumber,pageSize).then(lists => {
+            dispatch(loadListsSuccess(lists));
+        }).catch(error => {
+            throw(error);
+        });
+    };
 }
 
 export function loadLearnItems(listId,pageNumber=0) {

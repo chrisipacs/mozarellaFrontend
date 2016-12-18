@@ -4,6 +4,7 @@ export default {
   student: {},
   listsContext: {lists:[],
                   browseLists: false,
+                  totalCount: 0,
                   listUnderEdit: { //TODO rename to loadedList or something
                     name: '',
                     isPublic: true,

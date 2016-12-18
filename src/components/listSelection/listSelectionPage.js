@@ -20,11 +20,15 @@ class ListSelectionPage extends React.Component {
         this.state = {
             listsContext: Object.assign({}, this.props.listsContext),
             errors: {},
-            saving: false
+            saving: false,
+            activePage: 0
         };
 
         this.state.listsContext.listUnderEdit = Object.assign({},this.props.listsContext.listUnderEdit);
         this.updateListState = this.updateListState.bind(this);
+        this.handlePageChange = this.handlePageChange(this);
+
+        let pageSize = 10;
     }
 
     updateListState(event) {
@@ -44,6 +48,10 @@ class ListSelectionPage extends React.Component {
             nextProps.lists[nextProps.lists.length-1].id) {
             this.redirectToListPage(nextProps.lists[nextProps.lists.length-1].id);
         }
+    }
+
+    handlePageChange(pageNumber) {
+        //this.setState({activePage: pageNumber});
     }
 
     render() {
@@ -66,7 +74,12 @@ class ListSelectionPage extends React.Component {
                     className={this.props.browseLists ? "btn btn-primary" : ""}
                     onClick={()=>{that.props.actions.browseLists(true)}}/>
 
-                { this.props.browseLists ? <ListTable lists={this.props.lists} actions={this.props.actions} nameOfAction='View' pagePrefix='lists'/>
+                { this.props.browseLists ? <ListTable lists={this.props.lists}
+                                                      actions={this.props.actions}
+                                                      activePage={this.props.activePage}
+                                                      totalNumber={this.props.totalNumber}
+                                                      pageSize={this.pageSize}
+                                                      nameOfAction='View' pagePrefix='lists'/>
                     : <ListCreationPage list={this.state.listsContext.listUnderEdit} onChange={this.updateListState}
                     onSave={()=>{this.props.actions.saveList(this.state.listsContext.listUnderEdit);}}/>}
 
@@ -76,10 +89,12 @@ class ListSelectionPage extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    console.log('mapStateToProps: '+JSON.stringify(state.listsContext));
     return {
         listsContext: state.listsContext,
         lists: state.listsContext.lists,
-        browseLists: state.listsContext.browseLists
+        browseLists: state.listsContext.browseLists,
+        totalNumber: state.listsContext.totalNumber
     };
 }
 

@@ -6,6 +6,7 @@
  */
 import host from './host';
 import 'whatwg-fetch';
+import requestObjects from './RequestObjects';
 
 class LoginApi {
 
@@ -14,29 +15,7 @@ class LoginApi {
     }
 
     static studentWithName(name){
-        return new Promise((resolve, reject) => {
-            let token = localStorage.getItem('token');
-
-            fetch(host+'/api/students?name='+name,{
-                method: "GET",
-                headers: {
-                    'Authorization' : 'Bearer '+token
-                }
-                })
-                .then(function(response) {
-                    console.log('response1: '+response);
-                    if(response.status==401){
-                        reject('invalid credentials');
-                    }
-                    return response.json();
-                })
-                .then(function(studentsJSON) {
-                    resolve(Object.assign({}, studentsJSON[0]));
-                })
-                .catch(function(error) {
-                    reject(error);
-                })
-        });
+        return requestObjects('/api/students?name='+name,'GET')[0];
     }
 
     static saveToken(jwt){
@@ -56,11 +35,9 @@ class LoginApi {
                 }
                 })
                 .then(function(response) {
-                    console.log('response1: '+response);
                     return response.text();
                 })
                 .then(function(token){
-                    console.log('token obtained: '+token);
                     localStorage.setItem('token',token);
 
                     return that.studentWithName(username);

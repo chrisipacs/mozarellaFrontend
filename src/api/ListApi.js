@@ -5,8 +5,23 @@
  * Created by krisztian on 17/09/16.
  */
 
+import requestObjects from './RequestObjects';
+import sendObject from './SendObject';
+
 class ListApi {
-    static getAllLists() {
+    static getAllLists(pageNumber,pageSize) {
+        return new Promise((resolve, reject) => {
+            requestObjects('/api/learnitemlists?pagenumber='+pageNumber+'&&pagesize='+pageSize,'GET')
+            .then(function(lists){
+                resolve(lists.content);
+            }).catch(function(error) {
+                reject(error);
+            });
+        });
+    }
+
+    static getNumberOfLearnItems(){
+        //TODO implement this on both in the frontend and backend side
         return new Promise((resolve, reject) => {
 
         });
@@ -20,7 +35,7 @@ class ListApi {
 
     static addList(list) {
         return new Promise((resolve, reject) => {
-
+            return sendObject('/api/learnitemlists','POST',list);
         });
     }
 }

@@ -11,7 +11,7 @@ import {loadLists} from './actions/listActions';
 
 const store = configureStore(window.devToolsExtension && window.devToolsExtension());
 //store.dispatch(loadCourses());
-store.dispatch(loadLists());
+store.dispatch(loadLists(0,10));
 
 render(
   <Provider store={store}>

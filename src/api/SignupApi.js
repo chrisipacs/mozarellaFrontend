@@ -2,7 +2,6 @@
  * Created by krisztian on 2016. 11. 28..
  */
 import host from './host';
-//import fetch from 'whatwg-fetch';
 import 'whatwg-fetch';
 
 class SignupApi {

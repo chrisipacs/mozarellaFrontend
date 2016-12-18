@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import {Table, Column, Cell} from 'fixed-data-table';
 import '../../../node_modules/fixed-data-table/dist/fixed-data-table.css';
 import {browserHistory} from 'react-router';
+import Pagination from "../../../node_modules/react-js-pagination";
 
     class ListTable extends React.Component {
         constructor(props, context) {
@@ -13,7 +14,7 @@ import {browserHistory} from 'react-router';
         }
 
         render(){return (
-
+        <div>
             <Table
                 rowHeight={50}
                 rowsCount={this.props.lists.length}
@@ -65,7 +66,16 @@ import {browserHistory} from 'react-router';
                         </Cell>)}
                     width={300}
                     />
-            </Table>)}
+            </Table>
+            <Pagination
+                activePage={this.props.activePage}
+                itemsCountPerPage={this.props.pageSize}
+                totalItemsCount={this.props.totalNumber}
+                pageRangeDisplayed={5}
+                onChange={this.handlePageChange}
+            />
+            </div>
+            )}
 
 }
 
