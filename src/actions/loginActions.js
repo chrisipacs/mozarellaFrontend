@@ -15,12 +15,14 @@ export function login(username,password){
         dispatch(beginAjaxCall());
                 return loginApi.login(username,password).then(student => {
                     if(student){
+                        console.log('student$$$'+JSON.stringify(student));
                         localStorage.setItem('student',student);
                         dispatch(loginSuccess(student));
                     } else {
                         throw "Invalid username or password";
                     }
                 }).catch(error => {
+                    console.log('Login failed with reson: '+error);
                     throw(error);
                 });
             }

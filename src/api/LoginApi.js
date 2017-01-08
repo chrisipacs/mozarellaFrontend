@@ -15,7 +15,7 @@ class LoginApi {
     }
 
     static studentWithName(name){
-        return requestObjects('/api/students?name='+name,'GET')[0];
+        return requestObjects('/api/students?name='+name,'GET');
     }
 
     static saveToken(jwt){
@@ -41,8 +41,10 @@ class LoginApi {
                     localStorage.setItem('token',token);
 
                     return that.studentWithName(username);
-                }).then(function(student){
-                    resolve(Object.assign({}, student));
+                }).then(function(students){
+                    //let a = Object.assign({}, students[0]);
+                    //console.log('after studentwithname'+JSON.stringify(students[0]));
+                    resolve(Object.assign({}, students[0]));
                 })
                 .catch(function(error) {
                     console.log('login failed', error);

@@ -5,7 +5,7 @@ import {beginAjaxCall} from './ajaxStatusActions';
 import pageSize from '../constants';
 
 export function loadListsSuccess(lists) {
-  return {type: types.LOAD_LISTS_SUCCESS, lists};
+  return {type: types.LOAD_LISTS_SUCCESS, lists, totalCount:1000};
 }
 
 export function browseListsSuccess(browseLists){
@@ -59,7 +59,8 @@ export function loadLists(pageNumber,pageSize) {
     return dispatch => {
         console.log(pageSize);
         dispatch(beginAjaxCall());
-        return listApi.getAllLists(pageNumber,pageSize).then(lists => {
+        return listApi.getAllLists(pageNumber,pageSize).then((lists,totalNumber) => {
+            console.log('lists before dispatch: '+JSON.stringify(lists));
             dispatch(loadListsSuccess(lists));
         }).catch(error => {
             throw(error);

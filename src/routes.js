@@ -17,10 +17,16 @@ function requireAuth(nextState, replace) {
   {
     console.log('student in localStorage: '+localStorage.getItem("student"));
     let student = localStorage.getItem("student");
+    let nextPathname =  '/';
+
+    if(nextState!=undefined && nextState.location!=undefined && nextState.location.pathname != undefined){
+      nextPathname = nextState.location.pathname;
+    }
+
     if(localStorage.getItem("student")==undefined){
       replace({
         pathname: '/login',
-        state: { nextPathname: nextState.location.pathname }
+        state: { nextPathname }
       })
     }
   }

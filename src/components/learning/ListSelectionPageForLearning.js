@@ -11,25 +11,49 @@ import * as listActions from '../../actions/listActions';
 import ListTable from '../listSelection/ListTable';
 import ListCreationPage from '../listCreation/ListCreationPage';
 import {browserHistory} from 'react-router';
+import pageSize from './learnItemListPageSize';
 
 class ListSelectionPageForLearning extends React.Component {
 
     constructor(props, context) {
         super(props, context);
+
+        this.state = {
+            activePage: 0,
+            totalCount: 0 //todo: move this to the store, and props
+        };
+
+        this.props.actions.loadLists(0,pageSize).then(function(loadedLists){
+            console.log('successfully loaded the following lists: '+loadedLists);
+        });
+    }
+
+    handlePageChange(pageNumber) {
+        this.setState({activePage: pageNumber});
     }
 
     render() {
         return (
             <div>
-                <ListTable lists={this.props.lists} actions={this.props.actions} nameOfAction='Study' pagePrefix='learn'/>
+                <ListTable lists={this.props.lists}
+                           actions={this.props.actions}
+                           activePage={this.state.activePage}
+                           itemsCountPerPage={this.pageSize}
+                           totalCount={this.props.totalCount}
+                           pageRangeDisplayed={10}
+                           onChange={this.handlePageChange} actions={this.props.actions} nameOfAction='Study' pagePrefix='learn'
+
+                    />
             </div>
         );
     }
 }
 
 function mapStateToProps(state, ownProps) {
+    console.log('mapstatetoprops state'+JSON.stringify(state));
     return {
-        lists: state.listsContext.lists
+        lists: state.listsContext.lists,
+        totalCount: state.listsContext.totalCount
     };
 }
 

@@ -12,7 +12,9 @@ class ListApi {
     static getAllLists(pageNumber,pageSize) {
         return new Promise((resolve, reject) => {
             requestObjects('/api/learnitemlists?pagenumber='+pageNumber+'&&pagesize='+pageSize,'GET')
-            .then(function(lists){
+            .then(function(lists,headers){
+                //console.log('TOTAL COUNT: '+headers.get('X-total-count'));
+                //resolve(headers.get('X-total-count'),lists.content);
                 resolve(lists.content);
             }).catch(function(error) {
                 reject(error);

@@ -4,7 +4,7 @@ import initialState from './initialState';
 export default function listReducer(state = initialState.listsContext, action = {}) {
     switch (action.type) {
         case types.LOAD_LISTS_SUCCESS:
-            return Object.assign({}, state, {lists: action.lists});
+            return Object.assign({}, state, action);
         case types.SAVE_LIST_SUCCESS: {
             let existingElement = state.lists.find((list)=> {
                 return list.id === action.list.id

@@ -26,9 +26,9 @@ class ListSelectionPage extends React.Component {
 
         this.state.listsContext.listUnderEdit = Object.assign({},this.props.listsContext.listUnderEdit);
         this.updateListState = this.updateListState.bind(this);
-        this.handlePageChange = this.handlePageChange(this);
+        this.handlePageChange = this.handlePageChange.bind(this);
 
-        let pageSize = 10;
+        let pageSize = 10; //TODO to its own file
     }
 
     updateListState(event) {
@@ -51,7 +51,7 @@ class ListSelectionPage extends React.Component {
     }
 
     handlePageChange(pageNumber) {
-        //this.setState({activePage: pageNumber});
+        this.setState({activePage: pageNumber});
     }
 
     render() {
@@ -76,9 +76,11 @@ class ListSelectionPage extends React.Component {
 
                 { this.props.browseLists ? <ListTable lists={this.props.lists}
                                                       actions={this.props.actions}
-                                                      activePage={this.props.activePage}
-                                                      totalNumber={this.props.totalNumber}
-                                                      pageSize={this.pageSize}
+                                                      activePage={this.state.activePage}
+                                                      itemsCountPerPage={this.pageSize}
+                                                      totalItemsCount={this.props.totalNumber}
+                                                      pageRangeDisplayed={10}
+                                                      onChange={this.handlePageChange}
                                                       nameOfAction='View' pagePrefix='lists'/>
                     : <ListCreationPage list={this.state.listsContext.listUnderEdit} onChange={this.updateListState}
                     onSave={()=>{this.props.actions.saveList(this.state.listsContext.listUnderEdit);}}/>}

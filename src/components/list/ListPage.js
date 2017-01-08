@@ -35,7 +35,7 @@ class ListPage extends React.Component {
         this.props.actions.loadList(parseInt(listId));
         this.props.actions.loadLearnItems(parseInt(listId),0);
 
-        this.setState({list:{name:this.props.list.name, description: this.props.list.description}});
+        this.setState({list:{name:this.props.list.name, description: this.props.list.description}, activePage: {$set: 0}});
     }
 
     componentWillReceiveProps(nextProps){
@@ -138,13 +138,9 @@ class ListPage extends React.Component {
                     <NewLearnItem value={that.state.learnItemToAdd}/>
                 </div>}
                 <br/><br/>
-                <div>{this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems}/><Pagination
-                    activePage={this.state.activePage}
-                    itemsCountPerPage={pageSize}
-                    totalItemsCount={this.props.learnItemCount}
-                    pageRangeDisplayed={10}
-                    onChange={this.handlePageChange}
-                    /></div>}
+                <div>{
+
+                    this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems}/></div>}
                 </div>
             </div>
         );

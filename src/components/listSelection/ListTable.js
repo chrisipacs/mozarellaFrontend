@@ -11,6 +11,7 @@ import Pagination from "../../../node_modules/react-js-pagination";
     class ListTable extends React.Component {
         constructor(props, context) {
             super(props, context);
+            console.log('props at listTable: '+JSON.stringify(props));
         }
 
         render(){return (
@@ -19,7 +20,7 @@ import Pagination from "../../../node_modules/react-js-pagination";
                 rowHeight={50}
                 rowsCount={this.props.lists.length}
                 width={1000}
-                height={5000}
+                height={this.props.lists.length*50+50}
                 headerHeight={50}>
                 <Column
                     header={<Cell>Course name</Cell>}
@@ -69,10 +70,10 @@ import Pagination from "../../../node_modules/react-js-pagination";
             </Table>
             <Pagination
                 activePage={this.props.activePage}
-                itemsCountPerPage={this.props.pageSize}
-                totalItemsCount={this.props.totalNumber}
+                itemsCountPerPage={this.props.itemsCountPerPage}
+                totalItemsCount={this.props.totalCount}
                 pageRangeDisplayed={5}
-                onChange={this.handlePageChange}
+                onChange={this.props.onChange}
             />
             </div>
             )}

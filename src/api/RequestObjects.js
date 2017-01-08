@@ -11,7 +11,6 @@ export default (path,method)=>{
 
     return new Promise((resolve, reject) => {
         let token = localStorage.getItem('token');
-        console.log(path+'token: '+token);
 
         fetch(host+path,{
             method: method,
@@ -20,16 +19,19 @@ export default (path,method)=>{
             }
         })
         .then(function(response) {
-            //console.log(path+' response1: '+JSON.stringify(response));
+
             if(response.status==401){
                 reject('invalid credentials');
             }
+
             return response.json();
         })
-        .then(function(responseObjects) { //TODO this part doesn't belong here!
-            resolve(responseObjects);
+        .then(function(responseObject) { //TODO this part doesn't belong here!
+            console.log('response: '+JSON.stringify(responseObject));
+            resolve(responseObject);
         })
         .catch(function(error) {
+                console.log('rejecting... '+JSON.stringify(error));
             reject(error);
         })
     });
