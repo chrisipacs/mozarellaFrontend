@@ -19,8 +19,8 @@ import Pagination from "../../../node_modules/react-js-pagination";
             <Table
                 rowHeight={50}
                 rowsCount={this.props.lists == undefined ? 0 : this.props.lists.length}
-                width={1000}
-                height={this.props.lists == undefined ? 0 : this.props.lists.length*50+50}
+                width={1200}
+                height={this.props.lists == undefined ? 0 : this.props.lists.length*50+1}
                 headerHeight={50}>
                 <Column
                     header={<Cell>Course name</Cell>}

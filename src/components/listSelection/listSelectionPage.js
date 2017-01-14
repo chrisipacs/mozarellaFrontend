@@ -52,6 +52,7 @@ class ListSelectionPage extends React.Component {
 
     handlePageChange(pageNumber) {
         this.setState({activePage: pageNumber});
+        this.props.actions.loadLists(pageNumber-1,pageSize);
     }
 
     render() {

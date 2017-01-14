@@ -13,7 +13,7 @@ class ListApi {
         return new Promise((resolve, reject) => {
             requestObjects('/api/learnitemlists?pagenumber='+pageNumber+'&&pagesize='+pageSize,'GET')
             .then(function(result){
-                resolve({totalCount: Number(result.headers.get('X-total-count')),lists:result.responseObjects.content});
+                resolve({totalCount: Number(result.headers.get('X-total-count')),lists:result.objects.content});
             }).catch(function(error) {
                 reject(error);
             });

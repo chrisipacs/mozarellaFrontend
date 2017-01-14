@@ -1,5 +1,4 @@
-import {listApi} from '../middleware/middleware';
-import LearnItemApi from '../mockApi/LearnItemApi';
+import {listApi,learnItemApi} from '../middleware/middleware';
 import * as types from './actionTypes';
 import {beginAjaxCall} from './ajaxStatusActions';
 import pageSize from '../constants';
@@ -70,7 +69,7 @@ export function loadLists(pageNumber,pageSize) {
 export function loadLearnItems(listId,pageNumber=0) {
     return dispatch => {
         dispatch(beginAjaxCall());
-        return LearnItemApi.getLearnItemsForList(listId,pageNumber).then(result => {
+        return learnItemApi.getLearnItemsForList(listId,pageNumber).then(result => {
             dispatch(loadLearnitemSuccess(result.totalCount,result.learnItems));
         }).catch(error => {
             throw(error);

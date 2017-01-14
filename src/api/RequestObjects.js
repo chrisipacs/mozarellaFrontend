@@ -11,7 +11,7 @@ import 'whatwg-fetch';
 export default (path,method)=>{
     let createNewResponse = function (response){ //TODO find a better name
         return response.json().then((objects)=>{
-            return {responseObjects:objects, headers:response.headers}});
+            return {objects:objects, headers:response.headers}});
     };
 
     return new Promise((resolve, reject) => {

@@ -46,7 +46,7 @@ class ListApi {
 
             });
             if(list!==undefined)
-            {   console.log('list in api: '+JSON.stringify(list))
+            {   console.log('list in api: '+JSON.stringify(list));
                 setTimeout(() => {
                     resolve(Object.assign({}, list));
                 }, delay);
