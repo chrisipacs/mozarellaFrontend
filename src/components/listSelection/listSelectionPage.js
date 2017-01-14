@@ -78,7 +78,7 @@ class ListSelectionPage extends React.Component {
                                                       actions={this.props.actions}
                                                       activePage={this.state.activePage}
                                                       itemsCountPerPage={this.pageSize}
-                                                      totalItemsCount={this.props.totalNumber}
+                                                      totalCount={this.props.totalCount != undefined ? this.props.totalCount : 0}
                                                       pageRangeDisplayed={10}
                                                       onChange={this.handlePageChange}
                                                       nameOfAction='View' pagePrefix='lists'/>
@@ -91,12 +91,11 @@ class ListSelectionPage extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log('mapStateToProps: '+JSON.stringify(state.listsContext));
     return {
         listsContext: state.listsContext,
         lists: state.listsContext.lists,
         browseLists: state.listsContext.browseLists,
-        totalNumber: state.listsContext.totalNumber
+        totalCount: state.listsContext.totalCount
     };
 }
 

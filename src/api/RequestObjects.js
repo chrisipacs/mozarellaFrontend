@@ -7,7 +7,12 @@ import 'whatwg-fetch';
 //abstraction for the fetch logic to avoid repetition when querying objects
 //only for the /api methods
 
+
 export default (path,method)=>{
+    let createNewResponse = function (response){ //TODO find a better name
+        return response.json().then((objects)=>{
+            return {responseObjects:objects, headers:response.headers}});
+    };
 
     return new Promise((resolve, reject) => {
         let token = localStorage.getItem('token');
@@ -24,18 +29,10 @@ export default (path,method)=>{
                 reject('invalid credentials');
             }
 
-            return response.json();
-        })
-        .then(function(responseObject) { //TODO this part doesn't belong here!
-            console.log('response: '+JSON.stringify(responseObject));
-            resolve(responseObject);
-        })
-        .catch(function(error) {
-                console.log('rejecting... '+JSON.stringify(error));
-            reject(error);
-        })
+            createNewResponse(response).then((resp)=>{
+                resolve(resp);
+            })
+        });
+
     });
-
-
 }
-

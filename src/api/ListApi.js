@@ -12,10 +12,8 @@ class ListApi {
     static getAllLists(pageNumber,pageSize) {
         return new Promise((resolve, reject) => {
             requestObjects('/api/learnitemlists?pagenumber='+pageNumber+'&&pagesize='+pageSize,'GET')
-            .then(function(lists,headers){
-                //console.log('TOTAL COUNT: '+headers.get('X-total-count'));
-                //resolve(headers.get('X-total-count'),lists.content);
-                resolve(lists.content);
+            .then(function(result){
+                resolve({totalCount: Number(result.headers.get('X-total-count')),lists:result.responseObjects.content});
             }).catch(function(error) {
                 reject(error);
             });
@@ -23,7 +21,7 @@ class ListApi {
     }
 
     static getNumberOfLearnItems(){
-        //TODO implement this on both in the frontend and backend side
+        //TODO implement this on both the frontend and backend side
         return new Promise((resolve, reject) => {
 
         });

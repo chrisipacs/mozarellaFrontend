@@ -26,10 +26,13 @@ class ListSelectionPageForLearning extends React.Component {
         this.props.actions.loadLists(0,pageSize).then(function(loadedLists){
             console.log('successfully loaded the following lists: '+loadedLists);
         });
+
+        this.handlePageChange = this.handlePageChange.bind(this);
     }
 
     handlePageChange(pageNumber) {
         this.setState({activePage: pageNumber});
+        this.props.actions.loadLists(pageNumber-1,pageSize);
     }
 
     render() {
@@ -50,7 +53,6 @@ class ListSelectionPageForLearning extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log('mapstatetoprops state'+JSON.stringify(state));
     return {
         lists: state.listsContext.lists,
         totalCount: state.listsContext.totalCount

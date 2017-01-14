@@ -15,7 +15,9 @@ class LoginApi {
     }
 
     static studentWithName(name){
-        return requestObjects('/api/students?name='+name,'GET');
+        return requestObjects('/api/students?name='+name,'GET').then((students)=>{
+            return students.responseObjects;
+        })
     }
 
     static saveToken(jwt){
@@ -39,11 +41,10 @@ class LoginApi {
                 })
                 .then(function(token){
                     localStorage.setItem('token',token);
-
                     return that.studentWithName(username);
                 }).then(function(students){
                     //let a = Object.assign({}, students[0]);
-                    //console.log('after studentwithname'+JSON.stringify(students[0]));
+                    console.log('after studentwithname'+JSON.stringify(students[0]));
                     resolve(Object.assign({}, students[0]));
                 })
                 .catch(function(error) {
