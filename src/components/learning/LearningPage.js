@@ -75,6 +75,7 @@ class LearningPage extends React.Component {
 
     getNextLearnItem(){
         if(this.state.upcomingLearnItems && this.state.upcomingLearnItems.length>0){
+            console.log('setting upcoming: '+JSON.stringify(this.state.upcomingLearnItems));
             this.setState((previousState) => update(previousState, {
                 currentLearnItem: {$set: this.state.upcomingLearnItems[0]},
                 upcomingLearnItems: {$set: this.state.upcomingLearnItems.splice(1)},
@@ -82,7 +83,11 @@ class LearningPage extends React.Component {
             }),this.resetCountDown);
         } else {
             //the action triggered by this will call getNextLearnItem again
-            this.props.learnItemActions.loadLearnItemsToLearn(this.listId);
+            let pathElements = this.props.location.pathname.split('/');
+            let listId = pathElements[pathElements.length-1];
+
+            console.log('load new upcoming...'+listId);
+            this.props.learnItemActions.loadLearnItemsToLearn(listId);
         }
     }
 

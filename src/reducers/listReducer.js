@@ -6,25 +6,8 @@ export default function listReducer(state = initialState.listsContext, action = 
         case types.LOAD_LISTS_SUCCESS:
             return Object.assign({}, state, {lists:action.lists,totalCount:action.totalCount});
         case types.SAVE_LIST_SUCCESS: {
-            let existingElement = state.lists.find((list)=> {
-                return list.id === action.list.id
-            });
-            if (existingElement) {
-                let index = state.lists.indexOf(existingElement);
-                let newLists = [];
-                state.lists.forEach((element)=> {
-                    if (element.id !== action.list.id) {
-                        newLists.push(element);
-                    } else {
-                        console.log(JSON.stringify(action.list));
-                        newLists.push(Object.assign({}, action.list));
-                    }
-                });
-                return Object.assign({}, state, {lists: [...newLists]}, {listUnderEdit: Object.assign({}, action.list)});
-            } else {
-                //if a list is a new one
-                return Object.assign({}, state, {lists: [...state.lists, Object.assign({}, action.list)]});
-            }}
+                return Object.assign({}, state, Object.assign({}, {listUnderEdit:action.list}));
+            }
 
         case types.SAVE_LEARNITEM_SUCCESS:
             //no need to deal with this

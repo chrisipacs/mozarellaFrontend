@@ -40,6 +40,7 @@ export function saveList(list){
         return dispatch => {
             dispatch(beginAjaxCall());
             return listApi.addList(list).then(addedList => {
+                console.log('added list before dispatch: '+JSON.stringify(addedList));
                 dispatch(saveListSuccess(addedList));
             }).catch(error => {
                 throw(error);

@@ -29,13 +29,23 @@ class ListApi {
 
     static getList(listId) {
         return new Promise((resolve, reject) => {
-
-        });
+            requestObjects('/api/learnitemlists/'+listId,'GET').then((response)=>{
+                console.log('list in array before resolving: '+JSON.stringify(response));
+                resolve(response.objects[0]);
+            }).catch(function(error) {
+                reject(error);
+            });
+        })
     }
 
-    static addList(list) {
+    static addList(list) { //TODO: rename to saveList
         return new Promise((resolve, reject) => {
-            return sendObject('/api/learnitemlists','POST',list);
+            sendObject('/api/learnitemlists','POST',list).then((response)=>{
+                console.log('list we are resolving with: '+JSON.stringify(list));
+                resolve(list); //response doesn't contain the newly added list, we must resolve with the exact same thing that was sent in
+            }).catch(function(error) {
+                reject(error);
+            });
         });
     }
 }

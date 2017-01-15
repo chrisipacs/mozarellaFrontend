@@ -7,8 +7,14 @@ import sendObject from './SendObject';
 
 class LearnItemApi {
 
-    static getLearnItemsToLearn(listId, numberOfLearnItems){
+    static getLearnItemsToLearn(listId, numberOfLearnItems=10){
         return new Promise((resolve, reject) => {
+            requestObjects('/api/learnitemlists/'+listId+'/learnitems','GET')
+                .then(function(result){
+                    resolve(result.objects);
+                }).catch(function(error) {
+                    reject(error);
+                });
         });
     }
 
