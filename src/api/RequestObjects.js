@@ -24,7 +24,6 @@ export default (path,method)=>{
             }
         })
         .then(function(response) {
-
             if(response.status==401){
                 reject('invalid credentials');
             }

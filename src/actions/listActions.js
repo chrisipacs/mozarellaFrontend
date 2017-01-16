@@ -46,7 +46,6 @@ export function saveList(list){
                 throw(error);
             });
     }
-
 }
 
 export function browseLists(value) {

@@ -27,6 +27,7 @@ class ListSelectionPage extends React.Component {
         this.state.listsContext.listUnderEdit = Object.assign({},this.props.listsContext.listUnderEdit);
         this.updateListState = this.updateListState.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.saveList = this.saveList.bind(this);
 
         let pageSize = 10; //TODO to its own file
     }
@@ -44,10 +45,14 @@ class ListSelectionPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.lists.length > 0 && this.props.lists[this.props.lists.length-1].id !=
-            nextProps.lists[nextProps.lists.length-1].id) {
-            this.redirectToListPage(nextProps.lists[nextProps.lists.length-1].id);
+        //TODO: this was probably here to redirect after list creation... solve this without redirecting on page load
+        if (this.props.newlyCreatedListId!=nextProps.newlyCreatedListId){
+            this.redirectToListPage(this.props.newlyCreatedListId);
         }
+    }
+
+    saveList(){
+        this.props.actions.saveList(this.state.listsContext.listUnderEdit);
     }
 
     handlePageChange(pageNumber) {
@@ -85,7 +90,7 @@ class ListSelectionPage extends React.Component {
                                                       onChange={this.handlePageChange}
                                                       nameOfAction='View' pagePrefix='lists'/>
                     : <ListCreationPage list={this.state.listsContext.listUnderEdit} onChange={this.updateListState}
-                    onSave={()=>{this.props.actions.saveList(this.state.listsContext.listUnderEdit);}}/>}
+                    onSave={this.saveList}/>}
 
                 </div>
         );
@@ -97,7 +102,8 @@ function mapStateToProps(state, ownProps) {
         listsContext: state.listsContext,
         lists: state.listsContext.lists,
         browseLists: state.listsContext.browseLists,
-        totalCount: state.listsContext.totalCount
+        totalCount: state.listsContext.totalCount,
+        newlyCreatedListId: state.listsContext.listUnderEdit.id
     };
 }
 
