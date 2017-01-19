@@ -8,7 +8,8 @@ export default function listReducer(state = initialState.listsContext, action = 
         case types.SAVE_LIST_SUCCESS: {
                 return Object.assign({}, state, Object.assign({}, {listUnderEdit:action.list}));
             }
-
+        case types.RESET_LIST_UNDER_EDIT:
+            return Object.assign({}, state, Object.assign({}, {listUnderEdit:initialState.listsContext.listUnderEdit}));
         case types.SAVE_LEARNITEM_SUCCESS:
             //no need to deal with this
             return Object.assign({}, state);

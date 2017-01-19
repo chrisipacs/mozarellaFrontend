@@ -22,10 +22,13 @@ export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {
     };
 }
 
-export function saveLearnItem(learnItem){
+export function saveLearnItem(learnItem,listId){
+    console.log('savelearnitem...');
     return dispatch => {
+        console.log('before dispatch beginAjaxCall');
         dispatch(beginAjaxCall());
-        return learnItemApi.saveLearnItem(learnItem).then(learnItem => {
+        return learnItemApi.saveLearnItem(learnItem,listId).then(learnItem => {
+            console.log('before learnItemSuccess');
             saveLearnItemSuccess(learnItem);
             dispatch(saveLearnItemSuccess(learnItem));
         }).catch(error => {

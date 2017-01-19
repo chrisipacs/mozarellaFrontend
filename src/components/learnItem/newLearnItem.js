@@ -11,7 +11,7 @@ class NewLearnItem extends React.Component {
         super(props, context);
 
         this.state = {
-            learnItem: {text: ' ', translations: ''}
+            learnItem: {text: ' ', translations: []}
         };
 
         this.modifyText = this.modifyText.bind(this);
@@ -29,7 +29,7 @@ class NewLearnItem extends React.Component {
     modifyTranslations(event){
         event.persist();
         this.setState((previousState) => update(previousState, {
-            learnItem: {translations: {$set: event.target.value}}
+            learnItem: {translations: {$set: event.target.value.split(",")}}
         }));
     }
 
@@ -53,7 +53,7 @@ class NewLearnItem extends React.Component {
                         Learnitem translations separated by comma
                         <TextInput name='translations' value={this.state.learnItem.translations} onChange={this.modifyTranslations}/>
                         <br/>
-                        <div style={{float: 'right'}}><button type="button" className="btn btn-success" onClick={()=>{this.props.actions.saveLearnItem(this.state.learnItem); this.reset()}}>Add</button></div>
+                        <div style={{float: 'right'}}><button type="button" className="btn btn-success" onClick={()=>{this.props.actions.saveLearnItem(this.state.learnItem, this.props.listId); this.reset()}}>Add</button></div>
                     </div>
                 </div>
             </div>
@@ -63,8 +63,9 @@ class NewLearnItem extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    console.log('listUnderEdit: '+state.listsContext.listUnderEdit);
     return {
-
+        listId: state.listsContext.listUnderEdit.id
     };
 }
 

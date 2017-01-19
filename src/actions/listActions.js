@@ -23,6 +23,10 @@ export function loadLearnitemSuccess(totalCount,learnItems){
     return {type: types.LOAD_LEARNITEMS_SUCCESS,totalCount, learnItems};
 }
 
+export function resetListUnderEdit(){
+    return {type: types.RESET_LIST_UNDER_EDIT};
+}
+
 export function loadList(listId){
     return dispatch => {
         dispatch(beginAjaxCall());

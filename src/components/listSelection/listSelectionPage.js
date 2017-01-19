@@ -45,9 +45,8 @@ class ListSelectionPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        //TODO: this was probably here to redirect after list creation... solve this without redirecting on page load
-        if (this.props.newlyCreatedListId!=nextProps.newlyCreatedListId){
-            this.redirectToListPage(this.props.newlyCreatedListId);
+        if (this.props.newlyCreatedListId!=nextProps.newlyCreatedListId && nextProps.newlyCreatedListId!=undefined){
+            this.redirectToListPage(nextProps.newlyCreatedListId);
         }
     }
 

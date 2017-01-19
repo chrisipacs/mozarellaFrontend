@@ -9,6 +9,11 @@ import 'whatwg-fetch';
 
 export default (path,method,toSend)=>{
 
+    let createNewResponse = function (response){ //TODO find a better name
+        return response.json().then((objects)=>{
+            return {objects:objects, headers:response.headers, status:response.status}});
+    };
+
     return new Promise((resolve, reject) => {
         let token = localStorage.getItem('token');
         console.log(path+'token: '+token);
@@ -25,7 +30,10 @@ export default (path,method,toSend)=>{
             if(response.status==401){
                 reject('invalid credentials');
             }
-            resolve(response.status);
+
+            createNewResponse(response).then((resp)=>{
+                resolve(resp);
+            })
         })
         .catch(function(error) {
             reject(error);
