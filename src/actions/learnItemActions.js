@@ -31,7 +31,7 @@ export function saveLearnItem(learnItem,listId){
         dispatch(saveLearnItemAction(learnItem));
         dispatch(beginAjaxCall());
         return learnItemApi.saveLearnItem(learnItem,listId).then(learnItem => {
-            saveLearnItemSuccess(learnItem);
+            console.log('dispatching...');
             dispatch(saveLearnItemSuccess(learnItem));
         }).catch(error => {
             throw(error);
