@@ -63,9 +63,9 @@ class NewLearnItem extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log('listUnderEdit: '+state.listsContext.listUnderEdit);
+    console.log('activeList: '+state.listsContext.activeList);
     return {
-        listId: state.listsContext.listUnderEdit.id
+        listId: state.listsContext.activeList.id
     };
 }
 

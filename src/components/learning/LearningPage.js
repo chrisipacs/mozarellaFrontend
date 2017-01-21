@@ -176,8 +176,8 @@ class LearningPage extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        learnItems: state.learnItems,
-        list: state.listUnderEdit
+        learnItems: state.learnContext.learnItems,
+        list: state.activeList //TODO: remove?
     };
 }
 

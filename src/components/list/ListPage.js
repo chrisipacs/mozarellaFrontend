@@ -32,14 +32,14 @@ class ListPage extends React.Component {
         let pathElements = this.props.location.pathname.split('/');
         let listId = pathElements[pathElements.length-1];
 
-        this.props.actions.loadList(parseInt(listId));
-        this.props.actions.loadLearnItems(parseInt(listId),0);
+        this.props.actions.loadList(parseInt(listId)).then(()=>{
+            this.props.actions.loadLearnItems(parseInt(listId),0); //working by accident?
+        });
 
-        this.setState({list:{name:this.props.list.name, description: this.props.list.description}, activePage: {$set: 0}});
+        this.setState({list:{name:this.props.list.name, description: this.props.list.description}, activePage: 0});
     }
 
     componentWillReceiveProps(nextProps){
-        //console.log('willreceive'+JSON.stringify(nextProps.learnItems));
         this.setState((previousState) => update(previousState, {
             enableEditing: {$set: false},
               list: {$set: nextProps.list},
@@ -89,11 +89,11 @@ class ListPage extends React.Component {
         let pathElements = this.props.location.pathname.split('/');
         let listId = pathElements[pathElements.length-1];
 
-        this.setState((previousState) => update(previousState, {
-            activePage: {$set: page}
-        }));
-
-        this.props.actions.loadLearnItems(parseInt(listId),page-1);
+        if(this.props.learnItemPages[page-1]===undefined){
+            this.props.actions.loadLearnItems(parseInt(listId),page-1);
+        } else {
+            this.props.actions.changePage(page-1);
+        }
     }
 
     render() {
@@ -138,9 +138,17 @@ class ListPage extends React.Component {
                     <NewLearnItem value={that.state.learnItemToAdd}/>
                 </div>}
                 <br/><br/>
-                <div>{
-
-                    this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems}/></div>}
+                <div>
+                    {this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems}/></div>}
+                </div>
+                <div>
+                    <Pagination
+                        activePage={this.state.activePage != undefined ? this.state.activePage : 0}
+                        itemsCountPerPage={10}
+                        totalItemsCount={this.props.totalCount != undefined ? this.props.totalCount : 100}
+                        pageRangeDisplayed={5}
+                        onChange={this.handlePageChange}
+                        />
                 </div>
             </div>
         );
@@ -148,11 +156,12 @@ class ListPage extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log(JSON.stringify(state));
     return {
-        list:Object.assign({},state.listsContext.listUnderEdit),
-        learnItems:state.listsContext.listUnderEdit.learnItems,
-        learnItemCount: state.listsContext.listUnderEdit.totalCount
+        list:Object.assign({},state.listsContext.activeList),
+        totalCount: state.listsContext.activeList.learnItems.totalCount,
+        activePage: state.listsContext.activeList.learnItems.activePage,
+        learnItemPages:state.listsContext.activeList.learnItems.pages,
+        learnItems:state.listsContext.activeList.learnItems.pages[state.listsContext.activeList.learnItems.activePage]
     };
 }
 

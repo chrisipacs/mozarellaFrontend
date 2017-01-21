@@ -19,8 +19,12 @@ export function loadListSuccess(list){
     return {type: types.LOAD_LIST_SUCCESS, list};
 }
 
-export function loadLearnitemSuccess(totalCount,learnItems){
-    return {type: types.LOAD_LEARNITEMS_SUCCESS,totalCount, learnItems};
+export function loadLearnitemSuccess(activePage, totalCount,learnItems){ //for editing, NOT for learning
+    return {type: types.LOAD_LEARNITEMS_SUCCESS, activePage, totalCount, learnItems};
+}
+
+export function changePage(activePage){
+    return {type: types.CHANGE_LEARNITEMPAGE, activePage};
 }
 
 export function resetListUnderEdit(){
@@ -44,7 +48,6 @@ export function saveList(list){
         return dispatch => {
             dispatch(beginAjaxCall());
             return listApi.addList(list).then(addedList => {
-                console.log('added list before dispatch: '+JSON.stringify(addedList));
                 dispatch(saveListSuccess(addedList));
             }).catch(error => {
                 throw(error);
@@ -74,7 +77,7 @@ export function loadLearnItems(listId,pageNumber=0) {
     return dispatch => {
         dispatch(beginAjaxCall());
         return learnItemApi.getLearnItemsForList(listId,pageNumber).then(result => {
-            dispatch(loadLearnitemSuccess(result.totalCount,result.learnItems));
+            dispatch(loadLearnitemSuccess(pageNumber,result.totalCount,result.learnItems));
         }).catch(error => {
             throw(error);
         });

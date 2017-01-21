@@ -6,18 +6,21 @@ export default {
         lists:[],
         browseLists: false,
         totalCount: 0,
-        listUnderEdit: { //TODO rename to loadedList or something
+        activeList: {
             name: '',
             isPublic: true,
             fromLanguage: '',
             toLanguage: '',
             description: '',
-            totalCount: 0,
-            learnItemContext: {
+            learnItems: {
+                totalCount: 0,
                 pageSize: 10,
-                learnItems: []
-            },
-            learnItems: []
+                activePage:0,
+                pages: {}
+            }
         }
+    },
+    learnContext: {
+        learnItems: []
     }
 };

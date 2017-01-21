@@ -11,6 +11,8 @@ export default function learnItemReducer(state = initialState.student, action = 
     switch (action.type) {
         case types.LOAD_LEARNABLE_LEARNITEMS_SUCCESS:
             return Object.assign([], ...state, action.learnItems);
+        case types.SAVE_LEARNITEM_SUCCESS:
+            return Object.assign({}, state);
         default:
             return state;
     }

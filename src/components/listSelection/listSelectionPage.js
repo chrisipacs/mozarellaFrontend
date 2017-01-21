@@ -24,7 +24,7 @@ class ListSelectionPage extends React.Component {
             activePage: 0
         };
 
-        this.state.listsContext.listUnderEdit = Object.assign({},this.props.listsContext.listUnderEdit);
+        this.state.listsContext.activeList = Object.assign({},this.props.listsContext.activeList);
         this.updateListState = this.updateListState.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.saveList = this.saveList.bind(this);
@@ -35,7 +35,7 @@ class ListSelectionPage extends React.Component {
     updateListState(event) {
         const field = event.target.name;
         console.log(this);
-        let listUnderEdit = this.state.listsContext.listUnderEdit;
+        let listUnderEdit = this.state.listsContext.activeList;
         listUnderEdit[field] = event.target.value;
         return this.setState({listsContext: {listUnderEdit: listUnderEdit}});
     }
@@ -51,7 +51,7 @@ class ListSelectionPage extends React.Component {
     }
 
     saveList(){
-        this.props.actions.saveList(this.state.listsContext.listUnderEdit);
+        this.props.actions.saveList(this.state.listsContext.activeList);
     }
 
     handlePageChange(pageNumber) {
@@ -80,7 +80,7 @@ class ListSelectionPage extends React.Component {
                     className={this.props.browseLists ? "btn btn-primary" : ""}
                     onClick={()=>{that.props.actions.browseLists(true)}}/>
 
-                { this.props.browseLists ? <ListTable lists={this.props.lists}
+                {this.props.browseLists ? <ListTable lists={this.props.lists}
                                                       actions={this.props.actions}
                                                       activePage={this.state.activePage}
                                                       itemsCountPerPage={this.pageSize}
@@ -88,7 +88,7 @@ class ListSelectionPage extends React.Component {
                                                       pageRangeDisplayed={10}
                                                       onChange={this.handlePageChange}
                                                       nameOfAction='View' pagePrefix='lists'/>
-                    : <ListCreationPage list={this.state.listsContext.listUnderEdit} onChange={this.updateListState}
+                    : <ListCreationPage list={this.state.listsContext.activeList} onChange={this.updateListState}
                     onSave={this.saveList}/>}
 
                 </div>
@@ -102,7 +102,7 @@ function mapStateToProps(state, ownProps) {
         lists: state.listsContext.lists,
         browseLists: state.listsContext.browseLists,
         totalCount: state.listsContext.totalCount,
-        newlyCreatedListId: state.listsContext.listUnderEdit.id
+        newlyCreatedListId: state.listsContext.activeList.id
     };
 }
 

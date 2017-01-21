@@ -3,6 +3,10 @@ import * as types from './actionTypes';
 import {beginAjaxCall} from './ajaxStatusActions';
 import pageSize from '../constants';
 
+export function saveLearnItemAction(learnItem) {
+    return {type: types.SAVE_LEARNITEM, learnItem};
+}
+
 export function saveLearnItemSuccess(learnItem) {
   return {type: types.SAVE_LEARNITEM_SUCCESS, learnItem};
 }
@@ -23,12 +27,10 @@ export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {
 }
 
 export function saveLearnItem(learnItem,listId){
-    console.log('savelearnitem...');
     return dispatch => {
-        console.log('before dispatch beginAjaxCall');
+        dispatch(saveLearnItemAction(learnItem));
         dispatch(beginAjaxCall());
         return learnItemApi.saveLearnItem(learnItem,listId).then(learnItem => {
-            console.log('before learnItemSuccess');
             saveLearnItemSuccess(learnItem);
             dispatch(saveLearnItemSuccess(learnItem));
         }).catch(error => {
