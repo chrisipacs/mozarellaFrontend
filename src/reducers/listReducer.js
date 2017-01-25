@@ -5,11 +5,7 @@ import update from 'react-addons-update';
 function appendNewlySavedLearnItemToEndOfList(learnItems,newLearnItem){
     let learnItemsDeepCopy = Object.assign({},JSON.parse(JSON.stringify(learnItems)));
 
-    console.log('copy: '+JSON.stringify(learnItemsDeepCopy));
-
     let lastPage = learnItemsDeepCopy.pages[Object.keys(learnItemsDeepCopy.pages).length-1];
-    console.log('lastPage.length '+lastPage.length);
-    console.log('learnItemsDeepCopy.pageSize '+learnItemsDeepCopy.pageSize);
     if(lastPage.length<learnItemsDeepCopy.pageSize){
         lastPage.push(newLearnItem);
     } else {
@@ -21,6 +17,7 @@ function appendNewlySavedLearnItemToEndOfList(learnItems,newLearnItem){
     return learnItemsDeepCopy;
 }
 
+//TODO switch to update() everywhere
 export default function listReducer(state = initialState.listsContext, action = {}) {
     switch (action.type) {
         case types.LOAD_LISTS_SUCCESS:
@@ -61,15 +58,16 @@ export default function listReducer(state = initialState.listsContext, action = 
         case types.BROWSE_LISTS:
             return Object.assign({}, state, {browseLists: action.browseLists});
         case types.LOAD_LIST_SUCCESS:
-            return Object.assign({}, state, {
+            return update(state, {
+                activeList: {$set:action.list}
+            });/*Object.assign({}, state, {
                 activeList: Object.assign({}, action.list, {
                     name: action.list.name,
                     learnItems: Object.assign({activePage:0},state.activeList.learnItems)
                 })
-            }); //TODO probably still not good enough
+            });*/
         case types.SAVE_LEARNITEM_SUCCESS:{
             let learnItems = appendNewlySavedLearnItemToEndOfList(state.activeList.learnItems,action.learnItem);
-            console.log('new learnItems: '+JSON.stringify(learnItems));
 
             return update(state,  {
                 activeList: {learnItems : {$set:learnItems}}
