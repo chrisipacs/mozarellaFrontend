@@ -13,20 +13,20 @@ import mockSignupApi from '../mockApi/SignupApi';
 
 let learnItemApi, listApi, loginApi, signupApi;
 
-console.log('process.env.NODE_ENV is: '+process.env.NODE_ENV);
-console.log(JSON.stringify(process.env));
-
-if(process.env.NODE_ENV == 'prod'){
+//if(process.env.NODE_ENV == 'prod'){
     learnItemApi = realLearnItemApi;
     listApi = realListApi;
     loginApi = realLoginApi;
     signupApi = realSignupApi;
-} else {
-    learnItemApi = mockLearnItemApi;
-    listApi = mockListApi;
-    loginApi = mockLoginApi;
-    signupApi = mockSignupApi;
-}
+
+//Mock api is not used anymore to avoid maintanence
+
+//} else {
+//    learnItemApi = mockLearnItemApi;
+//    listApi = mockListApi;
+//    loginApi = mockLoginApi;
+//    signupApi = mockSignupApi;
+//}
 
 export {learnItemApi};
 export {listApi};

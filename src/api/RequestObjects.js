@@ -1,8 +1,5 @@
-/**
- * Created by krisztian on 2016. 12. 11..
- */
 import host from './host';
-import 'whatwg-fetch';
+import 'isomorphic-fetch';
 
 //abstraction for the fetch logic to avoid repetition when querying objects
 //only for the /api methods
@@ -15,7 +12,13 @@ export default (path,method)=>{
     };
 
     return new Promise((resolve, reject) => {
-        let token = localStorage.getItem('token');
+
+        let token = '';
+
+        if(window.localStorage){
+            token = window.localStorage.getItem('token');
+        }
+
 
         fetch(host+path,{
             method: method,
@@ -23,15 +26,15 @@ export default (path,method)=>{
                 'Authorization' : 'Bearer '+token
             }
         })
-        .then(function(response) {
-            if(response.status==401){
-                reject('invalid credentials');
-            }
+            .then(function(response) {
+                if(response.status==401){
+                    reject('invalid credentials');
+                }
 
-            createNewResponse(response).then((resp)=>{
-                resolve(resp);
-            })
-        });
+                createNewResponse(response).then((resp)=>{
+                    resolve(resp);
+                })
+            });
 
     });
 }

@@ -186,14 +186,6 @@ describe('List Reducer', () => {
         expect(newState.activeList.description).toEqual('this is a loaded list');
     });
 
-    //LOAD_LISTS_SUCCESS
-    //BROWSE_LISTS
-    //SAVE_LIST_SUCCESS
-    //LOAD_LIST_SUCCESS
-    //LOAD_LEARNITEMS_SUCCESS
-    //CHANGE_LEARNITEMPAGE
-    //RESET_LIST_UNDER_EDIT
-
     it('should load the learnitems into the right page of activeList.learnItems on LOAD_LEARNITEMS_SUCCESS', () => {
 
         const initialState = {
@@ -239,6 +231,38 @@ describe('List Reducer', () => {
                     pages: {0:[],
                             1:[{},{}],
                             4:[]
+                    }
+                }
+            }
+        };
+
+        const learnItemsToLoad = [{},{},{},{},{},{},{},{}];
+
+        // arrange
+        const action = actions.loadLearnitemSuccess(2, 142,learnItemsToLoad);
+
+        // act
+        const newState = listReducer(initialState, action);
+
+        // assert
+        expect(newState.activeList.learnItems.pages[0]).toEqual(initialState.activeList.learnItems.pages[0]);
+        expect(newState.activeList.learnItems.pages[1]).toEqual(initialState.activeList.learnItems.pages[1]);
+        expect(newState.activeList.learnItems.pages[2]).toEqual(learnItemsToLoad);
+        expect(newState.activeList.learnItems.pages[4]).toEqual(initialState.activeList.learnItems.pages[4]);
+
+    });
+
+    it('should keep the already loaded pages of activeList.learnItems on LOAD_LEARNITEMS_SUCCESS', () => {
+
+        const initialState = {
+            activeList: {
+                learnItems: {
+                    totalCount: 0,
+                    pageSize: 10,
+                    activePage:0,
+                    pages: {0:[],
+                        1:[{},{}],
+                        4:[]
                     }
                 }
             }
