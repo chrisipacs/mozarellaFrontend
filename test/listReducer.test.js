@@ -2,8 +2,8 @@
  * Created by krisztian on 2017. 01. 22..
  */
 import expect from 'expect';
-import listReducer from './listReducer';
-import * as actions from '../actions/listActions';
+import listReducer from './../src/reducers/listReducer';
+import * as actions from '../src/actions/listActions';
 
 describe('List Reducer', () => {
     it('should load list into activeList when passed LOAD_LIST_SUCCESS', () => {
