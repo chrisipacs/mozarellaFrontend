@@ -35,7 +35,7 @@ var jsdom = require('jsdom').jsdom;
 
 var exposedProperties = ['window', 'navigator', 'document'];
 
-global.document = jsdom('');
+global.document = jsdom('', {url: 'http://localhost:8280'});
 global.window = document.defaultView;
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
@@ -48,4 +48,4 @@ global.navigator = {
   userAgent: 'node.js'
 };
 
-documentRef = document;  //eslint-disable-line no-undef
+//documentRef = document;  //eslint-disable-line no-undef
