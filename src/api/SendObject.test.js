@@ -20,19 +20,70 @@ describe('Send Object', () => {
         });
 
         //arrange
-        nock(host)
-            .get('/someexamplemockaddress',{
-                reqheaders: {
-                    'authorization': 'Basic Auth'
-                }
-            })
-            .reply(200,[]);
+        nock(host,{
+            reqheaders: {
+                'Authorization': 'Bearer ',
+                'Content-Type': 'application/json'
+            }
+        })
+        .post('/someexamplemockaddress')
+        .reply(201,{});
 
         //act
-        requestObjects('/someexamplemockaddress','POST').then(()=>{
+        sendObject('/someexamplemockaddress','POST').then(()=>{
 
             //assert
             expect(nock.isDone()).toBe(true);
+            done();
+        });
+    });
+
+    it('should send the object', (done) => {
+
+        afterEach(() => {
+            nock.cleanAll();
+        });
+
+        //arrange
+        let toSend = {
+            field1 : 'value1'
+        };
+
+
+        nock(host)
+            .post('/someexamplemockaddress',toSend)
+            .reply(201,{});
+
+        //act
+        sendObject('/someexamplemockaddress','POST',toSend).then(()=>{
+
+            //assert
+            expect(nock.isDone()).toBe(true);
+            done();
+        });
+    });
+
+    it('should return the http status code', (done) => {
+
+        afterEach(() => {
+            nock.cleanAll();
+        });
+
+        //arrange
+        let toSend = {
+            field1 : 'value1'
+        };
+
+
+        nock(host)
+            .post('/someexamplemockaddress',toSend)
+            .reply(201,{});
+
+        //act
+        sendObject('/someexamplemockaddress','POST',toSend).then((response)=>{
+
+            //assert
+            expect(response.status).toBe(201);
             done();
         });
     });

@@ -26,15 +26,15 @@ export default (path,method)=>{
                 'Authorization' : 'Bearer '+token
             }
         })
-            .then(function(response) {
-                if(response.status==401){
-                    reject('invalid credentials');
-                }
+        .then(function(response) {
+            if(response.status==401){
+                reject('invalid credentials');
+            }
 
-                createNewResponse(response).then((resp)=>{
-                    resolve(resp);
-                })
-            });
+            createNewResponse(response).then((resp)=>{
+                resolve(resp);
+            })
+        });
 
     });
 }

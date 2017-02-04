@@ -15,8 +15,11 @@ export default (path,method,toSend)=>{
     };
 
     return new Promise((resolve, reject) => {
-        let token = localStorage.getItem('token');
-        console.log(path+'token: '+token);
+        let token = '';
+
+        if(window.localStorage){
+            token = window.localStorage.getItem('token');
+        }
 
         fetch(host+path,{
             method: method,
