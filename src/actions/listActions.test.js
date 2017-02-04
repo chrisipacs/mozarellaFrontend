@@ -31,7 +31,7 @@ describe('List Actions', () => {
                 list: listToLoad
             }];
 
-            nock('http://localhost:8280')
+            nock(host)
                .get('/api/learnitemlists/'+listId)
                .reply(200, [{"id":listId,"contributors":[],"isPublic":null,"name":"learnItemListNEW","description":"c","numberOfLearnItemsInList":0}]);
 
