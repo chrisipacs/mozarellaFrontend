@@ -13,10 +13,13 @@ class SignupApi {
     }
 
     static isUsernameFree(name){
-        console.log('real isusernamefree');
         return new Promise((resolve, reject) => {
-            fetch(host+'/usernameavailable?name='+name)
+            fetch(host+'/usernameavailable?name='+name,
+                {
+                    method: "GET"
+                })
                 .then(function(response) {
+                    console.log('...................');
                     return response.json();
                 })
                 .then(function(result){
@@ -30,9 +33,7 @@ class SignupApi {
     }
 
     static signUp(student) {
-        console.log('signup real api');
         return new Promise((resolve, reject) => {
-            console.log('signup real api '+JSON.stringify(student));
 
             let data = JSON.stringify(student);
 
@@ -43,11 +44,11 @@ class SignupApi {
                 },
                 body: data
                 })
-                .then(function(response) {
-                    return response.text();
-                })
-                .then(function(text){
-                    console.log('response: '+text);
+                //.then(function(response) {
+                //    return response.text();
+                //})
+                .then(function(response){
+                    resolve(response.json());
                 })
                 .catch(function(error) {
                     console.log('request failed', error);

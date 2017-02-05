@@ -33,7 +33,7 @@ describe('Login Actions', () => {
 
             nock(host)
                 .get('/api/learnitemlists/'+listId)
-                .reply(200, [{"id":listId,"contributors":[],"isPublic":null,"name":"learnItemListNEW","description":"c","numberOfLearnItemsInList":0}]);
+                .reply(201, [{"id":listId,"contributors":[],"isPublic":null,"name":"learnItemListNEW","description":"c","numberOfLearnItemsInList":0}]);
 
             //act
             const action = listActions.loadList(listId);
