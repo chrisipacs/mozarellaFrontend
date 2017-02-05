@@ -4,8 +4,8 @@
 
 import expect from 'expect';
 import nock from 'nock';
-import host from '../src/api/host';
-import requestObjects from './../src/api/RequestObjects'
+import host from './host';
+import requestObjects from './RequestObjects'
 
 // Test a sync action
 describe('Request Objects', () => {

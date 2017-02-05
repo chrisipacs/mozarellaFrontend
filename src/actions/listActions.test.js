@@ -3,15 +3,15 @@
  */
 
 import expect from 'expect';
-import * as listActions from './../src/actions/listActions';
-import * as types from './../src/actions/actionTypes';
+import * as listActions from './listActions';
+import * as types from './actionTypes';
 
 import thunk from 'redux-thunk';
 import fetchMock from 'fetch-mock'
 import nock from 'nock';
 
 import configureMockStore from 'redux-mock-store';
-import host from '../src/api/host';
+import host from '../api/host';
 
 // Test a sync action
 describe('List Actions', () => {

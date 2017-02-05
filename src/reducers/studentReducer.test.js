@@ -3,8 +3,8 @@
  */
 
 import expect from 'expect';
-import studentReducer from './../src/reducers/studentReducer';
-import * as actions from '../src/actions/loginActions';
+import studentReducer from './studentReducer';
+import * as actions from '../actions/loginActions';
 
 describe('Student Reducer', () => {
     it('should load student into store when passed LOGIN_SUCCESS', () => {

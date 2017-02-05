@@ -7,8 +7,8 @@
 
 import expect from 'expect';
 import nock from 'nock';
-import host from '../src/api/host';
-import sendObject from './../src/api/SendObject'
+import host from './host';
+import sendObject from './SendObject'
 
 // Test a sync action
 describe('Send Object', () => {
