@@ -6,10 +6,11 @@ import realListApi from '../api/ListApi';
 import realLoginApi from '../api/LoginApi';
 import realSignupApi from '../api/SignupApi';
 
-import mockLearnItemApi from '../mockApi/LearnItemApi';
-import mockListApi from '../mockApi/ListApi';
-import mockLoginApi from '../mockApi/LoginApi';
-import mockSignupApi from '../mockApi/SignupApi';
+//not used anymore:
+//import mockLearnItemApi from '../mockApi/LearnItemApi';
+//import mockListApi from '../mockApi/ListApi';
+//import mockLoginApi from '../mockApi/LoginApi';
+//import mockSignupApi from '../mockApi/SignupApi';
 
 let learnItemApi, listApi, loginApi, signupApi;
 
