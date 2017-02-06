@@ -25,14 +25,12 @@ class LoginApi {
     }
 
     static login(username,password) {
-        console.log('real login');
         let that = this;
 
         return new Promise((resolve, reject) => {
             fetch(host+'/login',{
                 method: "POST",
                 headers: {
-                    //'Content-Type': 'application/json'
                     'Authorization' : 'Basic'+btoa(username+':'+password)
                 }
                 })
@@ -40,11 +38,11 @@ class LoginApi {
                     return response.text();
                 })
                 .then(function(token){
-                    localStorage.setItem('token',token);
+                    if(window.localStorage){
+                        window.localStorage.setItem('token',token);
+                    }
                     return that.studentWithName(username);
                 }).then(function(students){
-                    //let a = Object.assign({}, students[0]);
-                    console.log('after studentwithname'+JSON.stringify(students[0]));
                     resolve(Object.assign({}, students[0]));
                 })
                 .catch(function(error) {

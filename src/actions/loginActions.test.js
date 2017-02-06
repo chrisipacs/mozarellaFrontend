@@ -3,7 +3,7 @@
  */
 
 import expect from 'expect';
-import * as listActions from './listActions';
+import * as loginActions from './loginActions';
 import * as types from './actionTypes';
 
 import thunk from 'redux-thunk';
@@ -14,41 +14,74 @@ import configureMockStore from 'redux-mock-store';
 import host from '../api/host';
 
 // Test a sync action
+function setNock(student) {
+    nock(host, {
+        reqheaders: {
+            'Authorization': 'Basic' + btoa(student.name + ':' + student.password)
+        }
+    })
+        .post('/login')
+        .reply(200, [{name: 'someStudent'}]);
+
+    nock(host)
+        .get('/api/students?name=someStudent')
+        .reply(200, [{name: 'someStudent', password:'somePassword'}]);
+}
 describe('Login Actions', () => {
     describe('login', () => {
-        it('should create a LOAD_LIST_SUCCESS action', (done) => {
-
+        it('should send a basic auth header in username:password format', (done) => {
             afterEach(() => {
                 nock.cleanAll();
             });
 
             //arrange
-            const listId = 1;
-            let listToLoad = {"id":listId,"contributors":[],"isPublic":null,"name":"learnItemListNEW","description":"c","numberOfLearnItemsInList":0};
+            let student = {name:'someStudent',password:'somePassword'};
 
-            const expectedActions = [{
-                type: types.LOAD_LIST_SUCCESS,
-                list: listToLoad
-            }];
-
-            nock(host)
-                .get('/api/learnitemlists/'+listId)
-                .reply(201, [{"id":listId,"contributors":[],"isPublic":null,"name":"learnItemListNEW","description":"c","numberOfLearnItemsInList":0}]);
+            setNock(student);
 
             //act
-            const action = listActions.loadList(listId);
+            let action = loginActions.login(student.name,student.password);
 
-            const store = mockStore({courses: []}, expectedActions);
-            store.dispatch(listActions.loadList(listId)).then(() => {
+            const store = mockStore({});
+            store.dispatch(action).then(() => {
                 //assert
 
-                const actions = store.getActions();
-                expect(actions[0].type).toEqual(types.BEGIN_AJAX_CALL);
-                expect(actions[1].type).toEqual(types.LOAD_LIST_SUCCESS);
-                expect(actions[1]).toEqual(expectedActions[0]);
+                expect(nock.isDone()).toBe(true);
                 done();
             });
+        });
 
+        it('should create a BEGIN_AJAX_CALL and a LOGIN_SUCCESS action', (done) => {
+            afterEach(() => {
+                nock.cleanAll();
+            });
+
+            //arrange
+            let student = {name:'someStudent',password:'somePassword'};
+
+            const expectedActions = [
+                {
+                    type: types.BEGIN_AJAX_CALL
+                },{
+                    type: types.LOGIN_SUCCESS,
+                    student: student
+                }
+            ];
+
+            setNock(student);
+            //act
+            let action = loginActions.login(student.name,student.password);
+
+            const store = mockStore({});
+            store.dispatch(action).then(() => {
+                //assert
+                const actions = store.getActions();
+
+                expect(actions[0]).toEqual(expectedActions[0]);
+                expect(actions[1]).toEqual(expectedActions[1]);
+
+                done();
+            });
         });
     });
 });

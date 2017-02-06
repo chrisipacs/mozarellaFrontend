@@ -57,9 +57,7 @@ describe('Signup Actions', () => {
             store.dispatch(action).then(() => {
                 //assert
 
-                console.log('??????????????????');
                 const actions = store.getActions();
-                console.log(JSON.stringify(actions));
 
                 expect(actions[0]).toEqual(expectedActions[0]);
                 expect(actions[1]).toEqual(expectedActions[1]);

@@ -6,12 +6,6 @@ import 'whatwg-fetch';
 
 class SignupApi {
 
-    static studentWithName(name){
-        return function(student){
-            return student.name==name;
-        }
-    }
-
     static isUsernameFree(name){
         return new Promise((resolve, reject) => {
             fetch(host+'/usernameavailable?name='+name,
@@ -19,7 +13,6 @@ class SignupApi {
                     method: "GET"
                 })
                 .then(function(response) {
-                    console.log('...................');
                     return response.json();
                 })
                 .then(function(result){

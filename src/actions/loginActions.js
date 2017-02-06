@@ -15,8 +15,10 @@ export function login(username,password){
         dispatch(beginAjaxCall());
                 return loginApi.login(username,password).then(student => {
                     if(student){
-                        console.log('student$$$'+JSON.stringify(student));
-                        localStorage.setItem('student',student);
+                        if(window.localStorage){
+                            localStorage.setItem('student',student);
+                        }
+
                         dispatch(loginSuccess(student));
                     } else {
                         throw "Invalid username or password";
