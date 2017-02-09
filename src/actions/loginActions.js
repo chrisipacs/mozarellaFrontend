@@ -21,10 +21,9 @@ export function login(username,password){
 
                         dispatch(loginSuccess(student));
                     } else {
-                        throw "Invalid username or password";
+                        throw "Could not get user";
                     }
                 }).catch(error => {
-                    console.log('Login failed with reson: '+error);
                     throw(error);
                 });
             }

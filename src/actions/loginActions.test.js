@@ -27,6 +27,7 @@ function setNock(student) {
         .get('/api/students?name=someStudent')
         .reply(200, [{name: 'someStudent', password:'somePassword'}]);
 }
+
 describe('Login Actions', () => {
     describe('login', () => {
         it('should send a basic auth header in username:password format', (done) => {
@@ -83,8 +84,37 @@ describe('Login Actions', () => {
                 done();
             });
         });
+
+        it('should throw an exception when credentials are incorrect', (done) => {
+            afterEach(() => {
+                nock.cleanAll();
+            });
+
+            //arrange
+            let invalidStudent = {name:'someStudent',password:'wrongPassword'};
+
+                nock(host, {
+                    reqheaders: {
+                        'Authorization': 'Basic' + btoa(invalidStudent.name + ':' + invalidStudent.password)
+                    }
+                })
+                .post('/login')
+                .reply(401, {a:'nyad'});
+
+            //act
+            let action = loginActions.login(invalidStudent.name,invalidStudent.password);
+
+            const store = mockStore({});
+
+            store.dispatch(action).catch(error => {
+                done();
+            });
+        });
+
     });
 });
+
+
 
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);

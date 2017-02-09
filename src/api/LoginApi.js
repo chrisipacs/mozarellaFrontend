@@ -20,8 +20,14 @@ class LoginApi {
         })
     }
 
-    static saveToken(jwt){
-
+    static checkStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+            return response
+        } else {
+            var error = new Error(response.statusText);
+            error.response = response;
+            throw error
+        }
     }
 
     static login(username,password) {
@@ -34,6 +40,7 @@ class LoginApi {
                     'Authorization' : 'Basic'+btoa(username+':'+password)
                 }
                 })
+                .then(that.checkStatus)
                 .then(function(response) {
                     return response.text();
                 })
@@ -46,7 +53,6 @@ class LoginApi {
                     resolve(Object.assign({}, students[0]));
                 })
                 .catch(function(error) {
-                    console.log('login failed', error);
                     reject(error);
                 })
         });

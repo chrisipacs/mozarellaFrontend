@@ -47,7 +47,6 @@ class LoginComponent extends React.Component {
             this.props.actions.login(this.state.username,this.state.password)
                 .then(function(){
                     //TODO trigger props update for student
-                    console.log('THEN');
                 })
                 .catch(
                 function(err){
@@ -59,7 +58,6 @@ class LoginComponent extends React.Component {
         }
 
         componentWillReceiveProps(nextProps){
-            console.log('nextprops: '+JSON.stringify(nextProps));
             if(nextProps.student!=undefined && nextProps.student.name!=undefined &&
                 nextProps.location!=undefined && nextProps.location.state!=undefined &&
                 nextProps.location.state.nextPathname!=undefined){
