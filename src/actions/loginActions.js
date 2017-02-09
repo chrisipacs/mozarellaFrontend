@@ -14,15 +14,10 @@ export function login(username,password){
     return dispatch => {
         dispatch(beginAjaxCall());
                 return loginApi.login(username,password).then(student => {
-                    if(student){
-                        if(window.localStorage){
-                            localStorage.setItem('student',student);
-                        }
-
-                        dispatch(loginSuccess(student));
-                    } else {
-                        throw "Could not get user";
+                    if(window.localStorage){
+                        localStorage.setItem('student',student);
                     }
+                    dispatch(loginSuccess(student));
                 }).catch(error => {
                     throw(error);
                 });

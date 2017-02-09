@@ -99,7 +99,7 @@ describe('Login Actions', () => {
                     }
                 })
                 .post('/login')
-                .reply(401, {a:'nyad'});
+                .reply(401, {});
 
             //act
             let action = loginActions.login(invalidStudent.name,invalidStudent.password);
