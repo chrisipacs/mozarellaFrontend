@@ -39,7 +39,7 @@ describe('List Actions', () => {
             const action = listActions.loadList(listId);
 
             //act
-            const store = mockStore({courses: []}, expectedActions);
+            const store = mockStore({}, expectedActions);
             store.dispatch(listActions.loadList(listId)).then(() => {
 
                 //assert
@@ -75,7 +75,7 @@ describe('List Actions', () => {
             //act
             const action = listActions.saveList(listToSave);
 
-            const store = mockStore({courses: []}, expectedActions);
+            const store = mockStore({}, expectedActions);
             store.dispatch(action).then(() => {
                 //assert
 
@@ -89,7 +89,7 @@ describe('List Actions', () => {
     });
 
     //loadLists(pageNumber,pageSize)
-    describe('loadlists', () => {
+    describe('loadLists', () => {
         it('should create a BEGIN_AJAX_CALL and a LOAD_LISTS_SUCCESS action', (done) => {
 
             afterEach(() => {
@@ -116,13 +116,35 @@ describe('List Actions', () => {
             //act
             const action = listActions.loadLists(pagenumber,pagesize);
 
-            const store = mockStore({courses: []}, expectedActions);
+            const store = mockStore({}, expectedActions);
             store.dispatch(action).then(() => {
                 //assert
 
                 const actions = store.getActions();
                 expect(actions[0]).toEqual(expectedActions[0]);
                 expect(actions[1]).toEqual(expectedActions[1]);
+                done();
+            });
+
+        });
+    });
+
+    describe('browseLists', () => {
+        it('should create a BROWSE_LISTS action with browseLists as true', (done) => {
+
+            const expectedAction = {
+                type: types.BROWSE_LISTS,
+                browseLists: true
+            };
+
+            //act
+            const action = listActions.browseLists(true);
+
+            const store = mockStore({},[]);
+            store.dispatch(action).then(() => {
+                //assert
+                const actions = store.getActions();
+                expect(actions[0]).toEqual(expectedAction);
                 done();
             });
 
