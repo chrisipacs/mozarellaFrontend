@@ -19,7 +19,6 @@ class LearnItemApi {
     }
 
     static saveLearnItem(learnItem,listId){
-        //localStorage.setItem('token',token);
         return new Promise((resolve, reject) => {
             sendObject('/api/learnitemlists/'+listId+'/learnitems','POST',[learnItem])
                 .then(function(result){

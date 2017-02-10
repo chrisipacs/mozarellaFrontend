@@ -10,10 +10,6 @@ import requestObjects from './RequestObjects';
 
 class LoginApi {
 
-    constructor(){
-
-    }
-
     static studentWithName(name){
         return requestObjects('/api/students?name='+name,'GET').then((students)=>{
             return students.objects;
