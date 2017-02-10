@@ -132,6 +132,7 @@ describe('List Actions', () => {
     describe('browseLists', () => {
         it('should create a BROWSE_LISTS action with browseLists as true', (done) => {
 
+            //arrange
             const expectedAction = {
                 type: types.BROWSE_LISTS,
                 browseLists: true
@@ -145,6 +146,40 @@ describe('List Actions', () => {
                 //assert
                 const actions = store.getActions();
                 expect(actions[0]).toEqual(expectedAction);
+                done();
+            });
+
+        });
+    });
+
+    describe('loadLearnItems', () => {
+        it('should create a BEGIN_AJAX_CALL and a LOAD_LEARNITEMS_SUCCESS action, and load the learnItems', (done) => {
+            //arrange
+            const learnItemsToLoad = [{},{},{},{},{},{},{},{},{},{}];
+            const listId = 1;
+            const pageNumber = 15;
+
+            const expectedActions = [{type: types.BEGIN_AJAX_CALL},{
+                type: types.LOAD_LEARNITEMS_SUCCESS,
+                learnItems: learnItemsToLoad,
+                totalCount: 123,
+                activePage: pageNumber
+            }];
+
+            nock(host)
+                .get('/api/learnitemlists/'+listId+'/learnitems?pagenumber='+pageNumber+'&&pagesize='+10)
+                .reply(200, learnItemsToLoad,{
+                    'X-Total-Count': '123'
+                });
+
+            //act
+            const action = listActions.loadLearnItems(1,15);
+            const store = mockStore({},[]);
+            store.dispatch(action).then(() => {
+                //assert
+                const actions = store.getActions();
+                expect(actions[0]).toEqual(expectedActions[0]);
+                expect(actions[1]).toEqual(expectedActions[1]);
                 done();
             });
 
