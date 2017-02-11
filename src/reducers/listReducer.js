@@ -3,9 +3,14 @@ import initialState from './initialState';
 import update from 'react-addons-update';
 
 function appendNewlySavedLearnItemToEndOfList(learnItems,newLearnItem){
+    //TODO determine the last page from the totalCount, this is incorrect as it is
+
     let learnItemsDeepCopy = Object.assign({},JSON.parse(JSON.stringify(learnItems)));
 
-    let lastPage = learnItemsDeepCopy.pages[Object.keys(learnItemsDeepCopy.pages).length-1];
+    let existingPageKeys = Object.keys(learnItemsDeepCopy.pages);
+    let lastPageKey = existingPageKeys[existingPageKeys.length-1];
+    let lastPage = learnItemsDeepCopy.pages[lastPageKey];
+
     if(lastPage.length<learnItemsDeepCopy.pageSize){
         lastPage.push(newLearnItem);
     } else {
@@ -30,8 +35,8 @@ export default function listReducer(state = initialState.listsContext, action = 
 
                 return Object.assign({}, state, newList);
             }
-        case types.RESET_LIST_UNDER_EDIT:
-            return Object.assign({}, state, Object.assign({}, {activeList:initialState.listsContext.activeList}));
+        //case types.RESET_LIST_UNDER_EDIT:
+        //    return Object.assign({}, state, Object.assign({}, {activeList:initialState.listsContext.activeList}));
         case types.LOAD_LEARNITEMS_SUCCESS:
         {
             let newPages = Object.assign({},state.activeList.learnItems.pages);
@@ -60,18 +65,20 @@ export default function listReducer(state = initialState.listsContext, action = 
         case types.LOAD_LIST_SUCCESS:
             return update(state, {
                 activeList: {$set:action.list}
-            });/*Object.assign({}, state, {
-                activeList: Object.assign({}, action.list, {
-                    name: action.list.name,
-                    learnItems: Object.assign({activePage:0},state.activeList.learnItems)
-                })
-            });*/
-        case types.SAVE_LEARNITEM_SUCCESS:{
-            let learnItems = appendNewlySavedLearnItemToEndOfList(state.activeList.learnItems,action.learnItem);
-
-            return update(state,  {
-                activeList: {learnItems : {$set:learnItems}}
             });
+        case types.SAVE_LEARNITEM_SUCCESS:{
+            let maxPageNumber = Math.floor(state.activeList.learnItems.totalCount/state.activeList.learnItems.pageSize);
+
+            let lastPageIsAlreadyLoaded = state.activeList.learnItems.pages[maxPageNumber]!=undefined;
+
+            if(lastPageIsAlreadyLoaded){
+                let learnItems = appendNewlySavedLearnItemToEndOfList(state.activeList.learnItems,action.learnItem);
+
+                return update(state,  {
+                    activeList: {learnItems : {$set:learnItems}}
+                });
+            }
+            return state;
         }
         default:
             return state;

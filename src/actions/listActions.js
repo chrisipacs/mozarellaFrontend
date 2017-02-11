@@ -57,7 +57,6 @@ export function browseLists(value) {
 
 export function loadLists(pageNumber,pageSize) {
     return dispatch => {
-        console.log(pageSize);
         dispatch(beginAjaxCall());
         return listApi.getAllLists(pageNumber,pageSize).then((result) => {
             dispatch(loadListsSuccess(result.lists,result.totalCount));

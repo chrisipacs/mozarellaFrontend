@@ -4,6 +4,7 @@
 import expect from 'expect';
 import listReducer from './listReducer';
 import * as actions from '../actions/listActions';
+import * as learnItemActions from '../actions/learnItemActions';
 
 describe('List Reducer', () => {
     it('should load list into activeList when passed LOAD_LIST_SUCCESS', () => {
@@ -271,7 +272,7 @@ describe('List Reducer', () => {
         const learnItemsToLoad = [{},{},{},{},{},{},{},{}];
 
         // arrange
-        const action = actions.loadLearnitemSuccess(2, 142,learnItemsToLoad)
+        const action = actions.loadLearnitemSuccess(2, 142,learnItemsToLoad);
 
         // act
         const newState = listReducer(initialState, action);
@@ -289,7 +290,7 @@ describe('List Reducer', () => {
         const initialState = {
             activeList: {
                 learnItems: {
-                    totalCount: 0,
+                    totalCount: 42,
                     pageSize: 10,
                     activePage:0,
                     pages: {0:[],
@@ -309,6 +310,72 @@ describe('List Reducer', () => {
         // assert
         expect(newState.activeList.learnItems.activePage).toEqual(42);
 
+    });
+
+    it('should append the saved learnItem to the end of the last loaded page on SAVE_LEARNITEM_SUCCESS', () => {
+
+        // arrange
+
+        const initialState = {
+            activeList: {
+                learnItems: {
+                    totalCount: 42,
+                    pageSize: 10,
+                    activePage:0,
+                    pages: {0:[],
+                        1:[{},{}],
+                        4:[]
+                    }
+                }
+            }
+        };
+
+        const learnItemToSave = {"id":1000,"text":"newLearnItem","translations":["exampletranslation"],"priority":null,"pictureReference":null,"helperItem":null};
+        const action = learnItemActions.saveLearnItemSuccess(learnItemToSave);
+
+        // act
+        const newState = listReducer(initialState, action);
+
+        // assert
+
+        //
+        let maxPageNumber = Math.floor(newState.activeList.learnItems.totalCount/newState.activeList.learnItems.pageSize);
+        let page = newState.activeList.learnItems.pages[maxPageNumber];
+
+        expect(page[page.length-1]).toEqual(learnItemToSave);
+
+    });
+
+    it('should not do anything on SAVE_LEARNITEM_SUCCESS if the last page of learnItems is not loaded yet', () => {
+
+        // arrange
+
+        const initialState = {
+            activeList: {
+                learnItems: {
+                    totalCount: 42,
+                    pageSize: 10,
+                    activePage:0,
+                    pages: {0:[],
+                        1:[{},{}]
+                    }
+                }
+            }
+        };
+
+        const learnItemToSave = {"id":1000,"text":"newLearnItem","translations":["exampletranslation"],"priority":null,"pictureReference":null,"helperItem":null};
+        const action = learnItemActions.saveLearnItemSuccess(learnItemToSave);
+
+        // act
+        const newState = listReducer(initialState, action);
+
+        // assert
+
+        //
+        let maxPageNumber = Math.floor(newState.activeList.learnItems.totalCount/newState.activeList.learnItems.pageSize);
+        let page = newState.activeList.learnItems.pages[maxPageNumber];
+
+        expect(newState).toEqual(initialState);
     });
 
 });

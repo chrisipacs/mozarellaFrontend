@@ -20,13 +20,6 @@ class ListApi {
         });
     }
 
-    static getNumberOfLearnItems(){
-        //TODO implement this on both the frontend and backend side
-        return new Promise((resolve, reject) => {
-
-        });
-    }
-
     static getList(listId) {
         return new Promise((resolve, reject) => {
             requestObjects('/api/learnitemlists/'+listId,'GET').then((response)=>{
