@@ -6,15 +6,15 @@ import * as types from './actionTypes';
 import {beginAjaxCall} from './ajaxStatusActions';
 import pageSize from '../constants';
 
-export function signupSuccess(student) {
-    return {type: types.SIGNUP_SUCCESS, student};
+export function signupSuccess() {
+    return {type: types.SIGNUP_SUCCESS};
 }
 
 export function signUp(newStudent){
     return dispatch => {
         dispatch(beginAjaxCall());
-        return signupApi.signUp(newStudent).then(student => {
-            dispatch(signupSuccess(student));
+        return signupApi.signUp(newStudent).then(studentId => { //studentId not needed, will be used at login
+            dispatch(signupSuccess());
         }).catch(error => {
             throw(error);
         });

@@ -37,11 +37,12 @@ class SignupApi {
                 },
                 body: data
                 })
-                //.then(function(response) {
-                //    return response.text();
-                //})
+                .then(function(response){ //studentId
+                    return response.text();
+                })
                 .then(function(response){
-                    resolve(response.json());
+                    console.log('and the json is: '+parseInt(response));
+                    resolve(response);
                 })
                 .catch(function(error) {
                     console.log('request failed', error);

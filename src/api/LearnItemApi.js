@@ -9,7 +9,8 @@ class LearnItemApi {
 
     static getLearnItemsToLearn(listId, numberOfLearnItems=10){
         return new Promise((resolve, reject) => {
-            requestObjects('/api/learnitemlists/'+listId+'/learnitems','GET')
+            //TODO: introduce studentId to the path
+            requestObjects('/api/learnitemlists/'+listId+'/learnitems?count='+numberOfLearnItems,'GET')
                 .then(function(result){
                     resolve(result.objects);
                 }).catch(function(error) {

@@ -40,7 +40,7 @@ describe('Learnitem Actions', () => {
             }];
 
             nock(host)
-                .get('/api/learnitemlists/'+listId+'/learnitems')
+                .get('/api/learnitemlists/'+listId+'/learnitems?count=10')
                 .reply(200, learnItemsToLoad);
 
 

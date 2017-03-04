@@ -41,8 +41,7 @@ describe('Signup Actions', () => {
                 {
                     type: types.BEGIN_AJAX_CALL
                 },{
-                    type: types.SIGNUP_SUCCESS,
-                    student: studentToSignUp
+                    type: types.SIGNUP_SUCCESS
                 }
             ];
 
