@@ -10,7 +10,7 @@ import { reducer as formReducer } from 'redux-form';
 const rootReducer = combineReducers({
     listsContext,
     ajaxCallsInProgress,
-    student: combineReducers({
+    studentContext: combineReducers({
         student,
         listsContext:studentsList
     }),

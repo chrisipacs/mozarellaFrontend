@@ -1,9 +1,6 @@
 /**
  * Created by krisztian on 2016. 11. 28..
  */
-/**
- * Created by krisztian on 17/09/16.
- */
 
 import requestObjects from './RequestObjects';
 import sendObject from './SendObject';

@@ -9,8 +9,8 @@ export const LOAD_LIST_SUCCESS = 'LOAD_LIST_SUCCESS';
 export const SAVE_LIST = 'SAVE_LIST'; //do we need this
 
 //student' lists
+export const SIGNUP_STUDENT_TO_LIST_SUCCESS = 'SIGNUP_STUDENT_TO_LIST_SUCCESS';
 export const LOAD_STUDENT_LISTS_SUCCESS = 'LOAD_STUDENT_LISTS_SUCCESS';
-
 
 //learnItem
 export const SAVE_LEARNITEM_SUCCESS = 'SAVE_LEARNITEM_SUCCESS';

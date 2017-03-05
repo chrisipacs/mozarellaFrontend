@@ -1,7 +1,10 @@
 export default {
     courses: [],
     ajaxCallsInProgress: 0,
-    student: {
+    studentContext: {
+        student: {
+
+        },
         listsContext: { //the lists the student is associated with
             totalCount: 0,
             pageSize: 10,

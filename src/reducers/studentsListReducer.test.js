@@ -1,9 +1,7 @@
 /**
  * Created by krisztian on 2017. 03. 05..
  */
-/**
- * Created by krisztian on 2017. 01. 22..
- */
+
 import expect from 'expect';
 import studentsListReducer from './studentsListReducer';
 import * as actions from '../actions/listActions';

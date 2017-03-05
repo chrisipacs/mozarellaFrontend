@@ -75,7 +75,7 @@ import * as constants from './listTableConstants';
                 <Column
                     header={<Cell></Cell>}
                     cell={({rowIndex, ...props}) => (<Cell>
-                         {this.props.column6}
+                         {React.cloneElement(this.props.column6,{rowIndex})}
                         </Cell>)}
                     width={100}
                     />

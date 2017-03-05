@@ -5,18 +5,18 @@
 import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 
-const SubscribeUnsubscribe = ({isSubscribed,onSubscribeUnsubscribe}) => {
+const SubscribeUnsubscribe = ({isSubscribed,onSubscribeUnsubscribe,rowIndex}) => {
 
     return (
         <div>
-            {isSubscribed && <input
+            {isSubscribed(rowIndex) && <input
                 type='submit'
                 disabled={false}
                 value='Unsubscribe'
                 className='btn btn-warning'
                 onClick={()=>{onSubscribeUnsubscribe(false)}}/>}
 
-            {!isSubscribed && <input
+            {!isSubscribed(rowIndex) && <input
                 type='submit'
                 disabled={false}
                 value='Subscribe'

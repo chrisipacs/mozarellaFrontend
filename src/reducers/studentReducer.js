@@ -4,7 +4,7 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-export default function studentReducer(state = initialState.student, action = {}) {
+export default function studentReducer(state = initialState.studentContext.student, action = {}) {
     switch (action.type) {
         case types.LOGIN_SUCCESS:
             return Object.assign({}, action.student);
