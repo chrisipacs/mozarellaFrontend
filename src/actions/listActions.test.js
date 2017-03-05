@@ -90,7 +90,7 @@ describe('List Actions', () => {
 
     //loadLists(pageNumber,pageSize)
     describe('loadLists', () => {
-        it('should create a BEGIN_AJAX_CALL and a LOAD_LISTS_SUCCESS action', (done) => {
+        it('should create a BEGIN_AJAX_CALL and a LOAD_LISTS_SUCCESS action when NO studentId is passed', (done) => {
 
             afterEach(() => {
                 nock.cleanAll();
@@ -115,6 +115,49 @@ describe('List Actions', () => {
 
             //act
             const action = listActions.loadLists(pagenumber,pagesize);
+
+            const store = mockStore({}, expectedActions);
+            store.dispatch(action).then(() => {
+                //assert
+
+                const actions = store.getActions();
+                expect(actions[0]).toEqual(expectedActions[0]);
+                expect(actions[1]).toEqual(expectedActions[1]);
+                done();
+            });
+
+        });
+    });
+
+    //
+    describe('loadLists', () => {
+        it('should create a BEGIN_AJAX_CALL and a LOAD_STUDENT_LISTS_SUCCESS action when studentId IS passed', (done) => {
+
+            afterEach(() => {
+                nock.cleanAll();
+            });
+
+            //arrange
+            const pagenumber = 0;
+            const pagesize = 10;
+
+            const listsToLoad = [{},{},{},{},{},{},{},{},{},{}];
+
+            const studentId =0;
+
+            const expectedActions = [{type: types.BEGIN_AJAX_CALL},{
+                type: types.LOAD_STUDENT_LISTS_SUCCESS,
+                totalCount: 0,
+                lists: listsToLoad
+            }];
+
+            nock(host)
+                .get('/api/students/0/learnitemlists')
+                .query({pagenumber,pagesize})
+                .reply(200, listsToLoad);
+
+            //act
+            const action = listActions.loadLists(pagenumber,pagesize,studentId);
 
             const store = mockStore({}, expectedActions);
             store.dispatch(action).then(() => {

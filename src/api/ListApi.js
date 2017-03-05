@@ -9,7 +9,7 @@ import requestObjects from './RequestObjects';
 import sendObject from './SendObject';
 
 class ListApi {
-    static getAllLists(pageNumber,pageSize) {
+    static getLists(pageNumber,pageSize) {
         return new Promise((resolve, reject) => {
             requestObjects('/api/learnitemlists?pagenumber='+pageNumber+'&&pagesize='+pageSize,'GET')
             .then(function(result){
@@ -17,6 +17,17 @@ class ListApi {
             }).catch(function(error) {
                 reject(error);
             });
+        });
+    }
+
+    static getListsOfStudent(pageNumber,pageSize,studentId) {
+        return new Promise((resolve, reject) => {
+            requestObjects('/api/students/'+studentId+'/learnitemlists?pagenumber='+pageNumber+'&&pagesize='+pageSize,'GET')
+                .then(function(result){
+                    resolve({totalCount: Number(result.headers.get('X-total-count')),lists:result.objects});
+                }).catch(function(error) {
+                    reject(error);
+                });
         });
     }
 

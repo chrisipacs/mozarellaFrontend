@@ -7,6 +7,10 @@ export function loadListsSuccess(lists, totalCount) {
   return {type: types.LOAD_LISTS_SUCCESS, lists, totalCount};
 }
 
+export function loadStudentListsSuccess(lists, totalCount) {
+    return {type: types.LOAD_STUDENT_LISTS_SUCCESS, lists, totalCount};
+}
+
 export function browseListsSuccess(browseLists){
     return {type: types.BROWSE_LISTS, browseLists};
 }
@@ -55,12 +59,17 @@ export function browseLists(value) {
     }
 }
 
-export function loadLists(pageNumber,pageSize) {
+export function loadLists(pageNumber,pageSize,studentId) {
     return dispatch => {
         dispatch(beginAjaxCall());
-        return listApi.getAllLists(pageNumber,pageSize).then((result) => {
-            dispatch(loadListsSuccess(result.lists,result.totalCount));
-        })
+        if(studentId==undefined){
+            return listApi.getLists(pageNumber,pageSize,studentId).then((result) => {
+                    dispatch(loadListsSuccess(result.lists,result.totalCount));
+            })} else {
+            return listApi.getListsOfStudent(pageNumber,pageSize,studentId).then((result) => {
+                dispatch(loadStudentListsSuccess(result.lists,result.totalCount));
+            })
+        }
     };
 }
 
