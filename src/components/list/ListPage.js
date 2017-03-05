@@ -74,7 +74,7 @@ class ListPage extends React.Component {
     }
 
     save(){
-        this.setState(Object.assign(this.state,{changedSinceLastSave:false})); //TODO maybe only set this after it was successfully saved?
+        //this.setState(Object.assign(this.state,{changedSinceLastSave:false})); //TODO maybe only set this after it was successfully saved?
         this.props.actions.saveList(this.state.list);
     }
 

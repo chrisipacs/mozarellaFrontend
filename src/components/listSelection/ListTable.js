@@ -12,16 +12,20 @@ import * as constants from './listTableConstants';
     class ListTable extends React.Component {
         constructor(props, context) {
             super(props, context);
-            console.log('props at listTable: '+JSON.stringify(props));
+            //console.log('props at listTable: '+JSON.stringify(props));
+
+            let  sumCallback = ( pre, cur ) => {return pre+cur};
+
         }
 
-        render(){return (
+        render(){
+            return (
         <div>
             <Table
                 rowHeight={constants.rowHeight}
                 rowsCount={this.props.lists == undefined ? 0 : this.props.lists.length}
-                width={1200}
-                height={this.props.lists == undefined ? 0 : this.props.lists.length*constants.rowHeight+constants.headerHeight}
+                width={920}
+                height={this.props.lists == undefined ? 0 : (this.props.lists.length*constants.rowHeight+constants.headerHeight)+3}
                 headerHeight={constants.headerHeight}>
                 <Column
                     header={<Cell>Course name</Cell>}
@@ -49,7 +53,7 @@ import * as constants from './listTableConstants';
                     width={60}
                     />
                 <Column
-                    header={<Cell>To</Cell>}
+                    header={<Cell>Description</Cell>}
                     cell={({rowIndex, ...props}) => (
                         <Cell {...props}>
                          {this.props.lists!=undefined && this.props.lists[rowIndex].description}
@@ -57,8 +61,8 @@ import * as constants from './listTableConstants';
                     width={300}
                     />
                 <Column
-                    header={<Cell></Cell>}
-                    cell={({rowIndex, ...props}) => (<Cell>
+                header={<Cell></Cell>}
+                cell={({rowIndex, ...props}) => (<Cell>
                          <input
                             type='submit'
                             disabled={false}
@@ -66,7 +70,14 @@ import * as constants from './listTableConstants';
                             className='btn btn-primary'
                             onClick={()=>{browserHistory.push('/'+this.props.pagePrefix+'/'+this.props.lists[rowIndex].id);}}/>
                         </Cell>)}
-                    width={300}
+                width={100}
+                />
+                <Column
+                    header={<Cell></Cell>}
+                    cell={({rowIndex, ...props}) => (<Cell>
+                         {this.props.column6}
+                        </Cell>)}
+                    width={100}
                     />
             </Table>
             <Pagination

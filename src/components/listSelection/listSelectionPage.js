@@ -11,6 +11,7 @@ import * as listActions from '../../actions/listActions';
 import ListTable from './ListTable';
 import ListCreationPage from '../listCreation/ListCreationPage';
 import {browserHistory} from 'react-router';
+import SubscribeUnsubscribe from './SubscribeUnsubscribe';
 
 class ListSelectionPage extends React.Component {
 
@@ -87,7 +88,8 @@ class ListSelectionPage extends React.Component {
                                                       totalCount={this.props.totalCount != undefined ? this.props.totalCount : 0}
                                                       pageRangeDisplayed={10}
                                                       onChange={this.handlePageChange}
-                                                      nameOfAction='View' pagePrefix='lists'/>
+                                                      nameOfAction='View' pagePrefix='lists'
+                                                        column6 = {<SubscribeUnsubscribe isSubscribed={false} onSubscribeUnsubscribe={()=>{}}/>} />
                     : <ListCreationPage list={this.state.listsContext.activeList} onChange={this.updateListState}
                     onSave={this.saveList}/>}
 
