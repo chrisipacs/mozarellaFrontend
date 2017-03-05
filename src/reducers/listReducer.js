@@ -62,10 +62,20 @@ export default function listReducer(state = initialState.listsContext, action = 
         }
         case types.BROWSE_LISTS:
             return Object.assign({}, state, {browseLists: action.browseLists});
-        case types.LOAD_LIST_SUCCESS:
-            return update(state, {
+        case types.LOAD_LIST_SUCCESS: {
+            //loaded learnItems have to be kept
+
+            let newState = update(state, {
                 activeList: {$set:action.list}
             });
+
+            if(state.activeList.learnItems!==undefined){
+                let learnItemsSave = JSON.parse(JSON.stringify(state.activeList.learnItems)); //deep copy
+                newState.activeList.learnItems = learnItemsSave;
+            }
+
+            return newState;
+        }
         case types.SAVE_LEARNITEM_SUCCESS:{
             let maxPageNumber = Math.floor(state.activeList.learnItems.totalCount/state.activeList.learnItems.pageSize);
 

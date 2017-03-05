@@ -6,7 +6,8 @@ import ReactDOM from 'react-dom';
 import {Table, Column, Cell} from 'fixed-data-table';
 import '../../../node_modules/fixed-data-table/dist/fixed-data-table.css';
 import {browserHistory} from 'react-router';
-import Pagination from "../../../node_modules/react-js-pagination";
+import Pagination from '../../../node_modules/react-js-pagination';
+import * as constants from './listTableConstants';
 
     class ListTable extends React.Component {
         constructor(props, context) {
@@ -17,11 +18,11 @@ import Pagination from "../../../node_modules/react-js-pagination";
         render(){return (
         <div>
             <Table
-                rowHeight={50}
+                rowHeight={constants.rowHeight}
                 rowsCount={this.props.lists == undefined ? 0 : this.props.lists.length}
                 width={1200}
-                height={this.props.lists == undefined ? 0 : this.props.lists.length*50+1}
-                headerHeight={50}>
+                height={this.props.lists == undefined ? 0 : this.props.lists.length*constants.rowHeight+constants.headerHeight}
+                headerHeight={constants.headerHeight}>
                 <Column
                     header={<Cell>Course name</Cell>}
                     cell={({rowIndex, ...props}) => (

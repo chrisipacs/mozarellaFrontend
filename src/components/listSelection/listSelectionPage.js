@@ -37,7 +37,7 @@ class ListSelectionPage extends React.Component {
         console.log(this);
         let listUnderEdit = this.state.listsContext.activeList;
         listUnderEdit[field] = event.target.value;
-        return this.setState({listsContext: {listUnderEdit: listUnderEdit}});
+        return this.setState({listsContext: {activeList: listUnderEdit}});
     }
 
     redirectToListPage(listId) {

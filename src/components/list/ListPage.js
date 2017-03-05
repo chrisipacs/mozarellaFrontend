@@ -26,6 +26,7 @@ class ListPage extends React.Component {
         this.cancel = this.cancel.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.loadNewLearnItemAddition = this.loadNewLearnItemAddition.bind(this);
+
     }
 
     componentWillMount(){
@@ -115,7 +116,7 @@ class ListPage extends React.Component {
                     onChange={this.updateListDescription} // handle innerHTML change
                     />
                 <br/>
-                {!that.state.enableEditing && <div><button onClick={this.changeEditing} className="btn btn-primary">
+                {!that.state.enableEditing && <div><button onClick={this.changeEditing} className={this.props.ajaxCallsInProgress? "btn btn-primary disabled" : "btn btn-primary"}>
                     Enable editing
                 </button> </div>}
                 {this.state.enableEditing &&
@@ -156,7 +157,15 @@ class ListPage extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+
+    if(state.listsContext.activeList.learnItems===undefined){ //learnItems not loaded yet
+        return {
+            list:Object.assign({},state.listsContext.activeList)
+        };
+    }
+
     return {
+        ajaxCallsInProgress: state.ajaxCallsInProgress,
         list:Object.assign({},state.listsContext.activeList),
         totalCount: state.listsContext.activeList.learnItems.totalCount,
         activePage: state.listsContext.activeList.learnItems.activePage,
