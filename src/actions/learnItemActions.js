@@ -7,19 +7,6 @@ export function saveLearnItemSuccess(learnItem) {
   return {type: types.SAVE_LEARNITEM_SUCCESS, learnItem};
 }
 
-export function loadLearnableLearnItemsSuccess(learnItems) {
-    return {type: types.LOAD_LEARNABLE_LEARNITEMS_SUCCESS, learnItems};
-}
-
-export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {
-    return dispatch => {
-        dispatch(beginAjaxCall());
-        return learnItemApi.getLearnItemsToLearn(listId, numberOfLearnItems).then(learnItems => {
-            dispatch(loadLearnableLearnItemsSuccess(learnItems));
-        })
-    };
-}
-
 export function saveLearnItem(learnItem,listId){
     return dispatch => {
         dispatch(beginAjaxCall());

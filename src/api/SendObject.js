@@ -10,8 +10,17 @@ import 'whatwg-fetch';
 export default (path,method,toSend)=>{
 
     let createNewResponse = function (response){ //TODO find a better name
-        return response.json().then((objects)=>{
-            return {objects:objects, headers:response.headers, status:response.status}});
+        var contentType = response.headers.get("content-type");
+
+        if(contentType && contentType.indexOf("application/json") !== -1) {
+            return response.json().then((objects)=> {
+                return {objects: objects, headers: response.headers, status: response.status}
+            });
+        } else {
+            return response.text().then((objects)=> {
+                return {objects: [], headers: response.headers, status: response.status}
+            });
+        }
     };
 
     return new Promise((resolve, reject) => {
@@ -35,6 +44,7 @@ export default (path,method,toSend)=>{
             }
 
             createNewResponse(response).then((resp)=>{
+                console.log('before SendObject resolve');
                 resolve(resp);
             })
         })

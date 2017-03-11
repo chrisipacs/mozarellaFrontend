@@ -1,12 +1,10 @@
 /**
- * Created by krisztian on 2017. 02. 10..
- */
-/**
- * Created by krisztian on 2017. 01. 30..
+ * Created by krisztian on 2017. 03. 11..
  */
 
+
 import expect from 'expect';
-import * as learnItemActions from './learnItemActions';
+import * as studentActions from './studentActions';
 import * as types from './actionTypes';
 
 import thunk from 'redux-thunk';
@@ -23,8 +21,8 @@ import host from '../api/host';
 // Test a sync action
 describe('Learnitem Actions', () => {
 
-    describe('saveLearnItem', () => {
-        it('should create a BEGIN_AJAX_CALL, and a SAVE_LEARNITEM_SUCCESS action', (done) => {
+    describe('loadLearnItemsToLearn', () => {
+        it('should create a BEGIN_AJAX_CALL, and a LOAD_LEARNABLE_LEARNITEMS action', (done) => {
 
             afterEach(() => {
                 nock.cleanAll();
@@ -32,19 +30,22 @@ describe('Learnitem Actions', () => {
 
             //arrange
             const listId = 1;
-            let learnItemToSave = {};
+            const numberToLoad = 10;
+            const studentId = 42;
+            let learnItemsToLoad = [{},{},{},{},{},{},{},{},{},{}];
 
             const expectedActions = [{type: types.BEGIN_AJAX_CALL},{
-                type: types.SAVE_LEARNITEM_SUCCESS,
-                learnItem: learnItemToSave
+                type: types.LOAD_LEARNABLE_LEARNITEMS_SUCCESS,
+                learnItems: learnItemsToLoad
             }];
 
             nock(host)
-                .post('/api/learnitemlists/1/learnitems',learnItemToSave)
-                .reply(201, [{}]);
+                .get('/api/students/'+studentId+'/learnitemlists/'+listId+'/learnitems')
+                .query({count:'10'})
+                .reply(200, learnItemsToLoad);
 
 
-            const action = learnItemActions.saveLearnItem(learnItemToSave,1);
+            const action = studentActions.loadLearnItemsToLearn(studentId,listId,numberToLoad);
 
 
             //act

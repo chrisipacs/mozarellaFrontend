@@ -7,18 +7,6 @@ import sendObject from './SendObject';
 
 class LearnItemApi {
 
-    static getLearnItemsToLearn(listId, numberOfLearnItems=10){
-        return new Promise((resolve, reject) => {
-            //TODO: introduce studentId to the path
-            requestObjects('/api/learnitemlists/'+listId+'/learnitems?count='+numberOfLearnItems,'GET')
-                .then(function(result){
-                    resolve(result.objects);
-                }).catch(function(error) {
-                    reject(error);
-                });
-        });
-    }
-
     static saveLearnItem(learnItem,listId){
         return new Promise((resolve, reject) => {
             sendObject('/api/learnitemlists/'+listId+'/learnitems','POST',[learnItem])

@@ -7,12 +7,25 @@ import * as types from './actionTypes';
 import {beginAjaxCall} from './ajaxStatusActions';
 import pageSize from '../constants';
 
+export function loadLearnableLearnItemsSuccess(learnItems) {
+    return {type: types.LOAD_LEARNABLE_LEARNITEMS_SUCCESS, learnItems};
+}
+
 export function signupToListSuccess(list) {
     return {type: types.SIGNUP_STUDENT_TO_LIST_SUCCESS, list: list};
 }
 
 export function deregisterFromListSuccess(list) {
     return {type: types.DEREGISTER_STUDENT_FROM_LIST_SUCCESS, list: list};
+}
+
+export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {
+    return dispatch => {
+        dispatch(beginAjaxCall());
+        return studentApi.getLearnItemsToLearn(listId, numberOfLearnItems).then(learnItems => {
+            dispatch(loadLearnableLearnItemsSuccess(learnItems));
+        })
+    };
 }
 
 export function subscribeStudentToList(student,list){

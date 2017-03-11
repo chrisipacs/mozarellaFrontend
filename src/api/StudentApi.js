@@ -6,10 +6,24 @@ import requestObjects from './RequestObjects';
 import sendObject from './SendObject';
 
 class StudentApi {
+
+    static getLearnItemsToLearn(studentId, listId, numberOfLearnItems=10){
+        return new Promise((resolve, reject) => {
+            //TODO: introduce studentId to the path
+            requestObjects('/api/students/'+studentId+'/learnitemlists/'+listId+'/learnitems?count='+numberOfLearnItems,'GET')
+                .then(function(result){
+                    resolve(result.objects);
+                }).catch(function(error) {
+                    reject(error);
+                });
+        });
+    }
+
     static signUpStudentToList(student,list) {
         return new Promise((resolve, reject) => {
             sendObject('/api/students/'+student.id+'/learnitemlists','POST',list)
                 .then(function(result){
+                    console.log('SendObject callback signup');
                     resolve(list);
                 }).catch(function(error) {
                     reject(error);
@@ -21,6 +35,7 @@ class StudentApi {
         return new Promise((resolve, reject) => {
             sendObject('/api/students/'+student.id+'/learnitemlists/'+list.id,'DELETE')
                 .then(function(result){
+                    console.log('SendObject callback deregister');
                     resolve(list);
                 }).catch(function(error) {
                     reject(error);

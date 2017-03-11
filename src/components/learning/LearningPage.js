@@ -8,6 +8,7 @@ import update from 'react-addons-update';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as listActions from '../../actions/listActions';
+import * as studentActions from '../../actions/studentActions';
 import TextInput from '../reusable/TextInput';
 import LearningStatusInfo from './LearningStatusInfo';
 import Sound from 'react-sound';
@@ -87,7 +88,7 @@ class LearningPage extends React.Component {
             let listId = pathElements[pathElements.length-1];
 
             console.log('load new upcoming...'+listId);
-            this.props.learnItemActions.loadLearnItemsToLearn(listId);
+            this.props.studentActions.loadLearnItemsToLearn(this.props.student.id,listId);
         }
     }
 
@@ -176,6 +177,7 @@ class LearningPage extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
+        student: state.studentContext.student,
         learnItems: state.learnContext.learnItems,
         list: state.activeList //TODO: remove?
     };
@@ -184,7 +186,8 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
     return {
         learnItemActions: bindActionCreators(LearnItemActions, dispatch),
-        listActions: bindActionCreators(listActions, dispatch)
+        listActions: bindActionCreators(listActions, dispatch),
+        studentActions: bindActionCreators(studentActions, dispatch)
     };
 }
 
