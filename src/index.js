@@ -10,6 +10,7 @@ import routes from './routes';
 import {loginSuccess} from './actions/loginActions';
 import {loadLists} from './actions/listActions';
 import {loadStudentLists} from './actions/listActions';
+import {beginAjaxCall} from './actions/ajaxStatusActions';
 
 const store = configureStore(window.devToolsExtension && window.devToolsExtension());
 //store.dispatch(loadCourses());
@@ -18,8 +19,11 @@ store.dispatch(loadLists(0,10));
 let student = localStorage.getItem('student');
 
 if(student != undefined){
-  store.dispatch(loginSuccess(JSON.parse(student)));
-  store.dispatch(loadLists(0,10,JSON.parse(student).id));
+    //loginSuccess does not include beginAjaxCall
+    store.dispatch(beginAjaxCall());
+    store.dispatch(loginSuccess(JSON.parse(student)));
+
+    store.dispatch(loadLists(0,10,JSON.parse(student).id));
 }
 
 render(

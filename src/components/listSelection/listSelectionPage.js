@@ -13,6 +13,7 @@ import ListTable from './ListTable';
 import ListCreationPage from '../listCreation/ListCreationPage';
 import {browserHistory} from 'react-router';
 import SubscribeUnsubscribe from './SubscribeUnsubscribe';
+import pageSize from '../PageSize';
 
 class ListSelectionPage extends React.Component {
 
@@ -31,6 +32,7 @@ class ListSelectionPage extends React.Component {
         this.handlePageChange = this.handlePageChange.bind(this);
         this.saveList = this.saveList.bind(this);
         this.handleSubscribe = this.handleSubscribe.bind(this);
+        this.handleUnsubscribe = this.handleUnsubscribe.bind(this);
         this.isSubscribed = this.isSubscribed.bind(this);
 
         let pageSize = 10; //TODO to its own file
@@ -55,17 +57,24 @@ class ListSelectionPage extends React.Component {
     }
 
     saveList(){
-        this.props.actions.saveList(this.state.listsContext.activeList);
+        this.props.actions.saveList(this.state.listsContext.activeList).then(()=>{
+            this.props.actions.loadLists(this.state.activePage,pageSize);
+        })
     }
 
     handlePageChange(pageNumber) {
-        let pageSize = 10;
         this.setState({activePage: pageNumber});
         this.props.actions.loadLists(pageNumber-1,pageSize);
     }
 
     handleSubscribe(listId){
+        console.log('handleSubscribe');
         this.props.studentActions.subscribeStudentToList(this.props.student,listId);
+    }
+
+    handleUnsubscribe(listId){
+        console.log('handleUnsubscribe');
+        this.props.studentActions.deregisterStudentFromList(this.props.student,listId);
     }
 
     isSubscribed(listId){
@@ -100,7 +109,7 @@ class ListSelectionPage extends React.Component {
                                             pageRangeDisplayed={10}
                                             onChange={this.handlePageChange}
                                             nameOfAction='View' pagePrefix='lists'
-                                            column6 = {<SubscribeUnsubscribe isSubscribed={this.isSubscribed} onSubscribeUnsubscribe={this.handleSubscribe}/>}
+                                            column6 = {<SubscribeUnsubscribe isSubscribed={this.isSubscribed} onSubscribe={this.handleSubscribe} onUnsubscribe={this.handleUnsubscribe}/>}
                                             />
                     : <ListCreationPage list={this.state.listsContext.activeList} onChange={this.updateListState}
                     onSave={this.saveList}/>}

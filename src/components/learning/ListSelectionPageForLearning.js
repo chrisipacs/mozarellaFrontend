@@ -18,16 +18,18 @@ class ListSelectionPageForLearning extends React.Component {
     constructor(props, context) {
         super(props, context);
 
+        //this.props.actions.loadLists(0,pageSize).then(function(loadedLists){
+        //    console.log('successfully loaded the following lists: '+loadedLists);
+        //});
+
+        this.handlePageChange = this.handlePageChange.bind(this);
+    }
+
+    componentWillMount(){
         this.state = {
             activePage: 0,
             totalCount: 0 //todo: move this to the store, and props
         };
-
-        this.props.actions.loadLists(0,pageSize).then(function(loadedLists){
-            console.log('successfully loaded the following lists: '+loadedLists);
-        });
-
-        this.handlePageChange = this.handlePageChange.bind(this);
     }
 
     handlePageChange(pageNumber) {
@@ -54,8 +56,8 @@ class ListSelectionPageForLearning extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        lists: state.listsContext.lists,
-        totalCount: state.listsContext.totalCount
+        lists: state.studentContext.listsContext.lists,
+        totalCount: state.studentContext.listsContext.totalCount
     };
 }
 

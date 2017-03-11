@@ -5,23 +5,23 @@
 import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 
-const SubscribeUnsubscribe = ({isSubscribed,onSubscribeUnsubscribe,rowIndex}) => {
+const SubscribeUnsubscribe = ({isSubscribed,onSubscribe, onUnsubscribe, rowIndex,list}) => {
 
     return (
         <div>
-            {isSubscribed(rowIndex) && <input
+            {isSubscribed(list.id) && <input
                 type='submit'
                 disabled={false}
                 value='Unsubscribe'
                 className='btn btn-warning'
-                onClick={()=>{onSubscribeUnsubscribe(false)}}/>}
+                onClick={()=>{onUnsubscribe(list)}}/>}
 
-            {!isSubscribed(rowIndex) && <input
+            {!isSubscribed(list.id) && <input
                 type='submit'
                 disabled={false}
                 value='Subscribe'
                 className='btn btn-success'
-                onClick={()=>{onSubscribeUnsubscribe(true)}}/>}
+                onClick={()=>{onSubscribe(list)}}/>}
         </div>
     );
 };

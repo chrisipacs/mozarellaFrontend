@@ -72,13 +72,13 @@ import * as constants from './listTableConstants';
                         </Cell>)}
                 width={100}
                 />
-                <Column
+                {this.props.column6 && <Column
                     header={<Cell></Cell>}
                     cell={({rowIndex, ...props}) => (<Cell>
-                         {React.cloneElement(this.props.column6,{rowIndex})}
+                         {React.cloneElement(this.props.column6,{rowIndex,list:this.props.lists[rowIndex]})}
                         </Cell>)}
                     width={100}
-                    />
+                    />}
             </Table>
             <Pagination
                 activePage={this.props.activePage}

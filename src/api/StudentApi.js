@@ -16,6 +16,17 @@ class StudentApi {
                 });
         });
     }
+
+    static deregisterStudentFromList(student,list) {
+        return new Promise((resolve, reject) => {
+            sendObject('/api/students/'+student.id+'/learnitemlists/'+list.id,'DELETE')
+                .then(function(result){
+                    resolve(list);
+                }).catch(function(error) {
+                    reject(error);
+                });
+        });
+    }
 }
 
 export default StudentApi;
