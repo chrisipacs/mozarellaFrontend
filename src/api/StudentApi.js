@@ -42,6 +42,19 @@ class StudentApi {
                 });
         });
     }
+
+    static sendNewResult(student,learnitem,listId,result) { //TODO test
+        console.log('STUDENT: '+JSON.stringify(student));
+        return new Promise((resolve, reject) => {
+            sendObject('/api/students/'+student.id+'/learnitemlists/'+listId+'/results','POST',result)
+                .then(function(){
+                    resolve();
+                }).catch(function(error) {
+                    reject(error);
+                });
+        });
+    }
+
 }
 
 export default StudentApi;

@@ -12,6 +12,7 @@ import * as studentActions from '../../actions/studentActions';
 import TextInput from '../reusable/TextInput';
 import LearningStatusInfo from './LearningStatusInfo';
 import Sound from 'react-sound';
+import StudentApi from '../../api/StudentApi';
 
 class LearningPage extends React.Component {
 
@@ -41,6 +42,7 @@ class LearningPage extends React.Component {
         this.startTimer = this.startTimer.bind(this);
         this.updateStateOnType = this.updateStateOnType.bind(this);
         this.updateStateOnKeyPress = this.updateStateOnKeyPress.bind(this);
+        this.createResult = this.createResult.bind(this);
     }
 
     startTimer(){
@@ -110,9 +112,14 @@ class LearningPage extends React.Component {
 
 
     checkSolution(solution,forced=false){
-        if(solution==this.state.currentLearnItem.translations[0]){ //TODO: figure out the condition
+        if(solution==this.state.currentLearnItem.translations[0]){ //TODO: implement a more generic solution for checking
             let playing = this.state.showSolution ? Sound.status.STOPPED : Sound.status.PLAYING;
-            let points = this.state.showSolution ? 0 : this.state.currentLearnItem.pointValue;
+            let pointValue = this.state.currentLearnItem.pointValue!=undefined ? this.state.currentLearnItem.pointValue: 100;
+            let points = this.state.showSolution ? 0 : pointValue;
+
+            let pathElements = this.props.location.pathname.split('/');
+            let listId = pathElements[pathElements.length-1];
+            StudentApi.sendNewResult(this.props.student,this.state.currentLearnItem,listId,this.createResult(true));
 
             this.setState({
                 points: this.state.points+=points,
@@ -123,6 +130,7 @@ class LearningPage extends React.Component {
             });
 
         } else if(forced){
+            StudentApi.sendNewResult(this.props.student,this.state.currentLearnItem,listId,this.createResult(false));
             this.setState({showSolution:true});
         }
     }
@@ -146,6 +154,10 @@ class LearningPage extends React.Component {
         } else {
             this.setState({ranOutOfLearnItems: true});
         }
+    }
+
+    createResult(wasSuccessful){
+        return {wasSuccessful:wasSuccessful, student:this.props.student,learnItem:this.state.currentLearnItem}
     }
 
     render() {
