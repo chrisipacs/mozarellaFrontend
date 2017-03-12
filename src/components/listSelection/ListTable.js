@@ -12,7 +12,6 @@ import * as constants from './listTableConstants';
     class ListTable extends React.Component {
         constructor(props, context) {
             super(props, context);
-            //console.log('props at listTable: '+JSON.stringify(props));
 
             let  sumCallback = ( pre, cur ) => {return pre+cur};
 
@@ -40,7 +39,7 @@ import * as constants from './listTableConstants';
                     header={<Cell>From</Cell>}
                     cell={({rowIndex, ...props}) => (
                         <Cell {...props}>
-                         {this.props.lists!=undefined && this.props.lists[rowIndex].fromLanguage}
+                         {this.props.lists!=undefined && this.props.lists[rowIndex].fromLanguageCode}
                         </Cell>)}
                     width={60}
                     />
@@ -48,7 +47,7 @@ import * as constants from './listTableConstants';
                     header={<Cell>To</Cell>}
                     cell={({rowIndex, ...props}) => (
                         <Cell {...props}>
-                         {this.props.lists!=undefined && this.props.lists[rowIndex].toLanguage}
+                         {this.props.lists!=undefined && this.props.lists[rowIndex].toLanguageCode}
                         </Cell>)}
                     width={60}
                     />

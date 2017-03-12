@@ -14,6 +14,8 @@ import ListCreationPage from '../listCreation/ListCreationPage';
 import {browserHistory} from 'react-router';
 import SubscribeUnsubscribe from './SubscribeUnsubscribe';
 import pageSize from '../PageSize';
+import update from 'react-addons-update';
+import initialState from '../../reducers/initialState';
 
 class ListSelectionPage extends React.Component {
 
@@ -21,19 +23,21 @@ class ListSelectionPage extends React.Component {
         super(props, context);
 
         this.state = {
-            listsContext: Object.assign({}, this.props.listsContext),
+            listsContext: Object.assign({}, JSON.parse(JSON.stringify(initialState.listsContext))),
             errors: {},
             saving: false,
             activePage: 0
         };
 
-        this.state.listsContext.activeList = Object.assign({},this.props.listsContext.activeList);
         this.updateListState = this.updateListState.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.saveList = this.saveList.bind(this);
         this.handleSubscribe = this.handleSubscribe.bind(this);
         this.handleUnsubscribe = this.handleUnsubscribe.bind(this);
         this.isSubscribed = this.isSubscribed.bind(this);
+        this.updateFromLanguage = this.updateFromLanguage.bind(this);
+        this.updateToLanguage = this.updateToLanguage.bind(this);
+        this.processListBeforeSave = this.processListBeforeSave.bind(this);
 
         let pageSize = 10; //TODO to its own file
     }
@@ -41,9 +45,29 @@ class ListSelectionPage extends React.Component {
     updateListState(event) {
         const field = event.target.name;
         console.log(this);
-        let listUnderEdit = this.state.listsContext.activeList;
+        let listUnderEdit = JSON.parse(JSON.stringify(this.state.listsContext.activeList));
         listUnderEdit[field] = event.target.value;
-        return this.setState({listsContext: {activeList: listUnderEdit}});
+        //return this.setState({listsContext: {activeList: listUnderEdit}});
+
+        this.setState((previousState) => update(previousState, {
+            listsContext: {activeList: {$set:listUnderEdit}}
+        }));
+    }
+
+    updateFromLanguage(newLanguage){
+        let listUnderEdit = JSON.parse(JSON.stringify(this.state.listsContext.activeList));
+        listUnderEdit['fromLanguage'] = newLanguage;
+        return this.setState({listsContext: {activeList: listUnderEdit}},()=>{
+            console.log('new state: '+JSON.stringify(this.state));
+        });
+    }
+
+    updateToLanguage(newLanguage){
+        let listUnderEdit = JSON.parse(JSON.stringify(this.state.listsContext.activeList));
+        listUnderEdit['toLanguage'] = newLanguage;
+        return this.setState({listsContext: {activeList: listUnderEdit}},()=>{
+            console.log('new state: '+JSON.stringify(this.state));
+        });
     }
 
     redirectToListPage(listId) {
@@ -56,11 +80,21 @@ class ListSelectionPage extends React.Component {
         }
     }
 
+    processListBeforeSave(list){ //only send the code to the backend
+        list.fromLanguageCode = list.fromLanguage.value;
+        list.toLanguageCode = list.toLanguage.value;
+
+        return list;
+    }
+
     saveList(){
+        let listToSave = this.processListBeforeSave(this.state.listsContext.activeList);
+
         this.props.actions.saveList(this.state.listsContext.activeList).then(()=>{
             this.props.actions.loadLists(this.state.activePage,pageSize);
-        })
+        });
     }
+
 
     handlePageChange(pageNumber) {
         this.setState({activePage: pageNumber});
@@ -68,12 +102,10 @@ class ListSelectionPage extends React.Component {
     }
 
     handleSubscribe(listId){
-        console.log('handleSubscribe');
         this.props.studentActions.subscribeStudentToList(this.props.student,listId);
     }
 
     handleUnsubscribe(listId){
-        console.log('handleUnsubscribe');
         this.props.studentActions.deregisterStudentFromList(this.props.student,listId);
     }
 
@@ -111,8 +143,8 @@ class ListSelectionPage extends React.Component {
                                             nameOfAction='View' pagePrefix='lists'
                                             column6 = {<SubscribeUnsubscribe isSubscribed={this.isSubscribed} onSubscribe={this.handleSubscribe} onUnsubscribe={this.handleUnsubscribe}/>}
                                             />
-                    : <ListCreationPage list={this.state.listsContext.activeList} onChange={this.updateListState}
-                    onSave={this.saveList}/>}
+                    : <ListCreationPage list={this.state.listsContext.activeList} onChange={this.updateListState} onFromLanguageChange={this.updateFromLanguage} onToLanguageChange={this.updateToLanguage}
+                    fromLanguage={this.state.listsContext.activeList.fromLanguage} toLanguage={this.state.listsContext.activeList.toLanguage} onSave={this.saveList}/>}
 
                 </div>
         );
