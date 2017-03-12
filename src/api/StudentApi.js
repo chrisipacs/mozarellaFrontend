@@ -23,7 +23,6 @@ class StudentApi {
         return new Promise((resolve, reject) => {
             sendObject('/api/students/'+student.id+'/learnitemlists','POST',list)
                 .then(function(result){
-                    console.log('SendObject callback signup');
                     resolve(list);
                 }).catch(function(error) {
                     reject(error);
@@ -35,7 +34,6 @@ class StudentApi {
         return new Promise((resolve, reject) => {
             sendObject('/api/students/'+student.id+'/learnitemlists/'+list.id,'DELETE')
                 .then(function(result){
-                    console.log('SendObject callback deregister');
                     resolve(list);
                 }).catch(function(error) {
                     reject(error);
@@ -44,7 +42,6 @@ class StudentApi {
     }
 
     static sendNewResult(student,learnitem,listId,result) { //TODO test
-        console.log('STUDENT: '+JSON.stringify(student));
         return new Promise((resolve, reject) => {
             sendObject('/api/students/'+student.id+'/learnitemlists/'+listId+'/results','POST',result)
                 .then(function(){

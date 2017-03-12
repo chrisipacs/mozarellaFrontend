@@ -61,6 +61,90 @@ describe('Learnitem Actions', () => {
 
         });
     });
+
+    describe('subscribeStudentToList', () => {
+        it('should create a BEGIN_AJAX_CALL, and a SIGNUP_STUDENT_TO_LIST_SUCCESS action', (done) => {
+
+            afterEach(() => {
+                nock.cleanAll();
+            });
+
+            //arrange
+            const listToSignUpTo = {
+                id:11
+            };
+
+            const studentToSignUp = {
+                id:42
+            };
+
+            const expectedActions = [{type: types.BEGIN_AJAX_CALL},{
+                type: types.SIGNUP_STUDENT_TO_LIST_SUCCESS,
+                list: listToSignUpTo
+            }];
+
+            nock(host)
+                .post('/api/students/'+studentToSignUp.id+'/learnitemlists',listToSignUpTo)
+                .reply(200);
+
+
+            const action = studentActions.subscribeStudentToList(studentToSignUp,listToSignUpTo);
+
+            //act
+            const store = mockStore({}, expectedActions);
+            store.dispatch(action).then(() => {
+
+                //assert
+                const actions = store.getActions();
+                expect(actions[0]).toEqual(expectedActions[0]);
+                expect(actions[1]).toEqual(expectedActions[1]);
+                done();
+            });
+
+        });
+    });
+
+    describe('deregisterStudentFromList', () => {
+        it('should create a BEGIN_AJAX_CALL, and a DEREGISTER_STUDENT_FROM_LIST_SUCCESS action', (done) => {
+
+            afterEach(() => {
+                nock.cleanAll();
+            });
+
+            //arrange
+            const listToDeregisterFrom = {
+                id:11
+            };
+
+            const studentToSignUp = {
+                id:42
+            };
+
+            const expectedActions = [{type: types.BEGIN_AJAX_CALL},{
+                type: types.DEREGISTER_STUDENT_FROM_LIST_SUCCESS,
+                list: listToDeregisterFrom
+            }];
+
+            nock(host)
+                .delete('/api/students/'+studentToSignUp.id+'/learnitemlists/'+listToDeregisterFrom.id)
+                .reply(200);
+
+
+            const action = studentActions.deregisterStudentFromList(studentToSignUp,listToDeregisterFrom);
+
+            //act
+            const store = mockStore({}, expectedActions);
+            store.dispatch(action).then(() => {
+
+                //assert
+                const actions = store.getActions();
+                expect(actions[0]).toEqual(expectedActions[0]);
+                expect(actions[1]).toEqual(expectedActions[1]);
+                done();
+            });
+
+        });
+    });
 });
 
 const middleware = [thunk];
