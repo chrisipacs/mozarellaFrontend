@@ -1,5 +1,12 @@
 language: node_js
 node_js:
-  - "6"
-  - "6.1"
-after_success: 'npm run coveralls'
+- '6'
+- '6.1'
+after_success: npm run coveralls
+deploy:
+  provider: heroku
+  api_key:
+    secure: dO4Cs4Niw0uS1C+mJp2mmaq210VjT5SKL3lQIusQyHP3fRRO5mWqhwW5QgrgM+UfJfpvVIlyfRF8xHqccL9V5jpgMt970QZRUQIgFgdpnll/pqH9T+9yjiutWrmhNVhyS5SyA09I5ll1vSHZ/wdYyEKhNPXXNM1JmCrv5xiTA73Afe2TWD/wlNQ949A3UYkuo/eU20pw/oKekoscoa2+inFOMO32ZNM6FVgIGyUmyPXJUN5SY/E0J2+GyMI8P+uafeQTY7HluEQCteQEzs2rDw0PktUGq6GWULKLV13bA7vu/D7wnqlhGzyTPppNkE7khfyPXcSDUNnYQrggNLdqTfoo4lP+K1+u+GEWECiRmkifxVaarZ+XT7QdvGJdeKRzrnP4VF5fZGgTL0I2qXPcdvV3SJYfu9g4XaSVi+IxrOc5hVcjOa1sd/4Uy7Gf3L0xfWVQBY0oSs2f8Z/8h3tqpUdEzB+r2VcJLNu0eWECdFYoWSd33IuBVp60DxgpBUHSYk7DyBMZyTIROrtL8o33Iu0naX7VwZyKn92hnX/hgUus4HUDQzG+5EErU+Bvbam/b7ktLQVTQjoY9wywOSd1BrM/qBbAHgfQ/9kl5lRGrQwSyOcKY0Gj16vtRPpWKgKAIbwMzywlNmNVKeBkglgt33FEdLdbwsM9kcKM+IZQGpw=
+  app: mozarella
+  on:
+    repo: chrisipacs/mozarellaFrontend
