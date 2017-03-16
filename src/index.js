@@ -9,7 +9,7 @@ import routes from './routes';
 //import {loadCourses} from './actions/courseActions';
 import {loginSuccess} from './actions/loginActions';
 import {loadLists} from './actions/listActions';
-import {loadStudentLists} from './actions/listActions';
+import listActions from './actions/listActions';
 import {beginAjaxCall} from './actions/ajaxStatusActions';
 
 const store = configureStore(window.devToolsExtension && window.devToolsExtension());

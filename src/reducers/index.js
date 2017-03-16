@@ -3,7 +3,7 @@ import listsContext from './listReducer';
 import learnContext from './learnReducer';
 import student from './studentReducer';
 import studentsList from './studentsListReducer'
-import learnItems from './learnItemReducer'
+//import learnItems from './learnItemReducer'
 import ajaxCallsInProgress from './ajaxStatusReducer';
 import { reducer as formReducer } from 'redux-form';
 

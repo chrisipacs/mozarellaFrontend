@@ -20,13 +20,13 @@ const NavigationPage = ({loading}) => {
 
                 </div>
 
-                <IndexLink to="/lists" activeClassName="active">Home</IndexLink>
+                <IndexLink to="/" activeClassName="active">Pet</IndexLink>
                 {" | "}
                 <Link to="/lists" activeClassName="active">Courses</Link>
                 {" | "}
                 <Link to="/learn" activeClassName="active">Learn</Link>
                 {" | "}
-                <Link to="/practice" activeClassName="active">Practice</Link>
+                <Link to="/settings" activeClassName="active">Settings</Link>
                 {loading && <LoadingDots interval={100} dots={20}/>}
             </div>
         </nav>

@@ -7,8 +7,8 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                <h1>Pete</h1>
-                <p>Here you can view your pet</p>
+                <h1>Pet</h1>
+                <p>Here you can view your pet in the future</p>
             </div>
         );
     }
