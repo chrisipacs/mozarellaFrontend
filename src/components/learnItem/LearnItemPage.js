@@ -3,7 +3,7 @@
  */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import Pagination from "../../../node_modules/react-js-pagination";
+import Pagination from "react-js-pagination";
 
 class LearnItemPage extends Component {
     constructor(props) {

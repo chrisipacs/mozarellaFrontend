@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import {Table, Column, Cell} from 'fixed-data-table';
 import '../../../node_modules/fixed-data-table/dist/fixed-data-table.css';
 import {browserHistory} from 'react-router';
-import Pagination from '../../../node_modules/react-js-pagination';
+import Pagination from 'react-js-pagination';
 import * as constants from './listTableConstants';
 
     class ListTable extends React.Component {

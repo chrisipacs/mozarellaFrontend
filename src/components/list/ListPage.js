@@ -10,7 +10,7 @@ import {bindActionCreators} from 'redux';
 import ContentEditable from '../../../node_modules/react-contenteditable';
 import striptags from '../../../node_modules/striptags';
 import LearnItemTableView from '../learnItem/learnItemTableView';
-import Pagination from '../../../node_modules/react-js-pagination';
+import Pagination from 'react-js-pagination';
 import pageSize from '../../constants';
 import NewLearnItem from '../learnItem/newLearnItem';
 

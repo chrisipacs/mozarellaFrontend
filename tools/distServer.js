@@ -8,6 +8,8 @@ var compression = require('compression');
 const port = process.env.PORT || 3000;
 const app = express();
 
+process.env.NODE_ENV = 'production';
+
 app.use(compression());
 app.use(express.static('dist'));
 

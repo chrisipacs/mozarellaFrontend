@@ -1,6 +1,10 @@
 import webpack from 'webpack';
 import path from 'path';
 
+const GLOBALS = {
+  'process.env.NODE_ENV': JSON.stringify('production')
+};
+
 export default {
   debug: true,
   devtool: 'cheap-module-eval-source-map',
@@ -20,7 +24,9 @@ export default {
     contentBase: './src' //was ./src
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()//,
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin(GLOBALS),
+      new webpack.optimize.UglifyJsPlugin()
     //new webpack.NoErrorsPlugin()
   ],
   module: {

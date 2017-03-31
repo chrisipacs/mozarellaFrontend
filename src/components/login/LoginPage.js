@@ -4,7 +4,7 @@
 
 import React from 'react';
 import {render} from 'react-dom';
-import {browserHistory} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import TextInput from '../reusable/TextInput';
 import {connect} from 'react-redux';
 import update from '../../../node_modules/react-addons-update';
@@ -91,7 +91,7 @@ class LoginComponent extends React.Component {
                         <button className="btn btn-lg btn-primary btn-block" type="submit" onClick={this.handleSubmit}>Sign in</button>
                     </form>
                     <div>
-                    Not a member? <a href="/signup">Sign up</a>
+                        <Link to="/signup">Click to sign up</Link>
                     </div>
                 </div>);
             }
