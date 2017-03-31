@@ -58,7 +58,7 @@ class ListSelectionPage extends React.Component {
         let listUnderEdit = JSON.parse(JSON.stringify(this.state.listsContext.activeList));
         listUnderEdit['fromLanguage'] = newLanguage;
         return this.setState({listsContext: {activeList: listUnderEdit}},()=>{
-            console.log('new state: '+JSON.stringify(this.state));
+
         });
     }
 
@@ -66,7 +66,7 @@ class ListSelectionPage extends React.Component {
         let listUnderEdit = JSON.parse(JSON.stringify(this.state.listsContext.activeList));
         listUnderEdit['toLanguage'] = newLanguage;
         return this.setState({listsContext: {activeList: listUnderEdit}},()=>{
-            console.log('new state: '+JSON.stringify(this.state));
+
         });
     }
 

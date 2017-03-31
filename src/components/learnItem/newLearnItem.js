@@ -63,7 +63,6 @@ class NewLearnItem extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log('activeList: '+state.listsContext.activeList);
     return {
         listId: state.listsContext.activeList.id
     };

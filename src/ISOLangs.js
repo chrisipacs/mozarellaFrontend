@@ -7,7 +7,6 @@
  */
 
 function createLanguageList(ISOLangs){ //TODO test
-    console.log('CREATEEEEEE');
     let languageObj = ISOLangs;
     let result = [];
 
@@ -751,6 +750,5 @@ let isoLangs = {
 };
 
 let toExport = createLanguageList(isoLangs);
-console.log('exporting...');
 
 export default toExport;

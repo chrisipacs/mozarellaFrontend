@@ -78,7 +78,6 @@ class LearningPage extends React.Component {
 
     getNextLearnItem(){
         if(this.state.upcomingLearnItems && this.state.upcomingLearnItems.length>0){
-            console.log('setting upcoming: '+JSON.stringify(this.state.upcomingLearnItems));
             this.setState((previousState) => update(previousState, {
                 currentLearnItem: {$set: this.state.upcomingLearnItems[0]},
                 upcomingLearnItems: {$set: this.state.upcomingLearnItems.splice(1)},
@@ -89,7 +88,6 @@ class LearningPage extends React.Component {
             let pathElements = this.props.location.pathname.split('/');
             let listId = pathElements[pathElements.length-1];
 
-            console.log('load new upcoming...'+listId);
             this.props.studentActions.loadLearnItemsToLearn(this.props.student.id,listId);
         }
     }
@@ -103,7 +101,6 @@ class LearningPage extends React.Component {
 
     updateStateOnKeyPress(event) {
         let key = event.key;
-        console.log('key:'+key);
 
         if(key=='Enter'){
             this.checkSolution('', true);

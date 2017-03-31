@@ -15,7 +15,6 @@ function requireAuth(nextState, replace) {
 
   if(typeof(Storage)!=="undefined")
   {
-    console.log('student in localStorage: '+localStorage.getItem("student"));
     let student = localStorage.getItem("student");
     let nextPathname =  '/';
 

@@ -14,7 +14,6 @@ export function login(username,password){
     return dispatch => {
         dispatch(beginAjaxCall());
                 return loginApi.login(username,password).then(student => {
-                    console.log("STUDENT"+JSON.stringify(student));
                     if(window.localStorage){
                         localStorage.setItem('student',JSON.stringify(student));
                     }

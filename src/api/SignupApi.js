@@ -41,7 +41,6 @@ class SignupApi {
                     return response.text();
                 })
                 .then(function(response){
-                    console.log('and the json is: '+parseInt(response));
                     resolve(response);
                 })
                 .catch(function(error) {
