@@ -1,6 +1,6 @@
 import {listApi,learnItemApi} from '../middleware/middleware';
 import * as types from './actionTypes';
-import {beginAjaxCall} from './ajaxStatusActions';
+import {beginAjaxCall, ajaxCallError} from './ajaxStatusActions';
 import pageSize from '../constants';
 
 export function loadListsSuccess(lists, totalCount) {
@@ -37,7 +37,11 @@ export function loadList(listId){
         return listApi.getList(listId).then(list => {
             loadLearnItems(list.id);
             dispatch(loadListSuccess(list));
-        })
+        }).catch(error => {
+            console.log('error cached');
+            dispatch(ajaxCallError());
+            throw(error);
+        });
     }
 }
 
@@ -46,7 +50,10 @@ export function saveList(list){
             dispatch(beginAjaxCall());
             return listApi.addList(list).then(addedList => {
                 dispatch(saveListSuccess(addedList));
-            })
+            }).catch(error => {
+                dispatch(ajaxCallError());
+                throw(error);
+            });
     }
 }
 
@@ -65,9 +72,18 @@ export function loadLists(pageNumber,pageSize,studentId) {
         if(studentId==undefined){
             return listApi.getLists(pageNumber,pageSize,studentId).then((result) => {
                     dispatch(loadListsSuccess(result.lists,result.totalCount));
-            })} else {
+            }).catch((error) => {
+                console.log('cached!');
+                dispatch(ajaxCallError());
+                throw error;
+            })
+        } else {
             return listApi.getListsOfStudent(pageNumber,pageSize,studentId).then((result) => {
                 dispatch(loadStudentListsSuccess(result.lists,result.totalCount));
+            }).catch((error) => {
+                console.log('cached!!');
+                dispatch(ajaxCallError());
+                throw error;
             })
         }
     };
@@ -78,6 +94,9 @@ export function loadLearnItems(listId,pageNumber=0) {
         dispatch(beginAjaxCall());
         return learnItemApi.getLearnItemsForList(listId,pageNumber).then(result => {
             dispatch(loadLearnitemSuccess(pageNumber,result.totalCount,result.learnItems));
-        })
+        }).catch(error => {
+            dispatch(ajaxCallError());
+            throw(error);
+        });
     };
 }

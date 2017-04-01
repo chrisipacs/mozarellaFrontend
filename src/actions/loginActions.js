@@ -3,7 +3,7 @@
  */
 import {loginApi} from '../middleware/middleware';
 import * as types from './actionTypes';
-import {beginAjaxCall} from './ajaxStatusActions';
+import {beginAjaxCall,ajaxCallError} from './ajaxStatusActions';
 import pageSize from '../constants';
 
 export function loginSuccess(student) {
@@ -19,6 +19,7 @@ export function login(username,password){
                     }
                     dispatch(loginSuccess(student));
                 }).catch(error => {
+                    dispatch(ajaxCallError());
                     throw(error);
                 });
             }

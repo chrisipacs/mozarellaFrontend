@@ -1,6 +1,6 @@
 import {listApi,learnItemApi} from '../middleware/middleware';
 import * as types from './actionTypes';
-import {beginAjaxCall} from './ajaxStatusActions';
+import {beginAjaxCall,ajaxCallError} from './ajaxStatusActions';
 import pageSize from '../constants';
 
 export function saveLearnItemSuccess(learnItem) {
@@ -12,6 +12,9 @@ export function saveLearnItem(learnItem,listId){
         dispatch(beginAjaxCall());
         return learnItemApi.saveLearnItem(learnItem,listId).then(learnItem => {
             dispatch(saveLearnItemSuccess(learnItem));
-        })
+        }).catch(error => {
+            dispatch(ajaxCallError());
+            throw(error);
+        });
     }
 }

@@ -3,7 +3,7 @@
  */
 import {signupApi} from '../middleware/middleware';
 import * as types from './actionTypes';
-import {beginAjaxCall} from './ajaxStatusActions';
+import {beginAjaxCall, ajaxCallError} from './ajaxStatusActions';
 import pageSize from '../constants';
 
 export function signupSuccess() {
@@ -16,6 +16,7 @@ export function signUp(newStudent){
         return signupApi.signUp(newStudent).then(studentId => { //studentId not needed, will be used at login
             dispatch(signupSuccess());
         }).catch(error => {
+            dispatch(ajaxCallError());
             throw(error);
         });
     }

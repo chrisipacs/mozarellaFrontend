@@ -4,7 +4,7 @@
 
 import {studentApi} from '../middleware/middleware';
 import * as types from './actionTypes';
-import {beginAjaxCall} from './ajaxStatusActions';
+import {beginAjaxCall,ajaxCallError} from './ajaxStatusActions';
 import pageSize from '../constants';
 
 export function loadLearnableLearnItemsSuccess(learnItems) {
@@ -24,7 +24,10 @@ export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {
         dispatch(beginAjaxCall());
         return studentApi.getLearnItemsToLearn(listId, numberOfLearnItems).then(learnItems => {
             dispatch(loadLearnableLearnItemsSuccess(learnItems));
-        })
+        }).catch(error => {
+            dispatch(ajaxCallError());
+            throw(error);
+        });
     };
 }
 
@@ -34,6 +37,7 @@ export function subscribeStudentToList(student,list){
         return studentApi.signUpStudentToList(student,list).then(() => { //studentId not needed, will be used at login
             dispatch(signupToListSuccess(list));
         }).catch(error => {
+            dispatch(ajaxCallError());
             throw(error);
         });
     }
@@ -45,6 +49,7 @@ export function deregisterStudentFromList(student,list){
         return studentApi.deregisterStudentFromList(student,list).then(() => { //studentId not needed, will be used at login
             dispatch(deregisterFromListSuccess(list));
         }).catch(error => {
+            dispatch(ajaxCallError());
             throw(error);
         });
     }

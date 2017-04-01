@@ -1,9 +1,7 @@
 /**
  * Created by krisztian on 2016. 11. 28..
  */
-/**
- * Created by krisztian on 2016. 10. 30..
- */
+
 import host from './host';
 import 'whatwg-fetch';
 import requestObjects from './RequestObjects';

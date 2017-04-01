@@ -12,6 +12,7 @@ class ListApi {
             .then(function(result){
                 resolve({totalCount: Number(result.headers.get('X-total-count')),lists:result.objects});
             }).catch(function(error) {
+                console.log('REJECTING LIST QUERY');
                 reject(error);
             });
         });
