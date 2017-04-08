@@ -47,6 +47,7 @@ class LoginComponent extends React.Component {
             this.props.actions.login(this.state.username,this.state.password)
                 .then(function(){
                     //TODO trigger props update for student
+                    console.log('logged in');
                 })
                 .catch(
                 function(err){
@@ -57,13 +58,20 @@ class LoginComponent extends React.Component {
                 })
         }
 
+        componentWillMount(){
+            if(this.props.student != undefined && this.props.student.id!=undefined){
+                browserHistory.push('/');
+            }
+        }
+
         componentWillReceiveProps(nextProps){
-            if(nextProps.student!=undefined && nextProps.student.name!=undefined &&
+            console.log('componentWillReceive');
+            if(nextProps.student!=undefined && nextProps.student.id!=undefined &&
                 nextProps.location!=undefined && nextProps.location.state!=undefined &&
                 nextProps.location.state.nextPathname!=undefined){
                 browserHistory.push(nextProps.location.state.nextPathname);
             } else if(nextProps.student!=undefined
-                        && nextProps.student.name!=undefined){
+                        && nextProps.student.id!=undefined){
                 browserHistory.push('/');
             }
         }
@@ -106,7 +114,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state, ownProps) {
     return {
-        student: state.student
+        student: state.studentContext.student
     };
 }
 

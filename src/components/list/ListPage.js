@@ -116,7 +116,7 @@ class ListPage extends React.Component {
                     onChange={this.updateListDescription} // handle innerHTML change
                     />
                 <br/>
-                {!that.state.enableEditing && <div><button onClick={this.changeEditing} className={this.props.ajaxCallsInProgress? "btn btn-primary disabled" : "btn btn-primary"}>
+                {this.props.hasPermissionToEdit && !that.state.enableEditing && <div><button onClick={this.changeEditing} className={this.props.ajaxCallsInProgress? "btn btn-primary disabled" : "btn btn-primary"}>
                     Enable editing
                 </button> </div>}
                 {this.state.enableEditing &&
@@ -169,8 +169,9 @@ function mapStateToProps(state, ownProps) {
         list:Object.assign({},state.listsContext.activeList),
         totalCount: state.listsContext.activeList.learnItems.totalCount,
         activePage: state.listsContext.activeList.learnItems.activePage,
-        learnItemPages:state.listsContext.activeList.learnItems.pages,
-        learnItems:state.listsContext.activeList.learnItems.pages[state.listsContext.activeList.learnItems.activePage]
+        learnItemPages: state.listsContext.activeList.learnItems.pages,
+        learnItems: state.listsContext.activeList.learnItems.pages[state.listsContext.activeList.learnItems.activePage],
+        hasPermissionToEdit: true //TODO
     };
 }
 

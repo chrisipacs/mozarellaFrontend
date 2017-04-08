@@ -23,7 +23,7 @@ import * as constants from './listTableConstants';
             <Table
                 rowHeight={constants.rowHeight}
                 rowsCount={this.props.lists == undefined ? 0 : this.props.lists.length}
-                width={920}
+                width={970}
                 height={this.props.lists == undefined ? 0 : (this.props.lists.length*constants.rowHeight+constants.headerHeight)+3}
                 headerHeight={constants.headerHeight}>
                 <Column
@@ -76,7 +76,7 @@ import * as constants from './listTableConstants';
                     cell={({rowIndex, ...props}) => (<Cell>
                          {React.cloneElement(this.props.column6,{rowIndex,list:this.props.lists[rowIndex]})}
                         </Cell>)}
-                    width={100}
+                    width={150}
                     />}
             </Table>
             <Pagination
