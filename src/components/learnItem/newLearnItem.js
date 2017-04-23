@@ -5,18 +5,30 @@ import update from '../../../node_modules/react-addons-update';
 import {bindActionCreators} from 'redux';
 import * as listActions from '../../actions/listActions';
 import * as learnItemActions from '../../actions/learnItemActions';
+import DictionaryTranslationList from './dictionaryTranslationList';
+import GlosbeClient from '../../api/dictionary/glosbeClient';
 
 class NewLearnItem extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            learnItem: {text: ' ', translations: []}
+            learnItem: {text: '', translations: [], translationsFromDictionary: []}
         };
 
         this.modifyText = this.modifyText.bind(this);
         this.modifyTranslations = this.modifyTranslations.bind(this);
         this.reset = this.reset.bind(this);
+        this.getTranslationsFromDictionary = this.getTranslationsFromDictionary.bind(this);
+        this.onDictionaryTranslationSelection = this.onDictionaryTranslationSelection.bind(this);
+    }
+
+    getTranslationsFromDictionary(expression){
+        GlosbeClient(this.props.fromLanguage,this.props.toLanguage,expression).then((translations)=>{
+            this.setState((previousState) => update(previousState, {
+                translationsFromDictionary: {$set: [...translations]}
+            }));
+        });
     }
 
     modifyText(event){
@@ -24,6 +36,8 @@ class NewLearnItem extends React.Component {
         this.setState((previousState) => update(previousState, {
             learnItem: {text: {$set: event.target.value}}
         }));
+
+        this.getTranslationsFromDictionary(event.target.value);
     }
 
     modifyTranslations(event){
@@ -39,6 +53,12 @@ class NewLearnItem extends React.Component {
         }));
     }
 
+    onDictionaryTranslationSelection(e){
+        this.setState((previousState) => update(previousState,
+            {learnItem: {translations: {$set: [...(this.state.learnItem.translations),e]}}
+            }));
+    };
+
     render(){
         return (
             <div>
@@ -50,7 +70,8 @@ class NewLearnItem extends React.Component {
                     <div className="panel-body">
                         Learnitem
                         <TextInput name='text' value={this.state.learnItem.text} onChange={this.modifyText}/>
-                        Learnitem translations separated by comma
+                        <DictionaryTranslationList translations={this.state.translationsFromDictionary} onClick={this.onDictionaryTranslationSelection} />
+                        Translations (separated by comma)
                         <TextInput name='translations' value={this.state.learnItem.translations} onChange={this.modifyTranslations}/>
                         <br/>
                         <div style={{float: 'right'}}><button type="button" className="btn btn-success" onClick={()=>{this.props.actions.saveLearnItem(this.state.learnItem, this.props.listId); this.reset()}}>Add</button></div>
@@ -64,7 +85,9 @@ class NewLearnItem extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        listId: state.listsContext.activeList.id
+        listId: state.listsContext.activeList.id,
+        fromLanguage: state.listsContext.activeList.fromLanguageCode,
+        toLanguage: state.listsContext.activeList.toLanguageCode
     };
 }
 

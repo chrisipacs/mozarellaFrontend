@@ -38,7 +38,6 @@ export function loadList(listId){
             loadLearnItems(list.id);
             dispatch(loadListSuccess(list));
         }).catch(error => {
-            console.log('error cached');
             dispatch(ajaxCallError());
             throw(error);
         });
@@ -73,7 +72,6 @@ export function loadLists(pageNumber,pageSize,studentId) {
             return listApi.getLists(pageNumber,pageSize,studentId).then((result) => {
                     dispatch(loadListsSuccess(result.lists,result.totalCount));
             }).catch((error) => {
-                console.log('cached!');
                 dispatch(ajaxCallError());
                 throw error;
             })
@@ -81,7 +79,6 @@ export function loadLists(pageNumber,pageSize,studentId) {
             return listApi.getListsOfStudent(pageNumber,pageSize,studentId).then((result) => {
                 dispatch(loadStudentListsSuccess(result.lists,result.totalCount));
             }).catch((error) => {
-                console.log('cached!!');
                 dispatch(ajaxCallError());
                 throw error;
             })

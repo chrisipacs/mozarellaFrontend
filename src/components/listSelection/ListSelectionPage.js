@@ -44,7 +44,6 @@ class ListSelectionPage extends React.Component {
 
     updateListState(event) {
         const field = event.target.name;
-        console.log(this);
         let listUnderEdit = JSON.parse(JSON.stringify(this.state.listsContext.activeList));
         listUnderEdit[field] = event.target.value;
         //return this.setState({listsContext: {activeList: listUnderEdit}});

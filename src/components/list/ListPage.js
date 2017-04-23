@@ -136,7 +136,7 @@ class ListPage extends React.Component {
                 }
                 {that.state.learnItemToAdd &&
                 <div>
-                    <NewLearnItem value={that.state.learnItemToAdd}/>
+                    <NewLearnItem value={that.state.learnItemToAdd} list = {that.state}/>
                 </div>}
                 <br/><br/>
                 <div>
@@ -171,7 +171,7 @@ function mapStateToProps(state, ownProps) {
         activePage: state.listsContext.activeList.learnItems.activePage,
         learnItemPages: state.listsContext.activeList.learnItems.pages,
         learnItems: state.listsContext.activeList.learnItems.pages[state.listsContext.activeList.learnItems.activePage],
-        hasPermissionToEdit: true //TODO
+        hasPermissionToEdit: state.listsContext.activeList.owner
     };
 }
 
