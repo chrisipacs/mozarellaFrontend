@@ -23,12 +23,22 @@ class NewLearnItem extends React.Component {
         this.onDictionaryTranslationSelection = this.onDictionaryTranslationSelection.bind(this);
     }
 
-    getTranslationsFromDictionary(expression){
-        GlosbeClient(this.props.fromLanguage,this.props.toLanguage,expression).then((translations)=>{
-            this.setState((previousState) => update(previousState, {
-                translationsFromDictionary: {$set: [...translations]}
-            }));
-        });
+    getTranslationsFromDictionary(expression){ //TODO maybe not the most accurate name
+        // in the example above, assign the result
+        if(this.timeoutHandle!=undefined){
+            // in your click function, call clearTimeout
+            window.clearTimeout(this.timeoutHandle);
+        }
+
+        // then call setTimeout again to reset the timer
+        this.timeoutHandle = window.setTimeout(()=>{
+            GlosbeClient(this.props.fromLanguage,this.props.toLanguage,expression).then((translations)=>{
+                this.setState((previousState) => update(previousState, {
+                    translationsFromDictionary: {$set: [...translations]}
+                }));
+            });
+        },1000);
+
     }
 
     modifyText(event){

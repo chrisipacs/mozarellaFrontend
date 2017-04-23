@@ -107,12 +107,19 @@ class LearningPage extends React.Component {
         }
     }
 
-
     checkSolution(solution,forced=false){
         let pathElements = this.props.location.pathname.split('/');
         let listId = pathElements[pathElements.length-1];
+        let isCorrect = false;
 
-        if(solution==this.state.currentLearnItem.translations[0]){ //TODO: implement a more generic solution for checking
+        for (let i = 0; i <= this.state.currentLearnItem.translations.length; i++) {
+            if(solution==this.state.currentLearnItem.translations[i]){
+                isCorrect = true;
+                break;
+            }
+        }
+
+        if(isCorrect){
             let playing = this.state.showSolution ? Sound.status.STOPPED : Sound.status.PLAYING;
             let pointValue = this.state.currentLearnItem.pointValue!=undefined ? this.state.currentLearnItem.pointValue: 100;
             let points = this.state.showSolution ? 0 : pointValue;
