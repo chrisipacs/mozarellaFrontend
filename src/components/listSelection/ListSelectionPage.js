@@ -16,11 +16,14 @@ import SubscribeUnsubscribe from './SubscribeUnsubscribe';
 import pageSize from '../PageSize';
 import update from 'react-addons-update';
 import initialState from '../../reducers/initialState';
+import ListSearch from './ListSearch';
 
 class ListSelectionPage extends React.Component {
 
     constructor(props, context) {
         super(props, context);
+
+        console.log('props2: '+JSON.stringify(props));
 
         this.state = {
             listsContext: Object.assign({}, JSON.parse(JSON.stringify(initialState.listsContext))),
@@ -38,6 +41,7 @@ class ListSelectionPage extends React.Component {
         this.updateFromLanguage = this.updateFromLanguage.bind(this);
         this.updateToLanguage = this.updateToLanguage.bind(this);
         this.processListBeforeSave = this.processListBeforeSave.bind(this);
+        this.onListSearch = this.onListSearch.bind(this);
 
         let pageSize = 10; //TODO to its own file
     }
@@ -96,8 +100,8 @@ class ListSelectionPage extends React.Component {
 
 
     handlePageChange(pageNumber) {
-        this.setState({activePage: pageNumber});
-        this.props.actions.loadLists(pageNumber-1,pageSize);
+        this.setState({activePage: pageNumber, search: this.state.search});
+        this.props.actions.loadLists(pageNumber-1,pageSize,undefined,this.state.search.name,this.state.search.fromLanguage.value,this.state.search.toLanguage.value);
     }
 
     handleSubscribe(listId){
@@ -110,6 +114,13 @@ class ListSelectionPage extends React.Component {
 
     isSubscribed(listId){
         return this.props.subscribedListIds.indexOf(listId)>-1;
+    }
+
+    onListSearch(searchState){
+        console.log('onListSearch'+JSON.stringify(searchState.name));
+        this.setState({activePage: 1, search:searchState},()=>{
+            this.props.actions.loadLists(0,pageSize,undefined,searchState.name,searchState.fromLanguage.value,searchState.toLanguage.value);
+        });
     }
 
     render() {
@@ -132,7 +143,9 @@ class ListSelectionPage extends React.Component {
                     className={this.props.browseLists ? "btn btn-primary" : ""}
                     onClick={()=>{that.props.actions.browseLists(true)}}/>
 
-                {this.props.browseLists ? <ListTable lists={this.props.lists}
+                {this.props.browseLists ? <div>
+                    <ListSearch onSearch={this.onListSearch}/><br/>
+                    <ListTable lists={this.props.lists}
                                             actions={this.props.actions}
                                             activePage={this.state.activePage}
                                             itemsCountPerPage={this.pageSize}
@@ -142,6 +155,7 @@ class ListSelectionPage extends React.Component {
                                             nameOfAction='View' pagePrefix='lists'
                                             column6 = {<SubscribeUnsubscribe isSubscribed={this.isSubscribed} onSubscribe={this.handleSubscribe} onUnsubscribe={this.handleUnsubscribe}/>}
                                             />
+                                            </div>
                     : <ListCreationPage list={this.state.listsContext.activeList} onChange={this.updateListState} onFromLanguageChange={this.updateFromLanguage} onToLanguageChange={this.updateToLanguage}
                     fromLanguage={this.state.listsContext.activeList.fromLanguage} toLanguage={this.state.listsContext.activeList.toLanguage} onSave={this.saveList}/>}
 

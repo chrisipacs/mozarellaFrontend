@@ -19,6 +19,7 @@ const LearnItem = ({value, isNew, error}) => {
     return (<div className="panel panel-info">
                 <div className="panel-heading">
                     <h3 className="panel-title">{value.text}</h3>
+                    <div><img src={'https://img.clipartfest.com/c99d33d4d2a55ee730a9c03a55afa5f0_red-x-painting-illustration-clipart-showing-red-x_508-339.jpeg'} alt="boohoo" className="img-responsive"/><span>Hello {this.props.name}</span></div>
                 </div>
                 <div className="panel-body">
                     {isNew ? <TextInput name="text" html={value.text}/>: <ContentEditable html={value.text} disabled={true} onChange={()=>{}} />}

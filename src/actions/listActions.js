@@ -65,18 +65,18 @@ export function browseLists(value) {
     }
 }
 
-export function loadLists(pageNumber,pageSize,studentId) {
+export function loadLists(pageNumber,pageSize,studentId,name,fromLanguage,toLanguage) {
     return dispatch => {
         dispatch(beginAjaxCall());
         if(studentId==undefined){
-            return listApi.getLists(pageNumber,pageSize,studentId).then((result) => {
+            return listApi.getLists(pageNumber,pageSize,name,fromLanguage,toLanguage).then((result) => {
                     dispatch(loadListsSuccess(result.lists,result.totalCount));
             }).catch((error) => {
                 dispatch(ajaxCallError());
                 throw error;
             })
         } else {
-            return listApi.getListsOfStudent(pageNumber,pageSize,studentId).then((result) => {
+            return listApi.getListsOfStudent(pageNumber,pageSize,studentId,name,fromLanguage,toLanguage).then((result) => {
                 dispatch(loadStudentListsSuccess(result.lists,result.totalCount));
             }).catch((error) => {
                 dispatch(ajaxCallError());
