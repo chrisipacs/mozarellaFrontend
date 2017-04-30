@@ -18,6 +18,17 @@ class LearnItemApi {
         });
     }
 
+    static deleteLearnItem(learnItemId){
+        return new Promise((resolve, reject) => {
+            sendObject('/api/learnitems/'+learnItemId,'DELETE')
+                .then(function(result){
+                    resolve();
+                }).catch(function(error) {
+                    reject(error);
+                });
+        });
+    }
+
     static getLearnItemsForList(listId,pageNumber) {
         return new Promise((resolve, reject) => {
             requestObjects('/api/learnitemlists/'+listId+'/learnitems?pagenumber='+pageNumber+'&&pagesize='+10,'GET')

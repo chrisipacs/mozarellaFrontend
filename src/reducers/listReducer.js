@@ -34,9 +34,7 @@ export default function listReducer(state = initialState.listsContext, action = 
                 newList.activeList.learnItems = learnItemsSave;
 
                 return Object.assign({}, state, newList);
-            }
-        //case types.RESET_LIST_UNDER_EDIT:
-        //    return Object.assign({}, state, Object.assign({}, {activeList:initialState.listsContext.activeList}));
+        }
         case types.LOAD_LEARNITEMS_SUCCESS:
         {
             let newPages = Object.assign({},state.activeList.learnItems.pages);
@@ -89,6 +87,33 @@ export default function listReducer(state = initialState.listsContext, action = 
                 });
             }
             return state;
+        }
+        case types.DELETE_LEARNITEM_SUCCESS:{
+            let activePageNumber = state.activeList.learnItems.activePage;
+            let activePageContent = JSON.parse(JSON.stringify(state.activeList.learnItems.pages[activePageNumber]));
+
+            let index = -1;
+            activePageContent.forEach((item,idx)=>{
+                if(item.id===action.learnItemId){
+                    index=idx;
+                }
+            });
+
+            console.log('index: '+index);
+            console.log('activePageContent before: '+JSON.stringify(activePageContent));
+
+            if (index > -1) {
+                activePageContent.splice(index, 1);
+            }
+
+            //TODO update
+            //TODO the RIGHT PAGE IS NEEDED
+            let newState = update(state, {
+                activeList: {learnItems : {$set:{}}}
+            });
+
+            console.log('activePageContent after: '+JSON.stringify(activePageContent));
+            return newState;
         }
         default:
             return state;

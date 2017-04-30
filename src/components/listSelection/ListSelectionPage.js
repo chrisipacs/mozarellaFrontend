@@ -29,7 +29,12 @@ class ListSelectionPage extends React.Component {
             listsContext: Object.assign({}, JSON.parse(JSON.stringify(initialState.listsContext))),
             errors: {},
             saving: false,
-            activePage: 0
+            activePage: 0,
+            search: {
+                name: '',
+                fromLanguage: '',
+                toLanguage: ''
+            }
         };
 
         this.updateListState = this.updateListState.bind(this);

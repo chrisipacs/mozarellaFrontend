@@ -6,6 +6,7 @@ import update from '../../../node_modules/react-addons-update';
 import LearnItemPage from '../learnItem/LearnItemPage';
 import {connect} from 'react-redux';
 import * as listActions from '../../actions/listActions';
+import * as itemActions from '../../actions/learnItemActions';
 import {bindActionCreators} from 'redux';
 import ContentEditable from '../../../node_modules/react-contenteditable';
 import striptags from '../../../node_modules/striptags';
@@ -26,6 +27,7 @@ class ListPage extends React.Component {
         this.cancel = this.cancel.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.loadNewLearnItemAddition = this.loadNewLearnItemAddition.bind(this);
+        this.deleteLearnItem = this.deleteLearnItem.bind(this);
 
     }
 
@@ -97,6 +99,11 @@ class ListPage extends React.Component {
         }
     }
 
+    deleteLearnItem(learnItemId){
+        console.log('deleting learnitem with id: '+learnItemId);
+        this.props.itemActions.deleteLearnItem(learnItemId);
+    }
+
     render() {
         const that = this;
         return (
@@ -140,7 +147,7 @@ class ListPage extends React.Component {
                 </div>}
                 <br/><br/>
                 <div>
-                    {this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems}/></div>}
+                    {this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems} deleteFunction={this.deleteLearnItem}/></div>}
                 </div>
                 <div>
                     <Pagination
@@ -158,11 +165,13 @@ class ListPage extends React.Component {
 
 function mapStateToProps(state, ownProps) {
 
+    console.log('statetoprops 1');
     if(state.listsContext.activeList.learnItems===undefined){ //learnItems not loaded yet
         return {
             list:Object.assign({},state.listsContext.activeList)
         };
     }
+    console.log('statetoprops 2');
 
     return {
         ajaxCallsInProgress: state.ajaxCallsInProgress,
@@ -177,7 +186,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(listActions, dispatch)
+        actions: bindActionCreators(listActions, dispatch),
+        itemActions: bindActionCreators(itemActions, dispatch)
     };
 }
 

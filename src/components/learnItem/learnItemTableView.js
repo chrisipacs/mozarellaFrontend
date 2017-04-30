@@ -6,9 +6,9 @@
 import React, { Component } from "react";
 import LearnItem from './learnItem';
 
-    const LearnItemTableView = ({learnItems}) => {
+    const LearnItemTableView = ({learnItems,deleteFunction}) => {
         return (
-            <div>{learnItems.map((learnItem)=>{return (<LearnItem  value={learnItem} isNew={false} key={learnItem.id} />)})}</div>
+            <div>{learnItems.map((learnItem)=>{return (<LearnItem  value={learnItem} isNew={false} key={learnItem.id} deleteFunction={deleteFunction} />)})}</div>
         );
     };
 
