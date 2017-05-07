@@ -7,6 +7,7 @@ export const BROWSE_LISTS = 'BROWSE_LISTS';
 export const SAVE_LIST_SUCCESS = 'SAVE_LIST_SUCCESS';
 export const LOAD_LIST_SUCCESS = 'LOAD_LIST_SUCCESS';
 export const SAVE_LIST = 'SAVE_LIST'; //do we need this
+export const CLEAR_ACTIVE_LIST = 'CLEAR_ACTIVE_LIST';
 
 //student' lists
 export const SIGNUP_STUDENT_TO_LIST_SUCCESS = 'SIGNUP_STUDENT_TO_LIST_SUCCESS';

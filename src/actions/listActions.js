@@ -31,8 +31,13 @@ export function changePage(activePage){
     return {type: types.CHANGE_LEARNITEMPAGE, activePage};
 }
 
+export function clearActiveListSucc(){
+    return {type: types.CLEAR_ACTIVE_LIST};
+}
+
 export function loadList(listId){
     return dispatch => {
+        dispatch(clearActiveListSucc()); //new 07.05.17
         dispatch(beginAjaxCall());
         return listApi.getList(listId).then(list => {
             loadLearnItems(list.id);
@@ -95,5 +100,11 @@ export function loadLearnItems(listId,pageNumber=0) {
             dispatch(ajaxCallError());
             throw(error);
         });
+    };
+}
+
+export function clearActiveList() {
+    return dispatch => {
+        dispatch(clearActiveListSucc());
     };
 }

@@ -4,8 +4,9 @@
 import React, { Component } from 'react';
 import TextInput from '../reusable/TextInput';
 import ContentEditable from '../../../node_modules/react-contenteditable';
+import '../../../public/custom.css';
 
-const LearnItem = ({value, isNew, deleteFunction, error}) => {
+const LearnItem = ({value, isNew, isDeletable, deleteFunction, error}) => {
 
     const translationListToString = (list) => {
         return list.reduce((pre,cur)=>{return pre+','+cur;});
@@ -17,8 +18,10 @@ const LearnItem = ({value, isNew, deleteFunction, error}) => {
 
     return (<div className="panel panel-info">
                 <div className="panel-heading">
-                    <h3 className="panel-title">{value.text}</h3>
-                    <div><img src={require('../../../public/delete.png')} onClick={()=>deleteFunction(value.id)} alt="delete learnItem" className="img-responsive"/><span></span></div>
+                    <div className="wrap"><div><h3 className="panel-title">{value.text}</h3></div>
+                    <div>{isDeletable && <img src={require('../../../public/delete.png')} onClick={()=>deleteFunction(value.id)} alt="delete learnItem" height="15" width="15" className="img-responsive"/>}</div></div>
+
+
                 </div>
                 <div className="panel-body">
                     {isNew ? <TextInput name="text" html={value.text}/>: <ContentEditable html={value.text} disabled={true} onChange={()=>{}} />}

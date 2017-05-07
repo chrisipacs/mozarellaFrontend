@@ -35,6 +35,8 @@ class ListPage extends React.Component {
         let pathElements = this.props.location.pathname.split('/');
         let listId = pathElements[pathElements.length-1];
 
+        this.props.actions.clearActiveList();
+
         this.props.actions.loadList(parseInt(listId)).then(()=>{
             this.props.actions.loadLearnItems(parseInt(listId),0); //working by accident?
         });
@@ -147,7 +149,7 @@ class ListPage extends React.Component {
                 </div>}
                 <br/><br/>
                 <div>
-                    {this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems} deleteFunction={this.deleteLearnItem}/></div>}
+                    {this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems} isDeletable={this.props.isDeletable} deleteFunction={this.deleteLearnItem}/></div>}
                 </div>
                 <div>
                     <Pagination
@@ -165,13 +167,11 @@ class ListPage extends React.Component {
 
 function mapStateToProps(state, ownProps) {
 
-    console.log('statetoprops 1');
     if(state.listsContext.activeList.learnItems===undefined){ //learnItems not loaded yet
         return {
             list:Object.assign({},state.listsContext.activeList)
         };
     }
-    console.log('statetoprops 2');
 
     return {
         ajaxCallsInProgress: state.ajaxCallsInProgress,
@@ -180,7 +180,8 @@ function mapStateToProps(state, ownProps) {
         activePage: state.listsContext.activeList.learnItems.activePage,
         learnItemPages: state.listsContext.activeList.learnItems.pages,
         learnItems: state.listsContext.activeList.learnItems.pages[state.listsContext.activeList.learnItems.activePage],
-        hasPermissionToEdit: state.listsContext.activeList.owner
+        hasPermissionToEdit: state.listsContext.activeList.owner,
+        isDeletable: state.listsContext.activeList.owner != undefined && state.listsContext.activeList.owner.id==state.studentContext.student.id
     };
 }
 

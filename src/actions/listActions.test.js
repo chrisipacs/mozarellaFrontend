@@ -16,7 +16,7 @@ import host from '../api/host';
 // Test a sync action
 describe('List Actions', () => {
     describe('loadList', () => {
-        it('should create a LOAD_LIST_SUCCESS action', (done) => {
+        it('should create a CLEAR_ACTIVE_LIST, a BEGIN_AJAX_CALL and a LOAD_LIST_SUCCESS action', (done) => {
 
             afterEach(() => {
                 nock.cleanAll();
@@ -44,9 +44,10 @@ describe('List Actions', () => {
 
                 //assert
                 const actions = store.getActions();
-                expect(actions[0].type).toEqual(types.BEGIN_AJAX_CALL);
-                expect(actions[1].type).toEqual(types.LOAD_LIST_SUCCESS);
-                expect(actions[1]).toEqual(expectedActions[0]);
+                expect(actions[0].type).toEqual(types.CLEAR_ACTIVE_LIST);
+                expect(actions[1].type).toEqual(types.BEGIN_AJAX_CALL);
+                expect(actions[2].type).toEqual(types.LOAD_LIST_SUCCESS);
+                expect(actions[2]).toEqual(expectedActions[0]);
                 done();
             });
 
