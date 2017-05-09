@@ -75,26 +75,17 @@ export default function listReducer(state = initialState.listsContext, action = 
             return newState;
         }
         case types.CLEAR_ACTIVE_LIST:{
-
-            console.log('initialstate '+JSON.stringify(initialState));
-
             let newState = update(state, {
                     activeList: {$set:initialState.listsContext.activeList}
             });
-
-            console.log('newState '+JSON.stringify(newState));
 
             return newState;
         }
         case types.SAVE_LEARNITEM_SUCCESS:{
             let maxPageNumber = Math.floor(state.activeList.learnItems.totalCount/state.activeList.learnItems.pageSize);
-            console.log('lastPageNumber: '+maxPageNumber);
-
             let lastPageIsAlreadyLoaded = state.activeList.learnItems.pages[maxPageNumber]!=undefined;
-            console.log('lastPageIsAlreadyLoaded: '+lastPageIsAlreadyLoaded);
 
             if(lastPageIsAlreadyLoaded){
-                console.log('applying');
                 let learnItems = appendNewlySavedLearnItemToEndOfList(state.activeList.learnItems,action.learnItem);
 
                 return update(state,  {
@@ -102,7 +93,6 @@ export default function listReducer(state = initialState.listsContext, action = 
                 });
             }
 
-            console.log('returning');
             return state;
         }
         case types.DELETE_LEARNITEM_SUCCESS:{
@@ -116,26 +106,17 @@ export default function listReducer(state = initialState.listsContext, action = 
                 }
             });
 
-            console.log('index: '+index);
-            console.log('activePageContent before: '+JSON.stringify(activePageContent));
-
             if (index > -1) {
                 activePageContent.splice(index, 1);
             }
 
-            //TODO update
-            //TODO the RIGHT PAGE IS NEEDED
-
             let newLearnItems = JSON.parse(JSON.stringify(state.activeList.learnItems));
             newLearnItems.pages[activePageNumber] = activePageContent;
-
-            //console.log('activePageContent: '+JSON.stringify(activePageContent));
 
             let newState = update(state, {
                 activeList: {learnItems : {$set:newLearnItems}}
             });
 
-            //console.log('activePageContent after??: '+JSON.stringify(activePageContent));
             return newState;
         }
         default:

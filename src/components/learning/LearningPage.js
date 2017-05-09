@@ -13,6 +13,7 @@ import TextInput from '../reusable/TextInput';
 import LearningStatusInfo from './LearningStatusInfo';
 import Sound from 'react-sound';
 import StudentApi from '../../api/StudentApi';
+import LearnItemQuestion from './LearnItemQuestion';
 
 class LearningPage extends React.Component {
 
@@ -50,6 +51,10 @@ class LearningPage extends React.Component {
 
         if(this.timer){
             clearTimeout(this.timer);
+        }
+
+        if(!this.state.currentLearnItem.alreadyPracticed){
+            return;
         }
 
         this.timer = setTimeout(function () {
@@ -172,14 +177,9 @@ class LearningPage extends React.Component {
             {this.state.currentLearnItem && !this.state.ranOutOfLearnItems &&
                 <div>
                     <LearningStatusInfo pointsCollected={this.state.points}/>
-                    <h1>{this.state.currentLearnItem.text}</h1>
-                    {this.state.showSolution &&
-                        <div className="alert alert-danger" role="alert">
-                            {this.state.currentLearnItem.translations[0]}
-                        </div>
-                    }
+                    <LearnItemQuestion learnItem={this.state.currentLearnItem} showSolution={this.state.showSolution}/>
                     <TextInput onChange={this.updateStateOnType} onKeyPress={this.updateStateOnKeyPress} value={this.state.typedSolution}/>
-                    <ProgressBar totalTime={this.state.totalTime} usedUpTime={this.state.usedUpTime}/>
+                    <ProgressBar totalTime={this.state.totalTime} usedUpTime={this.state.usedUpTime} isVisible={this.state.currentLearnItem.alreadyPracticed}/>
                 </div>}
             {!this.state.showSolution && <Sound
                 url="../resources/success.wav"

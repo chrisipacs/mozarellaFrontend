@@ -12,6 +12,4 @@ import LearnItem from './learnItem';
         );
     };
 
-//this.state.learnItems.map(({learnItem})=>{<LearnItem value={learnItem.text} isNew={true}/>})
-
 export default LearnItemTableView;
