@@ -67,7 +67,7 @@ class NewLearnItem extends React.Component {
         this.setState((previousState) => update(previousState,
             {learnItem: {translations: {$set: [...(this.state.learnItem.translations),e]}}
             }));
-    };
+    }
 
     render(){
         return (
