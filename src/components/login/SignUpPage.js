@@ -62,7 +62,7 @@ class SignUpPage extends React.Component {
         event.preventDefault();
         if(!this.props.invalid) {
             console.log('2');
-            this.props.actions.signUp({name:this.props.username, password:this.props.password}).then(()=>{
+            this.props.actions.signUp({name:this.props.username, email:this.props.email, password:this.props.password}).then(()=>{
                 console.log('3');
                 this.setState((previousState) => update(previousState, {
                     isSuccessful: {$set: true}
@@ -116,6 +116,7 @@ function mapStateToProps(state, ownProps) {
     if(state.form.signUp && state.form.signUp.values){
         return {
             username: state.form.signUp.values.username,
+            email: state.form.signUp.values.email,
             password: state.form.signUp.values.password
         };
     } else {
