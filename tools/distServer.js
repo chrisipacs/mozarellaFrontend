@@ -13,6 +13,13 @@ process.env.NODE_ENV = 'production';
 app.use(compression());
 app.use(express.static('dist'));
 
+app.use(function(req, res, next) {
+  if(!req.secure) {
+    return res.redirect(['https://', req.get('Host'), req.url].join(''));
+  }
+  next();
+});
+
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
