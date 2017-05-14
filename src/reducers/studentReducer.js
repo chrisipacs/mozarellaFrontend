@@ -9,7 +9,7 @@ export default function studentReducer(state = initialState.studentContext.stude
         case types.LOGIN_SUCCESS:
             return Object.assign({}, action.student);
         case types.SIGNUP_SUCCESS:
-            return Object.assign({}, action.student);
+            return state;
         default:
             return state;
     }
