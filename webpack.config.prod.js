@@ -39,7 +39,6 @@ export default {
     ]
   },
   node : {
-    console: 'empty',
     fs: 'empty',
     net: 'empty',
     tls: 'empty'
