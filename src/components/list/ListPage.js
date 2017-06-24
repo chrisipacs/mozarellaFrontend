@@ -14,6 +14,7 @@ import LearnItemTableView from '../learnItem/learnItemTableView';
 import Pagination from 'react-js-pagination';
 import pageSize from '../../constants';
 import NewLearnItem from '../learnItem/newLearnItem';
+import {isOwnerOfList} from '../../reducers/helperFunctions';
 
 class ListPage extends React.Component {
 
@@ -125,7 +126,7 @@ class ListPage extends React.Component {
                     onChange={this.updateListDescription} // handle innerHTML change
                     />
                 <br/>
-                {this.props.hasPermissionToEdit && !that.state.enableEditing && <div><button onClick={this.changeEditing} className={this.props.ajaxCallsInProgress? "btn btn-primary disabled" : "btn btn-primary"}>
+                {this.props.hasPermissionToEdit && this.props.isOwnerOfList && !that.state.enableEditing && <div><button onClick={this.changeEditing} className={this.props.ajaxCallsInProgress? "btn btn-primary disabled" : "btn btn-primary"}>
                     Enable editing
                 </button> </div>}
                 {this.state.enableEditing &&
@@ -149,7 +150,7 @@ class ListPage extends React.Component {
                 </div>}
                 <br/><br/>
                 <div>
-                    {this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems} isDeletable={this.props.isDeletable} deleteFunction={this.deleteLearnItem}/></div>}
+                    {this.state.learnItems && <div><LearnItemTableView learnItems={this.state.learnItems} isDeletable={this.props.isOwnerOfList} deleteFunction={this.deleteLearnItem}/></div>}
                 </div>
                 <div>
                     <Pagination
@@ -181,7 +182,7 @@ function mapStateToProps(state, ownProps) {
         learnItemPages: state.listsContext.activeList.learnItems.pages,
         learnItems: state.listsContext.activeList.learnItems.pages[state.listsContext.activeList.learnItems.activePage],
         hasPermissionToEdit: state.listsContext.activeList.owner,
-        isDeletable: state.listsContext.activeList.owner != undefined && state.listsContext.activeList.owner.id==state.studentContext.student.id
+        isOwnerOfList: isOwnerOfList(state)
     };
 }
 
