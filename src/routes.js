@@ -8,6 +8,7 @@ import ListSelectionPage from './components/listSelection/ListSelectionPage.js';
 import HomePage from './components/homePage';
 import ListPage from './components/list/ListPage.js';
 import LoginComponent from './components/login/LoginPage.js';
+import LogoutComponent from './components/logout/LogoutPage.js';
 import SignUpPage from './components/login/SignUpPage.js';
 import ListSelectionPageForLearning from './components/learning/ListSelectionPageForLearning';
 
@@ -20,6 +21,7 @@ function requireAuth(nextState, replace) {
 
     if(nextState!=undefined && nextState.location!=undefined && nextState.location.pathname != undefined){
       nextPathname = nextState.location.pathname;
+        console.log('!next path name is: '+nextPathname);
     }
 
     if(localStorage.getItem("student")==undefined){
@@ -40,6 +42,7 @@ export default (
     <Route path="learn/:listId" component={LearningPage} onEnter={requireAuth}/>
     <Route path="practice" component={PracticePage} onEnter={requireAuth}/>
     <Route path="login" component={LoginComponent} />
+    <Route path="logout" component={LogoutComponent} />
     <Route path="signup" component={SignUpPage} />
   </Route>
 );

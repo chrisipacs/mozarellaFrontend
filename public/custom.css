@@ -1,0 +1,21 @@
+div.wrap {
+    height: 20px;
+    position: relative;
+}
+
+.wrap div {
+    position: absolute;
+    bottom: 0;
+}
+
+.wrap div:nth-of-type(2) {
+    right: 0;
+}
+
+.alignleft {
+    float: left;
+}
+
+.alignright {
+    float: right;
+}

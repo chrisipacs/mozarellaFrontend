@@ -65,14 +65,13 @@ class LoginComponent extends React.Component {
         }
 
         componentWillReceiveProps(nextProps){
-            console.log('componentWillReceive');
-            if(nextProps.student!=undefined && nextProps.student.id!=undefined &&
-                nextProps.location!=undefined && nextProps.location.state!=undefined &&
-                nextProps.location.state.nextPathname!=undefined){
-                browserHistory.push(nextProps.location.state.nextPathname);
-            } else if(nextProps.student!=undefined
-                        && nextProps.student.id!=undefined){
-                browserHistory.push('/');
+            if(localStorage.getItem("student")!=null && nextProps.student!=undefined && nextProps.student.id!=undefined){
+                if(nextProps.location!=undefined && nextProps.location.state!=undefined &&
+                    nextProps.location.state.nextPathname!=undefined){
+                    browserHistory.push(nextProps.location.state.nextPathname);
+                } else {
+                    browserHistory.push('/');
+                }
             }
         }
 

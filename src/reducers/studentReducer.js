@@ -8,6 +8,8 @@ export default function studentReducer(state = initialState.studentContext.stude
     switch (action.type) {
         case types.LOGIN_SUCCESS:
             return Object.assign({}, action.student);
+        case types.LOGOUT_SUCCESS:
+            return {};
         case types.SIGNUP_SUCCESS:
             return state;
         default:

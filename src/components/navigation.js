@@ -4,6 +4,7 @@
 import React, {PropTypes} from 'react';
 import { Link, IndexLink } from 'react-router';
 import LoadingDots from './loadingDots';
+import '../../public/custom.css';
 
 const NavigationPage = ({loading}) => {
     return (
@@ -19,15 +20,19 @@ const NavigationPage = ({loading}) => {
                     </button>
 
                 </div>
-
-                <IndexLink to="/" activeClassName="active">Pet</IndexLink>
-                {" | "}
-                <Link to="/lists" activeClassName="active">Courses</Link>
-                {" | "}
-                <Link to="/learn" activeClassName="active">Learn</Link>
-                {" | "}
-                <Link to="/settings" activeClassName="active">Settings</Link>
-                {loading && <LoadingDots interval={100} dots={20}/>}
+                    <p className="alignleft">
+                        <IndexLink to="/" activeClassName="active">Pet</IndexLink>
+                        {" | "}
+                        <Link to="/lists" activeClassName="active">Courses</Link>
+                        {" | "}
+                        <Link to="/learn" activeClassName="active">Learn</Link>
+                        {loading && <LoadingDots interval={100} dots={20}/>}
+                    </p>
+                    <p className="alignright">
+                        <Link to="/settings" activeClassName="active">Settings</Link>
+                        {" | "}
+                        <Link to="/logout" activeClassName="active">Log out</Link>
+                    </p>
             </div>
         </nav>
     );
