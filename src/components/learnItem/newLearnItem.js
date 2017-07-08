@@ -78,10 +78,10 @@ class NewLearnItem extends React.Component {
                         <h3 className="panel-title">{this.state.learnItem.text}</h3>
                     </div>
                     <div className="panel-body">
-                        Learnitem
+                        Word/expression you want to learn
                         <TextInput name='text' value={this.state.learnItem.text} onChange={this.modifyText}/>
-                        <DictionaryTranslationList translations={this.state.translationsFromDictionary} onClick={this.onDictionaryTranslationSelection} />
-                        Translations (separated by comma)
+                        <DictionaryTranslationList translations={this.state.translationsFromDictionary} onClick={this.onDictionaryTranslationSelection} /><br/>
+                        Translations in your language (separated by comma, each of them should be unique in this list)
                         <TextInput name='translations' value={this.state.learnItem.translations} onChange={this.modifyTranslations}/>
                         <br/>
                         <div style={{float: 'right'}}><button type="button" className="btn btn-success" onClick={()=>{this.props.actions.saveLearnItem(this.state.learnItem, this.props.listId); this.reset()}}>Add</button></div>

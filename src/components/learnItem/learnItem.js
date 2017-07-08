@@ -25,7 +25,7 @@ const LearnItem = ({value, isNew, isDeletable, deleteFunction, error}) => {
                 </div>
                 <div className="panel-body">
                     {isNew ? <TextInput name="text" html={value.text}/>: <ContentEditable html={value.text} disabled={true} onChange={()=>{}} />}
-                    Acceptable solutions: {isNew ? <TextInput name="translations" html={translationListToString(value.translations)}/> : <ContentEditable html={translationListToString(value.translations)}/>}
+                    Meaning(s): {isNew ? <TextInput name="translations" html={translationListToString(value.translations)}/> : <ContentEditable html={translationListToString(value.translations)}/>}
                 </div>
             </div>);
 };

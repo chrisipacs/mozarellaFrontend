@@ -8,15 +8,15 @@ import React from 'react';
 const learnItemQuestion = ({learnItem, showSolution}) => {
     return (
     <div>
-        <h1>{learnItem.text}</h1>
+        <h1>{learnItem.translations[0]}</h1>
         {!learnItem.alreadyPracticed &&
             <div className="alert alert-success" role="alert">
-                {learnItem.translations[0]}
+                {learnItem.text}
             </div>
         }
         {showSolution &&
         <div className="alert alert-danger" role="alert">
-                {learnItem.translations[0]}
+                {learnItem.text}
         </div>}
     </div>);
 };
