@@ -19,6 +19,10 @@ export function deregisterFromListSuccess(list) {
     return {type: types.DEREGISTER_STUDENT_FROM_LIST_SUCCESS, list: list};
 }
 
+export function removeLearnableLearnItem(id){
+    return {type: types.REMOVE_LEARNABLE_LEARNITEM, id};
+}
+
 export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {
     return dispatch => {
         dispatch(beginAjaxCall());

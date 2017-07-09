@@ -82,13 +82,12 @@ class LearningPage extends React.Component {
     }
 
     getNextLearnItem(){
-        if(this.state.upcomingLearnItems && this.state.upcomingLearnItems.length>0){
-            this.setState((previousState) => update(previousState, {
-                currentLearnItem: {$set: this.state.upcomingLearnItems[0]},
-                upcomingLearnItems: {$set: this.state.upcomingLearnItems.splice(1)},
-                showSolution: {$set: false}
-            }),this.resetCountDown);
+        if(this.props.learnItems.length>3){
+            console.log('remove!!!');
+            this.props.studentActions.removeLearnableLearnItem(0);
         } else {
+            console.log('else!!');
+
             //the action triggered by this will call getNextLearnItem again
             let pathElements = this.props.location.pathname.split('/');
             let listId = pathElements[pathElements.length-1];
@@ -148,10 +147,14 @@ class LearningPage extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         let that = this;
+
+        console.log('willreceive, nextProps: '+JSON.stringify(nextProps));
+
         if (nextProps.learnItems && nextProps.learnItems.length>0) {
             this.setState((previousState) => update(previousState, {
-                upcomingLearnItems: {$set: nextProps.learnItems}
-            }), that.getNextLearnItem);
+                currentLearnItem: {$set: nextProps.learnItems[0]},
+                showSolution: {$set: false}
+            }),this.resetCountDown);
         } else {
             this.setState({ranOutOfLearnItems: true});
         }
