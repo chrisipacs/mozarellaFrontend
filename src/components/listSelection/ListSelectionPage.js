@@ -23,8 +23,6 @@ class ListSelectionPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        console.log('props2: '+JSON.stringify(props));
-
         this.state = {
             listsContext: Object.assign({}, JSON.parse(JSON.stringify(initialState.listsContext))),
             errors: {},
@@ -122,7 +120,6 @@ class ListSelectionPage extends React.Component {
     }
 
     onListSearch(searchState){
-        console.log('onListSearch'+JSON.stringify(searchState.name));
         this.setState({activePage: 1, search:searchState},()=>{
             this.props.actions.loadLists(0,pageSize,undefined,searchState.name,searchState.fromLanguage.value,searchState.toLanguage.value);
         });

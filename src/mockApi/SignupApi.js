@@ -27,7 +27,6 @@ class SignupApi {
     }
 
     static signUp(student) {
-        console.log('signup mock api');
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve(student);

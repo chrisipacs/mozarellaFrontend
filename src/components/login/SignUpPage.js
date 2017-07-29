@@ -58,12 +58,9 @@ class SignUpPage extends React.Component {
     }
 
     handleSubmit(event) {
-        console.log('1');
         event.preventDefault();
         if(!this.props.invalid) {
-            console.log('2');
             this.props.actions.signUp({name:this.props.username, email:this.props.email, password:this.props.password}).then(()=>{
-                console.log('3');
                 this.setState((previousState) => update(previousState, {
                     isSuccessful: {$set: true}
                 }));

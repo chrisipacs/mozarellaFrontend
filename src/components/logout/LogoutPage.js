@@ -17,7 +17,6 @@ class LoginComponent extends React.Component {
 
         componentWillMount(){
             this.props.actions.logout().then(()=>{
-                console.log('THEN');
                 if(this.props.student != undefined && this.props.student.id!=undefined){
                     browserHistory.push('/');
                 }

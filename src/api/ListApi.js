@@ -8,13 +8,10 @@ import sendObject from './SendObject';
 class ListApi {
     static getLists(pageNumber,pageSize,name,fromLanguage,toLanguage) {
         let additionalParameters = "";
-        console.log('name: '+name);
-        console.log('fromLanguage: '+fromLanguage);
         if(name!=undefined && name!=''){
             additionalParameters+='&&name='+name;
         }
         if(fromLanguage!=undefined && fromLanguage!=''){
-            console.log(JSON.stringify(fromLanguage));
             additionalParameters+='&&fromLanguage='+fromLanguage;
         }
         if(toLanguage!=undefined && toLanguage!=''){
@@ -26,7 +23,6 @@ class ListApi {
             .then(function(result){
                 resolve({totalCount: Number(result.headers.get('X-total-count')),lists:result.objects});
             }).catch(function(error) {
-                console.log('REJECTING LIST QUERY');
                 reject(error);
             });
         });

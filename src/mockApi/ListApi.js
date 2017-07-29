@@ -46,7 +46,7 @@ class ListApi {
 
             });
             if(list!==undefined)
-            {   console.log('list in api: '+JSON.stringify(list));
+            {
                 setTimeout(() => {
                     resolve(Object.assign({}, list));
                 }, delay);
@@ -65,7 +65,6 @@ class ListApi {
 
                 });
 
-                console.log(list.id);
                 if(existingList){
                     lists[existingList.id-1] = list;
                 } else {

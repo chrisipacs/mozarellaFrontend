@@ -23,6 +23,10 @@ export function removeLearnableLearnItem(id){
     return {type: types.REMOVE_LEARNABLE_LEARNITEM, id};
 }
 
+export function clearLearnContext(){
+    return {type: types.CLEAR_LEARN_CONTEXT};
+}
+
 export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {
     return dispatch => {
         dispatch(beginAjaxCall());

@@ -2,7 +2,8 @@
  * Created by krisztian on 10/09/16.
  */
 import React from 'react';
-import * as LearnItemActions from '../../actions/learnItemActions';
+import * as learnItemActions from '../../actions/learnItemActions';
+import * as learnActions from '../../actions/learnActions';
 import ProgressBar from './progressBar';
 import update from 'react-addons-update';
 import {connect} from 'react-redux';
@@ -30,7 +31,6 @@ class LearningPage extends React.Component {
             points: 0,
             soundPlaying:Sound.status.STOPPED,
             typedSolution: '',
-            ranOutOfLearnItems: false,
             showSolution: false
         };
 
@@ -81,19 +81,17 @@ class LearningPage extends React.Component {
         }),that.countdown);
     }
 
-    getNextLearnItem(){
-        if(this.props.learnItems.length>3){
-            console.log('remove!!!');
-            this.props.studentActions.removeLearnableLearnItem(0);
-        } else {
-            console.log('else!!');
+    getNextLearnItem(calledRecursively=false){
 
-            //the action triggered by this will call getNextLearnItem again
+        if(this.props.learnItems.length<3 && this.props.canLoadMore && !this.props.currentlyLoadingLearnItems) {
+            //the action triggered by this will call getNextLearnItem again => SHOULDNT
             let pathElements = this.props.location.pathname.split('/');
             let listId = pathElements[pathElements.length-1];
 
             this.props.studentActions.loadLearnItemsToLearn(this.props.student.id,listId);
         }
+
+        this.props.studentActions.removeLearnableLearnItem(0);
     }
 
     updateStateOnType(event) {
@@ -120,6 +118,7 @@ class LearningPage extends React.Component {
             let pointValue = this.state.currentLearnItem.pointValue!=undefined ? this.state.currentLearnItem.pointValue: 100;
             let points = this.state.showSolution ? 0 : pointValue;
 
+            this.props.learnActions.addSuccessfullyAnsweredLearnitemId(this.state.currentLearnItem.id);
             StudentApi.sendNewResult(this.props.student,this.state.currentLearnItem,listId,this.createResult(true));
 
             this.setState({
@@ -136,6 +135,7 @@ class LearningPage extends React.Component {
     }
 
     componentWillMount(){
+        this.props.learnActions.resetLearnContext();
         this.getNextLearnItem();
     }
 
@@ -148,15 +148,15 @@ class LearningPage extends React.Component {
     componentWillReceiveProps(nextProps) {
         let that = this;
 
-        console.log('willreceive, nextProps: '+JSON.stringify(nextProps));
-
         if (nextProps.learnItems && nextProps.learnItems.length>0) {
             this.setState((previousState) => update(previousState, {
                 currentLearnItem: {$set: nextProps.learnItems[0]},
                 showSolution: {$set: false}
             }),this.resetCountDown);
         } else {
-            this.setState({ranOutOfLearnItems: true});
+            this.setState((previousState) => update(previousState, {
+                currentLearnItem: {$set: undefined}
+            })/*,this.resetCountDown*/);
         }
     }
 
@@ -168,7 +168,7 @@ class LearningPage extends React.Component {
         const that = this;
         return (
         <div>
-            {this.state.currentLearnItem && !this.state.ranOutOfLearnItems &&
+            {this.state.currentLearnItem && !this.props.ranOutOfLearnItems &&
                 <div>
                     <LearningStatusInfo pointsCollected={this.state.points}/>
                     <LearnItemQuestion learnItem={this.state.currentLearnItem} showSolution={this.state.showSolution}/>
@@ -180,7 +180,8 @@ class LearningPage extends React.Component {
                 playStatus={this.state.soundPlaying}
                 playFromPosition={1000 /* in milliseconds */}
                 onFinishedPlaying={() => this.setState({soundPlaying: Sound.status.STOPPED})} />}
-            {this.state.ranOutOfLearnItems && <h1>No more items to practice at this time</h1>}
+            {this.props.currentlyLoadingLearnItems && this.props.learnItems.length==0 && <h4>Loading...</h4>}
+            {this.props.ranOutOfLearnItems && <h1>No more items to practice at this time</h1>}
         </div>
         );
     }
@@ -190,15 +191,19 @@ function mapStateToProps(state, ownProps) {
     return {
         student: state.studentContext.student,
         learnItems: state.learnContext.learnItems,
-        list: state.activeList //TODO: remove?
+        list: state.activeList, //TODO: remove?
+        canLoadMore: state.learnContext.canLoadMore,
+        currentlyLoadingLearnItems: state.ajaxCallsInProgress>0,
+        ranOutOfLearnItems: state.learnContext.learnItems.length==0 && !state.learnContext.canLoadMore
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        learnItemActions: bindActionCreators(LearnItemActions, dispatch),
+        learnItemActions: bindActionCreators(learnItemActions, dispatch),
         listActions: bindActionCreators(listActions, dispatch),
-        studentActions: bindActionCreators(studentActions, dispatch)
+        studentActions: bindActionCreators(studentActions, dispatch),
+        learnActions: bindActionCreators(learnActions, dispatch)
     };
 }
 

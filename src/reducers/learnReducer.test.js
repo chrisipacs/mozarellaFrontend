@@ -12,7 +12,8 @@ describe('LearnItem Reducer', () => {
 
         const initialState =
         {
-            learnItems: [{id:0,text:'item1'},{id:1,text:'item2'}]
+            learnItems: [{id:0,text:'item1'},{id:1,text:'item2'}],
+            successfullyAnsweredIds: []
         };
 
         const action = actions.removeLearnableLearnItem(0);
@@ -29,7 +30,8 @@ describe('LearnItem Reducer', () => {
 
         const initialState =
         {
-            learnItems: [{id:0,text:'item1'},{id:1,text:'item2'}]
+            learnItems: [{id:0,text:'item1'},{id:1,text:'item2'}],
+            successfullyAnsweredIds: []
         };
 
         const newItems = [{id:0,text:'item1'},{id:1,text:'item2'},{id:2,text:'item3'}];

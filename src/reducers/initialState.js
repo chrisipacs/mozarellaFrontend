@@ -31,6 +31,8 @@ export default {
         }
     },
     learnContext: { //the upcoming learnItems
-        learnItems: []
+        learnItems: [],
+        successfullyAnsweredIds: [], //to avoid showing them again in case they come back from the server because the result is not processed yet
+        canLoadMore: true
     }
 };
