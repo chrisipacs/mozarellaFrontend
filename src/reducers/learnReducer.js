@@ -25,7 +25,7 @@ export default function listReducer(state = initialState.learnContext, action = 
             });
 
             let canLoadMore = action.learnItems.length === numberOfItemsToLoad;
-            let newState = Object.assign({}, state, {learnItems: [...state.learnItems,...uniqueNewItems]}, {canLoadMore:canLoadMore});
+            let newState = Object.assign({}, state, {learnItems: [...state.learnItems,...uniqueNewItems]}, {loadingInProgress:false});
 
             return newState;
         }
@@ -48,6 +48,9 @@ export default function listReducer(state = initialState.learnContext, action = 
         }
         case types.RESET_LEARN_CONTEXT:{
             return Object.assign({}, initialState.learnContext);
+        }
+        case types.LOADING_LEARNABLE_LEARNITEMS_START:{
+            return Object.assign({}, state, {loadingInProgress:true});
         }
         default:
             return state;

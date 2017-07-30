@@ -53,7 +53,7 @@ class LearningPage extends React.Component {
             clearTimeout(this.timer);
         }
 
-        if(!this.state.currentLearnItem.alreadyPracticed){
+        if(!(this.state.currentLearnItem && this.state.currentLearnItem.alreadyPracticed)){
             return;
         }
 
@@ -82,8 +82,14 @@ class LearningPage extends React.Component {
     }
 
     getNextLearnItem(calledRecursively=false){
+        console.log('getNext');
+        console.log('this.props.learnItems.length '+this.props.learnItems.length);
+        console.log('this.props.canLoadMore '+this.props.canLoadMore);
+        console.log('!this.props.loadingInProgress '+!this.props.loadingInProgress);
 
-        if(this.props.learnItems.length<3 && this.props.canLoadMore && !this.props.currentlyLoadingLearnItems) {
+        if(this.props.learnItems.length<3 && this.props.canLoadMore && !this.props.loadingInProgress) {
+            console.log('try loading');
+
             //the action triggered by this will call getNextLearnItem again => SHOULDNT
             let pathElements = this.props.location.pathname.split('/');
             let listId = pathElements[pathElements.length-1];
@@ -135,8 +141,12 @@ class LearningPage extends React.Component {
     }
 
     componentWillMount(){
+        console.log('willmount');
         this.props.learnActions.resetLearnContext();
-        this.getNextLearnItem();
+
+        let pathElements = this.props.location.pathname.split('/');
+        let listId = pathElements[pathElements.length-1];
+        this.props.studentActions.loadLearnItemsToLearn(this.props.student.id,listId);
     }
 
     componentWillUnmount(){
@@ -146,6 +156,7 @@ class LearningPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('willreceive');
         let that = this;
 
         if (nextProps.learnItems && nextProps.learnItems.length>0) {
@@ -158,6 +169,11 @@ class LearningPage extends React.Component {
                 currentLearnItem: {$set: undefined}
             })/*,this.resetCountDown*/);
         }
+
+        //initialization on page load
+        //if(nextProps.canLoadMore && nextProps.learnItems.length==0){
+        //    console.log('nextProps.canLoadMore: '+nextProps.canLoadMore);
+        //}
     }
 
     createResult(wasSuccessful){
@@ -173,7 +189,7 @@ class LearningPage extends React.Component {
                     <LearningStatusInfo pointsCollected={this.state.points}/>
                     <LearnItemQuestion learnItem={this.state.currentLearnItem} showSolution={this.state.showSolution}/>
                     <TextInput onChange={this.updateStateOnType} onKeyPress={this.updateStateOnKeyPress} value={this.state.typedSolution}/>
-                    <ProgressBar totalTime={this.state.totalTime} usedUpTime={this.state.usedUpTime} isVisible={this.state.currentLearnItem.alreadyPracticed}/>
+                    <ProgressBar totalTime={this.state.totalTime} usedUpTime={this.state.usedUpTime} isVisible={this.state.currentLearnItem && this.state.currentLearnItem.alreadyPracticed}/>
                 </div>}
             {!this.state.showSolution && <Sound
                 url="../resources/success.wav"
@@ -188,12 +204,13 @@ class LearningPage extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    //console.log('mapstatetoprops: '+JSON.stringify(state));
     return {
         student: state.studentContext.student,
         learnItems: state.learnContext.learnItems,
         list: state.activeList, //TODO: remove?
         canLoadMore: state.learnContext.canLoadMore,
-        currentlyLoadingLearnItems: state.ajaxCallsInProgress>0,
+        loadingInProgress: state.learnContext.loadingInProgress,
         ranOutOfLearnItems: state.learnContext.learnItems.length==0 && !state.learnContext.canLoadMore
     };
 }

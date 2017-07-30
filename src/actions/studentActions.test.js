@@ -22,7 +22,7 @@ import host from '../api/host';
 describe('Learnitem Actions', () => {
 
     describe('loadLearnItemsToLearn', () => {
-        it('should create a BEGIN_AJAX_CALL, and a LOAD_LEARNABLE_LEARNITEMS action', (done) => {
+        it('should create a BEGIN_AJAX_CALL, a LOADING_LEARNABLE_LEARNITEMS_START, and a LOAD_LEARNABLE_LEARNITEMS action', (done) => {
 
             afterEach(() => {
                 nock.cleanAll();
@@ -34,7 +34,7 @@ describe('Learnitem Actions', () => {
             const studentId = 42;
             let learnItemsToLoad = [{},{},{},{},{},{},{},{},{},{}];
 
-            const expectedActions = [{type: types.BEGIN_AJAX_CALL},{
+            const expectedActions = [{type: types.BEGIN_AJAX_CALL},{type: types.LOADING_LEARNABLE_LEARNITEMS_START},{
                 type: types.LOAD_LEARNABLE_LEARNITEMS_SUCCESS,
                 learnItems: learnItemsToLoad
             }];
@@ -56,6 +56,7 @@ describe('Learnitem Actions', () => {
                 const actions = store.getActions();
                 expect(actions[0]).toEqual(expectedActions[0]);
                 expect(actions[1]).toEqual(expectedActions[1]);
+                expect(actions[2]).toEqual(expectedActions[2]);
                 done();
             });
 

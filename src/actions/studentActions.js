@@ -27,9 +27,14 @@ export function clearLearnContext(){
     return {type: types.CLEAR_LEARN_CONTEXT};
 }
 
+export function loadLearnableLearnitemsStart(){
+    return {type: types.LOADING_LEARNABLE_LEARNITEMS_START};
+}
+
 export function loadLearnItemsToLearn(listId,numberOfLearnItems=10) {
     return dispatch => {
         dispatch(beginAjaxCall());
+        dispatch(loadLearnableLearnitemsStart());
         return studentApi.getLearnItemsToLearn(listId, numberOfLearnItems).then(learnItems => {
             dispatch(loadLearnableLearnItemsSuccess(learnItems));
         }).catch(error => {
