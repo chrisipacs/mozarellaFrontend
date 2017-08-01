@@ -25,7 +25,7 @@ export default function listReducer(state = initialState.learnContext, action = 
             });
 
             let canLoadMore = action.learnItems.length === numberOfItemsToLoad;
-            let newState = Object.assign({}, state, {learnItems: [...state.learnItems,...uniqueNewItems]}, {loadingInProgress:false});
+            let newState = Object.assign({}, state, {learnItems: [...state.learnItems,...uniqueNewItems]}, {loadingInProgress:false}, {canLoadMore});
 
             return newState;
         }

@@ -44,6 +44,8 @@ class LearningPage extends React.Component {
         this.updateStateOnType = this.updateStateOnType.bind(this);
         this.updateStateOnKeyPress = this.updateStateOnKeyPress.bind(this);
         this.createResult = this.createResult.bind(this);
+        this.itemReplacedAfterCorrectAnswer = this.itemReplacedAfterCorrectAnswer.bind(this);
+        this.shouldLoadFirstLearnItem = this.shouldLoadFirstLearnItem.bind(this);
     }
 
     startTimer(){
@@ -82,13 +84,7 @@ class LearningPage extends React.Component {
     }
 
     getNextLearnItem(calledRecursively=false){
-        console.log('getNext');
-        console.log('this.props.learnItems.length '+this.props.learnItems.length);
-        console.log('this.props.canLoadMore '+this.props.canLoadMore);
-        console.log('!this.props.loadingInProgress '+!this.props.loadingInProgress);
-
         if(this.props.learnItems.length<3 && this.props.canLoadMore && !this.props.loadingInProgress) {
-            console.log('try loading');
 
             //the action triggered by this will call getNextLearnItem again => SHOULDNT
             let pathElements = this.props.location.pathname.split('/');
@@ -155,25 +151,25 @@ class LearningPage extends React.Component {
         }
     }
 
+    itemReplacedAfterCorrectAnswer(nextProps) {
+        return nextProps.learnItems && nextProps.learnItems.length > 0 && nextProps.learnItems.length == this.props.learnItems.length-1;
+    }
+
+    shouldLoadFirstLearnItem(nextProps) {
+        return nextProps.learnItems && nextProps.learnItems.length > 0 && this.props.learnItems.length==0 && this.props.successfullyAnsweredIds && this.props.successfullyAnsweredIds.length==0;
+    }
+
+
     componentWillReceiveProps(nextProps) {
         console.log('willreceive');
         let that = this;
 
-        if (nextProps.learnItems && nextProps.learnItems.length>0) {
+        if (this.shouldLoadFirstLearnItem(nextProps) || this.itemReplacedAfterCorrectAnswer(nextProps)) {
             this.setState((previousState) => update(previousState, {
                 currentLearnItem: {$set: nextProps.learnItems[0]},
                 showSolution: {$set: false}
-            }),this.resetCountDown);
-        } else {
-            this.setState((previousState) => update(previousState, {
-                currentLearnItem: {$set: undefined}
-            })/*,this.resetCountDown*/);
+            }), this.resetCountDown);
         }
-
-        //initialization on page load
-        //if(nextProps.canLoadMore && nextProps.learnItems.length==0){
-        //    console.log('nextProps.canLoadMore: '+nextProps.canLoadMore);
-        //}
     }
 
     createResult(wasSuccessful){
@@ -188,7 +184,7 @@ class LearningPage extends React.Component {
                 <div>
                     <LearningStatusInfo pointsCollected={this.state.points}/>
                     <LearnItemQuestion learnItem={this.state.currentLearnItem} showSolution={this.state.showSolution}/>
-                    <TextInput onChange={this.updateStateOnType} onKeyPress={this.updateStateOnKeyPress} value={this.state.typedSolution}/>
+                    <TextInput ref1={input => input && input.focus()} onChange={this.updateStateOnType} onKeyPress={this.updateStateOnKeyPress} value={this.state.typedSolution}/>
                     <ProgressBar totalTime={this.state.totalTime} usedUpTime={this.state.usedUpTime} isVisible={this.state.currentLearnItem && this.state.currentLearnItem.alreadyPracticed}/>
                 </div>}
             {!this.state.showSolution && <Sound
@@ -211,7 +207,8 @@ function mapStateToProps(state, ownProps) {
         list: state.activeList, //TODO: remove?
         canLoadMore: state.learnContext.canLoadMore,
         loadingInProgress: state.learnContext.loadingInProgress,
-        ranOutOfLearnItems: state.learnContext.learnItems.length==0 && !state.learnContext.canLoadMore
+        ranOutOfLearnItems: state.learnContext.learnItems.length==0 && !state.learnContext.canLoadMore,
+        successfullyAnsweredIds: state.learnContext.successfullyAnsweredIds
     };
 }
 
