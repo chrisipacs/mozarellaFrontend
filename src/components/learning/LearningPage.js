@@ -84,9 +84,8 @@ class LearningPage extends React.Component {
     }
 
     getNextLearnItem(calledRecursively=false){
-        if(this.props.learnItems.length<3 && this.props.canLoadMore && !this.props.loadingInProgress) {
+        if(this.props.learnItems.length<5 && this.props.canLoadMore && !this.props.loadingInProgress) {
 
-            //the action triggered by this will call getNextLearnItem again => SHOULDNT
             let pathElements = this.props.location.pathname.split('/');
             let listId = pathElements[pathElements.length-1];
 
@@ -180,7 +179,7 @@ class LearningPage extends React.Component {
         const that = this;
         return (
         <div>
-            {this.state.currentLearnItem && !this.props.ranOutOfLearnItems &&
+            {this.state.currentLearnItem && !this.props.ranOutOfLearnItems && /*new 0108*/ !(this.props.loadingInProgress && this.props.learnItems.length==0) &&
                 <div>
                     <LearningStatusInfo pointsCollected={this.state.points}/>
                     <LearnItemQuestion learnItem={this.state.currentLearnItem} showSolution={this.state.showSolution}/>
@@ -192,7 +191,7 @@ class LearningPage extends React.Component {
                 playStatus={this.state.soundPlaying}
                 playFromPosition={1000 /* in milliseconds */}
                 onFinishedPlaying={() => this.setState({soundPlaying: Sound.status.STOPPED})} />}
-            {this.props.currentlyLoadingLearnItems && this.props.learnItems.length==0 && <h4>Loading...</h4>}
+            {this.props.loadingInProgress && this.props.learnItems.length==0 && <h4>Loading...</h4>}
             {this.props.ranOutOfLearnItems && <h1>No more items to practice at this time</h1>}
         </div>
         );
