@@ -42,6 +42,7 @@ export default function listReducer(state = initialState.learnContext, action = 
             return Object.assign(initialState.learnContext);
         }
         case types.ADD_SUCCESSFULLY_ANSWERED_LEARNITEM_ID:{
+
             let newSuccessfullyAnsweredIds = [...(state.successfullyAnsweredIds),action.learnItemId];
 
             return Object.assign({}, state, {successfullyAnsweredIds:newSuccessfullyAnsweredIds});

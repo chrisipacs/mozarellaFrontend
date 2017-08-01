@@ -84,15 +84,13 @@ class LearningPage extends React.Component {
     }
 
     getNextLearnItem(calledRecursively=false){
-        if(this.props.learnItems.length<5 && this.props.canLoadMore && !this.props.loadingInProgress) {
+        if(this.props.learnItems.length<4 && this.props.canLoadMore && !this.props.loadingInProgress) {
 
             let pathElements = this.props.location.pathname.split('/');
             let listId = pathElements[pathElements.length-1];
 
             this.props.studentActions.loadLearnItemsToLearn(this.props.student.id,listId);
         }
-
-        this.props.studentActions.removeLearnableLearnItem(0);
     }
 
     updateStateOnType(event) {
@@ -119,6 +117,7 @@ class LearningPage extends React.Component {
             let pointValue = this.state.currentLearnItem.pointValue!=undefined ? this.state.currentLearnItem.pointValue: 100;
             let points = this.state.showSolution ? 0 : pointValue;
 
+            this.props.studentActions.removeLearnableLearnItem(0);
             this.props.learnActions.addSuccessfullyAnsweredLearnitemId(this.state.currentLearnItem.id);
             StudentApi.sendNewResult(this.props.student,this.state.currentLearnItem,listId,this.createResult(true));
 
@@ -154,8 +153,10 @@ class LearningPage extends React.Component {
         return nextProps.learnItems && nextProps.learnItems.length > 0 && nextProps.learnItems.length == this.props.learnItems.length-1;
     }
 
+
+
     shouldLoadFirstLearnItem(nextProps) {
-        return nextProps.learnItems && nextProps.learnItems.length > 0 && this.props.learnItems.length==0 && this.props.successfullyAnsweredIds && this.props.successfullyAnsweredIds.length==0;
+        return nextProps.learnItems && nextProps.learnItems.length > 0 && this.props.learnItems.length==0;
     }
 
 
@@ -179,7 +180,7 @@ class LearningPage extends React.Component {
         const that = this;
         return (
         <div>
-            {this.state.currentLearnItem && !this.props.ranOutOfLearnItems && /*new 0108*/ !(this.props.loadingInProgress && this.props.learnItems.length==0) &&
+            {this.state.currentLearnItem && !this.props.ranOutOfLearnItems && !(this.props.loadingInProgress && this.props.learnItems.length==0) &&
                 <div>
                     <LearningStatusInfo pointsCollected={this.state.points}/>
                     <LearnItemQuestion learnItem={this.state.currentLearnItem} showSolution={this.state.showSolution}/>
