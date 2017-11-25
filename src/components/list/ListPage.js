@@ -21,7 +21,8 @@ class ListPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        this.changeEditing = this.changeEditing.bind(this);
+        this.flipEditing = this.flipEditing.bind(this);
+        this.changeEditingToTrue = this.changeEditingToTrue.bind(this);
         this.updateListName = this.updateListName.bind(this);
         this.updateListDescription = this.updateListDescription.bind(this);
         this.save = this.save.bind(this);
@@ -74,9 +75,14 @@ class ListPage extends React.Component {
         this.setState(Object.assign({},this.state,{list: Object.assign(this.state.list,{description:value}), changedSinceLastSave:true}));
     }
 
-    changeEditing() {
+    flipEditing() {
         console.log('changing editing to '+!this.state.enableEditing);
         this.setState({enableEditing:!this.state.enableEditing});
+    }
+
+    changeEditingToTrue() {
+        console.log('changing editing to true');
+        this.setState({enableEditing:true});
     }
 
     save(){
@@ -130,7 +136,7 @@ class ListPage extends React.Component {
                     onChange={this.updateListDescription} // handle innerHTML change
                     />
                 <br/>
-                {this.props.hasPermissionToEdit && this.props.isOwnerOfList && !that.state.enableEditing && <div><button onClick={this.changeEditing} className={this.props.ajaxCallsInProgress? "btn btn-primary disabled" : "btn btn-primary"}>
+                {this.props.hasPermissionToEdit && this.props.isOwnerOfList && !that.state.enableEditing && <div><button onClick={this.changeEditingToTrue} className={this.props.ajaxCallsInProgress? "btn btn-primary disabled" : "btn btn-primary"}>
                     Enable editing
                 </button> </div>}
                 {this.state.enableEditing &&
