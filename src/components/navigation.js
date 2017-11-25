@@ -21,7 +21,7 @@ const NavigationPage = ({loading}) => {
 
                 </div>
                     <p className="alignleft">
-                        <Link to="/lists" activeClassName="active">Courses</Link>
+                        <IndexLink to="/lists" activeClassName="active">Courses</IndexLink>
                         {" | "}
                         <Link to="/learn" activeClassName="active">Learn</Link>
                         {loading && <LoadingDots interval={100} dots={20}/>}
