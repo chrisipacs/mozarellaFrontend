@@ -128,14 +128,14 @@ class ListPage extends React.Component {
                 <ContentEditable
                     name="title"
                     html={that.state.list.name} // innerHTML of the editable div
-                    disabled={!that.state.enableEditing}       // use true to disable edition
+                    disabled={false}      // use true to disable edition
                     onChange={this.updateListName} // handle innerHTML change
                 />
                     </h1>
                 <ContentEditable
                     name="description"
                     html={that.state.list.description} // innerHTML of the editable div
-                    disabled={!that.state.enableEditing}       // use true to disable edition
+                    disabled={false}       // use true to disable edition
                     onChange={this.updateListDescription} // handle innerHTML change
                     />
                 <br/>
