@@ -121,21 +121,21 @@ class ListPage extends React.Component {
 
     render() {
         const that = this;
-        console.log('rendering');
+        console.log('rendering, state: '+JSON.stringify(this.state));
         return (
             <div>
                 <h1>
                 <ContentEditable
                     name="title"
                     html={that.state.list.name} // innerHTML of the editable div
-                    disabled={false}      // use true to disable edition
+                    disabled={!this.state.enableEditing}       // use true to disable edition
                     onChange={this.updateListName} // handle innerHTML change
                 />
                     </h1>
                 <ContentEditable
                     name="description"
                     html={that.state.list.description} // innerHTML of the editable div
-                    disabled={false}       // use true to disable edition
+                    disabled={!this.state.enableEditing}       // use true to disable edition
                     onChange={this.updateListDescription} // handle innerHTML change
                     />
                 <br/>
