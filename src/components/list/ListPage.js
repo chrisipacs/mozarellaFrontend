@@ -44,6 +44,8 @@ class ListPage extends React.Component {
         });
 
         this.setState({list:{name:this.props.list.name, description: this.props.list.description}, activePage: 0});
+
+        this.props.actions.disableEditing(); //new
     }
 
     componentWillReceiveProps(nextProps){
@@ -76,24 +78,20 @@ class ListPage extends React.Component {
     }
 
     disableEditing() {
-        console.log('changing editing to '+!this.state.enableEditing);
         this.props.actions.disableEditing();
     }
 
     changeEditingToTrue() {
-        console.log('changing editing to true');
         this.props.actions.enableEditing();
     }
 
     save(){
-        console.log('save');
         this.setState(Object.assign(this.state,{changedSinceLastSave:false})); //TODO maybe only set this after it was successfully saved?
         this.props.actions.saveList(this.state.list);
         this.props.actions.disableEditing();
     }
 
     cancel(){
-        console.log('cancel');
         this.setState((previousState) => update(previousState, {
             //enableEditing: {$set: false},
             changedSinceLastSave: {$set: false},
@@ -114,13 +112,11 @@ class ListPage extends React.Component {
     }
 
     deleteLearnItem(learnItemId){
-        console.log('deleting learnitem with id: '+learnItemId);
         this.props.itemActions.deleteLearnItem(learnItemId);
     }
 
     render() {
         const that = this;
-        console.log('rendering, state: '+JSON.stringify(this.state));
         return (
             <div>
                 <h1>
