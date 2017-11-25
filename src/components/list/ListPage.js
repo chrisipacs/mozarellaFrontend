@@ -21,7 +21,7 @@ class ListPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        this.flipEditing = this.flipEditing.bind(this);
+        this.disableEditing = this.disableEditing.bind(this);
         this.changeEditingToTrue = this.changeEditingToTrue.bind(this);
         this.updateListName = this.updateListName.bind(this);
         this.updateListDescription = this.updateListDescription.bind(this);
@@ -75,32 +75,31 @@ class ListPage extends React.Component {
         this.setState(Object.assign({},this.state,{list: Object.assign(this.state.list,{description:value}), changedSinceLastSave:true}));
     }
 
-    flipEditing() {
+    disableEditing() {
         console.log('changing editing to '+!this.state.enableEditing);
-        this.setState({enableEditing:!this.state.enableEditing});
+        this.props.actions.disableEditing();
     }
 
     changeEditingToTrue() {
         console.log('changing editing to true');
-        this.setState({enableEditing:true});
+        this.props.actions.enableEditing();
     }
 
     save(){
         console.log('save');
         this.setState(Object.assign(this.state,{changedSinceLastSave:false})); //TODO maybe only set this after it was successfully saved?
         this.props.actions.saveList(this.state.list);
-        this.setState((previousState) => update(previousState, {
-            enableEditing: {$set: false}
-        }));
+        this.props.actions.disableEditing();
     }
 
     cancel(){
         console.log('cancel');
         this.setState((previousState) => update(previousState, {
-            enableEditing: {$set: false},
+            //enableEditing: {$set: false},
             changedSinceLastSave: {$set: false},
             list: {$set: this.props.list}
         }));
+        this.props.actions.disableEditing();
     }
 
     handlePageChange(page){
@@ -127,22 +126,22 @@ class ListPage extends React.Component {
                 <h1>
                 <ContentEditable
                     name="title"
-                    html={this.state.enableEditing} // innerHTML of the editable div
-                    disabled={!this.state.enableEditing}       // use true to disable edition
+                    html={this.state.list.name} // innerHTML of the editable div
+                    disabled={!this.props.enableEditing}       // use true to disable edition
                     onChange={this.updateListName} // handle innerHTML change
                 />
                     </h1>
                 <ContentEditable
                     name="description"
                     html={that.state.list.description} // innerHTML of the editable div
-                    disabled={!this.state.enableEditing}       // use true to disable edition
+                    disabled={!this.props.enableEditing}       // use true to disable edition
                     onChange={this.updateListDescription} // handle innerHTML change
                     />
                 <br/>
-                {this.props.hasPermissionToEdit && this.props.isOwnerOfList && !that.state.enableEditing && <div><button onClick={this.changeEditingToTrue} className={this.props.ajaxCallsInProgress? "btn btn-primary disabled" : "btn btn-primary"}>
+                {this.props.hasPermissionToEdit && this.props.isOwnerOfList && !that.props.enableEditing && <div><button onClick={this.changeEditingToTrue} className={this.props.ajaxCallsInProgress? "btn btn-primary disabled" : "btn btn-primary"}>
                     Enable editing
                 </button> </div>}
-                {this.state.enableEditing &&
+                {this.props.enableEditing &&
                     <div>
                         <button onClick={this.loadNewLearnItemAddition} className="btn btn-primary">
                                 Add new learn Item
@@ -202,7 +201,8 @@ function mapStateToProps(state, ownProps) {
         learnItemPages: state.listsContext.activeList.learnItems.pages,
         learnItems: state.listsContext.activeList.learnItems.pages[state.listsContext.activeList.learnItems.activePage],
         hasPermissionToEdit: state.listsContext.activeList.owner,
-        isOwnerOfList: isOwnerOfList(state)
+        isOwnerOfList: isOwnerOfList(state),
+        enableEditing: state.listsContext.enableEditing
     };
 }
 

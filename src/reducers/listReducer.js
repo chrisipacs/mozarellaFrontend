@@ -119,6 +119,12 @@ export default function listReducer(state = initialState.listsContext, action = 
 
             return newState;
         }
+        case types.ENABLE_EDITING:{
+            return Object.assign({}, state, {enableEditing: true});
+        }
+        case types.DISABLE_EDITING:{
+            return Object.assign({}, state, {enableEditing: false});
+        }
         default:
             return state;
     }

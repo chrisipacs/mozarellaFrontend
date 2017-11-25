@@ -7,6 +7,14 @@ export function loadListsSuccess(lists, totalCount) {
   return {type: types.LOAD_LISTS_SUCCESS, lists, totalCount};
 }
 
+export function enableEditing() {
+    return {type: types.ENABLE_EDITING};
+}
+
+export function disableEditing() {
+    return {type: types.DISABLE_EDITING};
+}
+
 export function loadStudentListsSuccess(lists, totalCount) {
     return {type: types.LOAD_STUDENT_LISTS_SUCCESS, lists, totalCount};
 }

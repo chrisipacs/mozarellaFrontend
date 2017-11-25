@@ -16,6 +16,7 @@ export default {
         lists:[],
         browseLists: false,
         totalCount: 0,
+        enableEditing: false,
         activeList: {
             name: '',
             isPublic: true,
