@@ -86,6 +86,7 @@ class ListPage extends React.Component {
     }
 
     save(){
+        console.log('save');
         this.setState(Object.assign(this.state,{changedSinceLastSave:false})); //TODO maybe only set this after it was successfully saved?
         this.props.actions.saveList(this.state.list);
         this.setState((previousState) => update(previousState, {
@@ -94,6 +95,7 @@ class ListPage extends React.Component {
     }
 
     cancel(){
+        console.log('cancel');
         this.setState((previousState) => update(previousState, {
             enableEditing: {$set: false},
             changedSinceLastSave: {$set: false},
@@ -119,6 +121,7 @@ class ListPage extends React.Component {
 
     render() {
         const that = this;
+        console.log('rendering');
         return (
             <div>
                 <h1>
