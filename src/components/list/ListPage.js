@@ -141,12 +141,22 @@ class ListPage extends React.Component {
                         />
                     }
                     </h1>
-                <ContentEditable
-                    name="description"
-                    html={that.state.list.description} // innerHTML of the editable div
-                    disabled={!this.props.enableEditing}       // use true to disable edition
-                    onChange={this.updateListDescription} // handle innerHTML change
-                    />
+                    {this.props.enableEditing &&
+                        <ContentEditable
+                        name="description"
+                        html={that.state.list.description} // innerHTML of the editable div
+                        disabled={false}       // use true to disable edition
+                        onChange={this.updateListDescription} // handle innerHTML change
+                        />
+                    }
+                    {!this.props.enableEditing &&
+                        <ContentEditable
+                            name="description"
+                            html={that.state.list.description} // innerHTML of the editable div
+                            disabled={true}       // use true to disable edition
+                            onChange={this.updateListDescription} // handle innerHTML change
+                            />
+                    }
                 <br/>
                 {this.props.hasPermissionToEdit && this.props.isOwnerOfList && !that.props.enableEditing && <div><button onClick={this.changeEditingToTrue} className={this.props.ajaxCallsInProgress? "btn btn-primary disabled" : "btn btn-primary"}>
                     Enable editing
