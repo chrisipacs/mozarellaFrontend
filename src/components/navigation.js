@@ -21,7 +21,8 @@ const NavigationPage = ({loading}) => {
 
                 </div>
                     <p className="alignleft">
-                        <IndexLink to="/lists" activeClassName="active">Home</IndexLink>
+                        <IndexLink to="/" activeClassName="active">Home</IndexLink>
+                        {" | "}
                         <Link to="/lists" activeClassName="active">Courses</Link>
                         {" | "}
                         <Link to="/learn" activeClassName="active">Learn</Link>
