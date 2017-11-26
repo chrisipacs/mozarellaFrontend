@@ -30,6 +30,7 @@ class ListSelectionPageForLearning extends React.Component {
             activePage: 0,
             totalCount: 0 //todo: move this to the store, and props
         };
+        this.props.actions.loadLists(0,pageSize);
     }
 
     handlePageChange(pageNumber) {
