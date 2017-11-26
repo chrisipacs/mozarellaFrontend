@@ -53,6 +53,9 @@ export default function listReducer(state = initialState.learnContext, action = 
         case types.LOADING_LEARNABLE_LEARNITEMS_START:{
             return Object.assign({}, state, {loadingInProgress:true});
         }
+        case types.LOGOUT_SUCCESS:{
+            return {};
+        }
         default:
             return state;
     }
